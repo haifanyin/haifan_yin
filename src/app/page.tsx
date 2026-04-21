@@ -313,7 +313,7 @@ function PageHero({ page }: { page: Exclude<PageName, 'home'> }) {
         <div className="hero-orb-2 absolute bottom-[10%] right-[5%] w-[300px] h-[300px] rounded-full bg-primary/3 blur-3xl" />
         <div className="hero-orb-3 absolute top-[40%] left-[50%] w-[150px] h-[150px] rounded-full bg-accent/4 blur-3xl" />
       </div>
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 min-w-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4 md:pt-8 md:pb-6 min-w-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1580,7 +1580,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
   }
 
   return (
-    <SectionWrapper id="publications" className="dot-pattern">
+    <SectionWrapper id="publications" className="dot-pattern pt-8 md:pt-12">
       {/* Scroll Progress Bar (full page only) */}
       {fullPage && (
         <div className="sticky top-16 md:top-20 z-30 h-0.5 bg-border/30">
