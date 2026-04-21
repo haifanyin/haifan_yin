@@ -3542,26 +3542,75 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
               >
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
-              {/* Image Container - Full screen */}
+              {/* Main Content - Click to close */}
               <div
-                className="flex flex-col items-center justify-center w-full h-full p-4 sm:p-8"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                className="flex flex-col items-center justify-center w-full h-full cursor-pointer"
+                onClick={() => setSelectedPhoto(null)}
               >
-                {/* Main Image */}
-                <div className="relative flex-1 w-full flex items-center justify-center min-h-0">
-                  <Image
-                    src={publicAsset(selectedPhotoDetails.src)}
-                    alt={selectedPhotoDetails.caption}
-                    fill
-                    sizes="100vw"
-                    className="object-contain"
-                    priority
-                  />
+                {/* Image Container */}
+                <div
+                  className="flex-1 w-full flex items-center justify-center min-h-0 p-4 sm:p-8 pb-2"
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      src={publicAsset(selectedPhotoDetails.src)}
+                      alt={selectedPhotoDetails.caption}
+                      fill
+                      sizes="100vw"
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
                 </div>
-                {/* Caption bar - Fixed at bottom */}
-                <div className="flex-shrink-0 w-full pt-4 pb-2 px-2 sm:px-4">
+                {/* Thumbnail Strip */}
+                {allPhotos.length > 1 && (
+                  <div
+                    className="flex-shrink-0 w-full px-4 sm:px-8 pb-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-center justify-center gap-1.5 overflow-x-auto py-2 px-2 custom-scrollbar">
+                      {allPhotos.map((photo, idx) => {
+                        const currentIdx = getCurrentPhotoIndex()
+                        const isActive = idx === currentIdx
+                        const isNeighbor = Math.abs(idx - currentIdx) <= 4
+                        if (!isActive && !isNeighbor && allPhotos.length > 10) return null
+                        return (
+                          <button
+                            key={`${photo.src}-${idx}`}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const catIdx = galleryCategories.findIndex(c => c.name === photo.category)
+                              const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
+                              setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
+                            }}
+                            className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                              isActive
+                                ? 'border-white/80 opacity-100 scale-105'
+                                : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
+                            }`}
+                          >
+                            <Image
+                              src={publicAsset(photo.src)}
+                              alt={photo.caption}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+                {/* Caption bar */}
+                <div
+                  className="flex-shrink-0 w-full pt-2 pb-4 px-4 sm:px-8"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm sm:text-base font-medium truncate">{selectedPhotoDetails.caption}</p>
