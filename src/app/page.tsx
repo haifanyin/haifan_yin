@@ -3497,7 +3497,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedPhoto !== null} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
-        <DialogContent className="max-w-5xl w-[95vw] p-0 gap-0 bg-black/95 border-white/10 backdrop-blur-xl [&>button]:hidden">
+        <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl [&>button]:hidden" showCloseButton={false}>
           {selectedPhotoDetails && (
             <>
               <DialogHeader className="sr-only">
@@ -3506,10 +3506,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
               {/* Close button */}
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-3 right-3 z-50 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
-                <X className="w-4 h-4 text-white" />
+                <X className="w-5 h-5 text-white" />
               </button>
               {/* Navigation arrows */}
               <button
@@ -3522,10 +3522,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === prevPhoto.src)
                   setSelectedPhoto({ category: prevPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
                 aria-label="Previous photo"
               >
-                <ChevronLeft className="w-5 h-5 text-white" />
+                <ChevronLeft className="w-6 h-6 text-white" />
               </button>
               <button
                 onClick={(e) => {
@@ -3537,77 +3537,42 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === nextPhoto.src)
                   setSelectedPhoto({ category: nextPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
                 aria-label="Next photo"
               >
-                <ChevronRight className="w-5 h-5 text-white" />
+                <ChevronRight className="w-6 h-6 text-white" />
               </button>
-              {/* Image */}
+              {/* Image Container - Full screen */}
               <div
-                className="flex items-center justify-center w-full py-6 px-12"
+                className="flex flex-col items-center justify-center w-full h-full p-4 sm:p-8"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
               >
-                <div className="relative w-full flex items-center justify-center max-h-[75vh]">
+                {/* Main Image */}
+                <div className="relative flex-1 w-full flex items-center justify-center min-h-0">
                   <Image
                     src={publicAsset(selectedPhotoDetails.src)}
                     alt={selectedPhotoDetails.caption}
-                    width={800}
-                    height={600}
-                    className="object-contain rounded-lg max-w-full max-h-[65vh]"
+                    fill
+                    sizes="100vw"
+                    className="object-contain"
+                    priority
                   />
                 </div>
-              </div>
-              {/* Thumbnail Strip */}
-              {allPhotos.length > 1 && (
-                <div className="px-8 pb-3">
-                  <div className="flex items-center justify-center gap-1.5 overflow-x-auto py-1 custom-scrollbar">
-                    {allPhotos.map((photo, idx) => {
-                      const currentIdx = getCurrentPhotoIndex()
-                      const isActive = idx === currentIdx
-                      const isNeighbor = Math.abs(idx - currentIdx) <= 3
-                      if (!isActive && !isNeighbor && allPhotos.length > 7) return null
-                      return (
-                        <button
-                          key={`${photo.src}-${idx}`}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            const catIdx = galleryCategories.findIndex(c => c.name === photo.category)
-                            const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
-                            setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
-                          }}
-                          className={`flex-shrink-0 w-12 h-12 rounded-md overflow-hidden border-2 transition-all duration-200 ${
-                            isActive
-                              ? 'border-white/80 opacity-100 scale-105'
-                              : 'border-white/10 opacity-50 hover:opacity-80 hover:border-white/30'
-                          }`}
-                        >
-                          <Image
-                            src={publicAsset(photo.src)}
-                            alt={photo.caption}
-                            width={48}
-                            height={48}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      )
-                    })}
+                {/* Caption bar - Fixed at bottom */}
+                <div className="flex-shrink-0 w-full pt-4 pb-2 px-2 sm:px-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-sm sm:text-base font-medium truncate">{selectedPhotoDetails.caption}</p>
+                      <Badge variant="secondary" className="text-[10px] mt-1 bg-white/10 text-white/70 border-white/10">
+                        {selectedPhotoDetails.categoryName}
+                      </Badge>
+                    </div>
+                    <p className="text-white/50 text-xs sm:text-sm tabular-nums flex-shrink-0">
+                      {getCurrentPhotoIndex() + 1} / {allPhotos.length}
+                    </p>
                   </div>
-                </div>
-              )}
-              {/* Caption bar */}
-              <div className="px-12 pb-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white text-sm font-medium">{selectedPhotoDetails.caption}</p>
-                    <Badge variant="secondary" className="text-[10px] mt-1 bg-white/10 text-white/70 border-white/10">
-                      {selectedPhotoDetails.categoryName}
-                    </Badge>
-                  </div>
-                  <p className="text-white/40 text-xs tabular-nums">
-                    {getCurrentPhotoIndex() + 1} / {allPhotos.length}
-                  </p>
                 </div>
               </div>
             </>
