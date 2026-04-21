@@ -1801,18 +1801,15 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                           <p className="text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
                             <strong className="text-foreground">Haifan Yin</strong>, &ldquo;<span className="text-foreground/90">Interference mitigation in massive MIMO systems,</span>&rdquo;{' '}
                             <em className="text-muted-foreground">PhD dissertation, Télécom ParisTech</em>, Dec. 2015.
-                          </p>
-                          <div className="mt-2 flex items-center gap-3">
                             <a
                               href="/documents/thesis-haifan-yin.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
+                              className="academic-link ml-1 text-xs"
                             >
-                              <FileText className="w-3.5 h-3.5" />
-                              Download PDF
+                              [Link]
                             </a>
-                          </div>
+                          </p>
                         </div>
                       </div>
                     </motion.div>
