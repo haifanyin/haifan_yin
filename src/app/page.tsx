@@ -3271,8 +3271,8 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       icon: Trophy,
       color: 'from-amber-500 to-orange-600',
       photos: [
-        { src: '/gallery/awards/2024-09-Speech on the May 4th Youth Medal.jpg', caption: 'Speech on the May 4th Youth Medal (2024.09)' },
         { src: '/gallery/awards/2024-rice prize.png', caption: 'Rice Prize (2024)' },
+        { src: '/gallery/awards/2024-09-Speech on the May 4th Youth Medal.jpg', caption: 'Speech on the May 4th Youth Medal (2024.09)' },
       ]
     },
     {
@@ -3281,8 +3281,8 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       icon: Globe,
       color: 'from-blue-500 to-cyan-600',
       photos: [
-        { src: '/gallery/conference attendance/2024-09-EURECOM.jpg', caption: 'EURECOM Conference (2024.09)' },
         { src: '/gallery/conference attendance/2024-11-the 3rd RIS forum.jpg', caption: 'The 3rd RIS Forum (2024.11)' },
+        { src: '/gallery/conference attendance/2024-09-EURECOM.jpg', caption: 'EURECOM Conference (2024.09)' },
       ]
     },
     {
@@ -3291,15 +3291,15 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       icon: UsersIcon,
       color: 'from-violet-500 to-purple-600',
       photos: [
-        { src: '/gallery/team events/2024-05-Ziao Qin\'s defence.jpg', caption: "Ziao Qin's Defence (2024.05)" },
-        { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation (2024.06)' },
-        { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation Ceremony (2024.06)' },
-        { src: '/gallery/team events/2024-09-teacher\'s day.jpg', caption: "Teacher's Day (2024.09)" },
-        { src: '/gallery/team events/2024-09-teacher\'s day 2.jpg', caption: "Teacher's Day Celebration (2024.09)" },
-        { src: '/gallery/team events/2025-08-Weidong Li\'s defence.jpg', caption: "Weidong Li's Defence (2025.08)" },
-        { src: '/gallery/team events/2025-08-Weidong Li\'s farewell dinner.jpg', caption: "Weidong Li's Farewell Dinner (2025.08)" },
+        { src: '/gallery/team events/2025-11-Rongguang Song\'s defence.jpg', caption: "Rongguang Song's Defence (2025.11)" },
         { src: '/gallery/team events/2025-09-teacher\'s day.jpg', caption: "Teacher's Day (2025.09)" },
-        { src: '/gallery/team events/2025-11-Rongguang Song‘s defence.jpg', caption: "Rongguang Song's Defence (2025.11)" },
+        { src: '/gallery/team events/2025-08-Weidong Li\'s farewell dinner.jpg', caption: "Weidong Li's Farewell Dinner (2025.08)" },
+        { src: '/gallery/team events/2025-08-Weidong Li\'s defence.jpg', caption: "Weidong Li's Defence (2025.08)" },
+        { src: '/gallery/team events/2024-09-teacher\'s day 2.jpg', caption: "Teacher's Day Celebration (2024.09)" },
+        { src: '/gallery/team events/2024-09-teacher\'s day.jpg', caption: "Teacher's Day (2024.09)" },
+        { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation Ceremony (2024.06)' },
+        { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation (2024.06)' },
+        { src: '/gallery/team events/2024-05-Ziao Qin\'s defence.jpg', caption: "Ziao Qin's Defence (2024.05)" },
       ]
     },
     {
@@ -3308,11 +3308,11 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       icon: Sparkles,
       color: 'from-emerald-500 to-teal-600',
       photos: [
-        { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match (2024.09)' },
-        { src: '/gallery/team activities/2024-winter team activity.jpg', caption: 'Winter Team Activity (2024)' },
-        { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match (2025.06)' },
-        { src: '/gallery/team activities/2025-summer team activity.jpg', caption: 'Summer Team Activity (2025)' },
         { src: '/gallery/team activities/2025-winter team activity.jpg', caption: 'Winter Team Activity (2025)' },
+        { src: '/gallery/team activities/2025-summer team activity.jpg', caption: 'Summer Team Activity (2025)' },
+        { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match (2025.06)' },
+        { src: '/gallery/team activities/2024-winter team activity.jpg', caption: 'Winter Team Activity (2024)' },
+        { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match (2024.09)' },
       ]
     },
   ], [])
