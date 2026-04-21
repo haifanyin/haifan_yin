@@ -1724,7 +1724,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   {activeTab === 'journal' && <span>Showing {filteredJournals.length} of {journalPapers.length} journal papers</span>}
                   {activeTab === 'conference' && <span>Showing {filteredConferences.length} of {conferencePapers.length} conference papers</span>}
                   {activeTab === 'patents' && <span>Showing {patents.length} patents</span>}
-                  {activeTab === 'thesis' && <span>Showing 1 thesis</span>}
+                  {activeTab === 'thesis' && <span>Showing {(yearFilter === 'all' || yearFilter === '2015') ? 1 : 0} of 1 thesis</span>}
                 </p>
               </motion.div>
             )}
@@ -1792,27 +1792,43 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
 
             <TabsContent value="thesis">
               <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
-                <div className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
-                      <GraduationCap className="w-6 h-6 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-muted-foreground mb-2">
-                        <span className="pub-number text-xs">[1]</span>{' '}
-                        H. Yin, <span className="italic">"Interference mitigation in massive MIMO systems,"</span> PhD dissertation, Télécom ParisTech, Dec. 2015.
-                      </p>
-                      <a
-                        href="/documents/thesis-haifan-yin.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                <div className="p-2">
+                  {(yearFilter === 'all' || yearFilter === '2015') ? (
+                    <motion.div variants={staggerItem} className="group">
+                      <div className="flex gap-3 py-3.5 px-3 rounded-lg hover:bg-accent/50 transition-colors">
+                        <span className="pub-number text-xs mt-1 flex-shrink-0 tabular-nums">[1]</span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
+                            <strong className="text-foreground">Haifan Yin</strong>, &ldquo;<span className="text-foreground/90">Interference mitigation in massive MIMO systems,</span>&rdquo;{' '}
+                            <em className="text-muted-foreground">PhD dissertation, Télécom ParisTech</em>, Dec. 2015.
+                          </p>
+                          <div className="mt-2 flex items-center gap-3">
+                            <a
+                              href="/documents/thesis-haifan-yin.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
+                            >
+                              <FileText className="w-3.5 h-3.5" />
+                              Download PDF
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                      <Search className="w-8 h-8 mb-3 text-muted-foreground/40" />
+                      <p className="text-sm font-medium">No thesis for year {yearFilter}</p>
+                      <button
+                        onClick={() => setYearFilter('all')}
+                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                       >
-                        <FileText className="w-4 h-4" />
-                        Download PDF
-                      </a>
+                        <Filter className="w-3 h-3" />
+                        Clear Filter
+                      </button>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
