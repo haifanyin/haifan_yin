@@ -1632,7 +1632,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
               >
                 {sortDesc ? <SortDesc className="w-4 h-4" /> : <SortAsc className="w-4 h-4" />}
               </button>
-              {activeTab !== 'patents' && (
+              {activeTab !== 'patents' && activeTab !== 'thesis' && (
                 <button
                   onClick={handleDownloadBibTeX}
                   className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
@@ -1641,7 +1641,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   <Download className="w-4 h-4" />
                 </button>
               )}
-              {showStatsBar && activeTab !== 'patents' && (
+              {showStatsBar && activeTab !== 'patents' && activeTab !== 'thesis' && (
                 <button
                   onClick={handleExportAllBibTeX}
                   className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors border border-border/40"
@@ -1708,6 +1708,11 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                 Patents
                 <Badge variant="secondary" className="ml-1 text-xs">{patents.length}</Badge>
               </TabsTrigger>
+              <TabsTrigger value="thesis" className="gap-1.5">
+                <GraduationCap className="w-4 h-4" />
+                Thesis
+                <Badge variant="secondary" className="ml-1 text-xs">1</Badge>
+              </TabsTrigger>
             </TabsList>
             </div>
 
@@ -1719,6 +1724,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   {activeTab === 'journal' && <span>Showing {filteredJournals.length} of {journalPapers.length} journal papers</span>}
                   {activeTab === 'conference' && <span>Showing {filteredConferences.length} of {conferencePapers.length} conference papers</span>}
                   {activeTab === 'patents' && <span>Showing {patents.length} patents</span>}
+                  {activeTab === 'thesis' && <span>Showing 1 thesis</span>}
                 </p>
               </motion.div>
             )}
@@ -1779,6 +1785,33 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                         <span className="text-muted-foreground break-words [overflow-wrap:anywhere]">{patent}</span>
                       </motion.div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="thesis">
+              <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
+                <div className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
+                      <GraduationCap className="w-6 h-6 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-muted-foreground mb-2">
+                        <span className="pub-number text-xs">[1]</span>{' '}
+                        H. Yin, <span className="italic">"Interference mitigation in massive MIMO systems,"</span> PhD dissertation, Télécom ParisTech, Dec. 2015.
+                      </p>
+                      <a
+                        href="/documents/thesis-haifan-yin.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                      >
+                        <FileText className="w-4 h-4" />
+                        Download PDF
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
