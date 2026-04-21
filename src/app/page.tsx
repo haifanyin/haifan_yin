@@ -464,17 +464,6 @@ function PubStatsBar() {
               <span className="text-xs font-bold text-violet-700 dark:text-violet-400 tabular-nums">h{citationStats.hIndex}</span>
             </div>
           </div>
-
-          {/* Google Scholar Link */}
-          <a
-            href={professorInfo.googleScholar}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/60 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-          >
-            <School className="w-3.5 h-3.5" />
-            Google Scholar
-          </a>
         </div>
       </div>
     </motion.div>

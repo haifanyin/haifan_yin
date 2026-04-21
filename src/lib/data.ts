@@ -690,8 +690,8 @@ export const patentBreakdown = {
 }
 
 export const citationStats = {
-  totalCitations: 4500,
-  hIndex: 28,
+  totalCitations: 3500,
+  hIndex: 21,
   i10Index: 42,
 }
 
