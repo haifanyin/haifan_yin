@@ -1356,7 +1356,7 @@ function PublicationItem({ pub, index, type }: { pub: Publication; index: number
             {pub.authors.split(',').map((author, i) => {
               const name = author.trim()
               if (name === 'Haifan Yin') {
-                return <strong key={i} className="text-foreground">{i > 0 ? ', ' : ''}{name}</strong>
+                return <span key={i}>{i > 0 ? <span className="text-muted-foreground">, </span> : ''}<strong className="text-foreground">{name}</strong></span>
               }
               return <span key={i} className="text-muted-foreground">{i > 0 ? ', ' : ''}{name}</span>
             })}
