@@ -3546,20 +3546,17 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
               >
                 {/* Image Container */}
                 <div
-                  className="flex-1 min-h-0 flex items-center justify-center px-2 py-14 sm:px-8 sm:py-4"
+                  className="flex-1 min-h-0 flex items-center justify-center overflow-hidden"
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <Image
+                  <div className="relative flex items-center justify-center w-full h-full px-2 pt-14 pb-2 sm:px-8 sm:py-4">
+                    <img
                       src={publicAsset(selectedPhotoDetails.src)}
                       alt={selectedPhotoDetails.caption}
-                      fill
-                      sizes="100vw"
-                      className="!relative !w-auto !h-auto max-w-[95vw] max-h-[55vh] sm:max-h-[65vh] object-contain"
-                      priority
+                      className="max-w-[calc(100vw-1rem)] max-h-[calc(100vh-220px)] sm:max-w-[calc(100vw-4rem)] sm:max-h-[calc(100vh-200px)] w-auto h-auto object-contain"
                     />
                   </div>
                 </div>
