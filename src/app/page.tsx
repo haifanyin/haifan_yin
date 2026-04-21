@@ -817,10 +817,8 @@ function Navigation({ currentPage, darkMode, toggleDarkMode, onNavigate }: { cur
                 <item.icon className="w-4 h-4" />
                 {item.label}
                 {currentPage === item.id && (
-                  <motion.div
-                    layoutId="activeNav"
+                  <div
                     className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary"
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
               </button>
@@ -3632,21 +3630,29 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
 
 // ============ Hash Routing Utility ============
 function getInitialPage(): PageName {
-  if (typeof window === 'undefined') return 'home'
-  const hash = window.location.hash.replace('#', '')
-  if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'teaching' || hash === 'gallery') return hash
+  // Always return 'home' for SSR to match server-rendered HTML
+  // The actual page will be synced via useEffect after hydration
   return 'home'
 }
 
 // ============ Main Page ============
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState<PageName>(getInitialPage)
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return localStorage.getItem('mcsp-dark-mode') === 'true'
-  })
+  const [currentPage, setCurrentPage] = useState<PageName>('home')
+  const [darkMode, setDarkMode] = useState(false)
   const [toastVisible, setToastVisible] = useState(false)
   const [showCommandPalette, setShowCommandPalette] = useState(false)
+
+  // Sync page with URL hash after mount (client-side only)
+  // This is the recommended pattern for reading browser state after hydration
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'teaching' || hash === 'gallery') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentPage(hash)
+    }
+    // Load dark mode preference
+    setDarkMode(localStorage.getItem('mcsp-dark-mode') === 'true')
+  }, [])
 
   // Listen for hash changes (browser back/forward)
   useEffect(() => {
