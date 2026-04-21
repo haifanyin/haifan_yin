@@ -1144,24 +1144,6 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
               ))}
             </motion.div>
 
-            {/* Scroll Down Indicator */}
-            <motion.div
-              variants={fadeInUp}
-              className="hidden md:flex items-center justify-center pt-4"
-            >
-              <button
-                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex flex-col items-center gap-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors group cursor-pointer"
-              >
-                <span className="text-[10px] uppercase tracking-widest font-medium">Scroll to explore</span>
-                <motion.div
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <ChevronDown className="w-4 h-4" />
-                </motion.div>
-              </button>
-            </motion.div>
           </div>
         </div>
       </div>
@@ -1188,7 +1170,7 @@ function TimelineItem({ period, title, subtitle, isLast = false, Icon }: { perio
 
 function AboutSection() {
   return (
-    <SectionWrapper id="about" className="bg-muted/30">
+    <SectionWrapper id="about" className="bg-muted/30 pt-8 md:pt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle accent="blue" subtitle="Background, honors, and professional services">
           About
@@ -2931,7 +2913,6 @@ function HomePage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
     <main>
       <HeroSection onNavigate={onNavigate} />
 
-      <SectionDivider />
       <AboutSection />
       <SectionDivider flip />
 
