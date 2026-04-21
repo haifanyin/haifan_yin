@@ -3438,36 +3438,36 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
           </div>
         </motion.div>
 
-        {/* 4 Column Gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        {/* 4 Categories - Stacked Vertically */}
+        <div className="space-y-12">
           {galleryCategories.map((category, catIdx) => (
-            <motion.div
+            <motion.section
               key={category.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: catIdx * 0.1 }}
-              className="flex flex-col"
+              transition={{ duration: 0.5, delay: catIdx * 0.15 }}
+              className="scroll-mt-24"
             >
               {/* Category Header */}
-              <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-border/60">
-                <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center shadow-sm`}>
-                  <category.icon className="w-4 h-4 text-white" />
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-md`}>
+                  <category.icon className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground">{category.name}</h3>
-                  <p className="text-[10px] text-muted-foreground">{category.photos.length} photos</p>
+                  <h2 className="text-xl font-bold text-foreground">{category.name}</h2>
+                  <p className="text-xs text-muted-foreground">{category.photos.length} photos</p>
                 </div>
               </div>
 
-              {/* Photos in Category */}
-              <div className="space-y-4 flex-1">
+              {/* Photos Grid - Responsive */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {category.photos.map((photo, photoIdx) => (
                   <motion.div
                     key={photo.src}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: catIdx * 0.1 + photoIdx * 0.05 }}
-                    className="group relative cursor-pointer"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: catIdx * 0.1 + photoIdx * 0.05 }}
+                    className="group cursor-pointer"
                     onClick={() => setSelectedPhoto({ category: category.name, index: photoIdx })}
                   >
                     <div className="relative rounded-xl overflow-hidden border border-border/60 hover:shadow-lg transition-all duration-300 hover:border-primary/30 aspect-[4/3]">
@@ -3476,25 +3476,21 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                         alt={photo.caption}
                         width={400}
                         height={300}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      {/* Hover overlay gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      {/* Caption on hover */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <p className="text-white text-xs font-medium line-clamp-2 drop-shadow-md">{photo.caption}</p>
-                      </div>
-                      {/* View icon overlay */}
+                      {/* View icon overlay on hover */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                        <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center border border-white/30">
                           <Maximize2 className="w-5 h-5 text-white" />
                         </div>
                       </div>
                     </div>
+                    {/* Caption - Always Visible */}
+                    <p className="mt-2.5 text-sm font-medium text-foreground line-clamp-2">{photo.caption}</p>
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </motion.section>
           ))}
         </div>
       </div>
