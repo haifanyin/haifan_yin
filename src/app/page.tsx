@@ -3497,16 +3497,13 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedPhoto !== null} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
-        <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl [&>button]:hidden" showCloseButton={false}>
+        <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl" showCloseButton={false}>
           {selectedPhotoDetails && (
-            <>
-              <DialogHeader className="sr-only">
-                <DialogTitle>{selectedPhotoDetails.caption}</DialogTitle>
-              </DialogHeader>
+            <div className="relative w-full h-full">
               {/* Close button */}
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+                className="absolute top-4 right-4 z-[100] w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
                 <X className="w-5 h-5 text-white" />
@@ -3522,7 +3519,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === prevPhoto.src)
                   setSelectedPhoto({ category: prevPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Previous photo"
               >
                 <ChevronLeft className="w-6 h-6 text-white" />
@@ -3537,7 +3534,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === nextPhoto.src)
                   setSelectedPhoto({ category: nextPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Next photo"
               >
                 <ChevronRight className="w-6 h-6 text-white" />
@@ -3624,7 +3621,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   </div>
                 </div>
               </div>
-            </>
+              <DialogHeader className="sr-only">
+                <DialogTitle>{selectedPhotoDetails.caption}</DialogTitle>
+              </DialogHeader>
+            </div>
           )}
         </DialogContent>
       </Dialog>
