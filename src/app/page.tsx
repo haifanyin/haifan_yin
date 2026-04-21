@@ -339,7 +339,7 @@ function PageHero({ page }: { page: Exclude<PageName, 'home'> }) {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-          className="decorative-line w-20 mt-3 mb-4 md:ml-16"
+          className="decorative-line w-20 mt-3 mb-6 md:ml-16"
         />
       </div>
     </div>
@@ -1580,7 +1580,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
   }
 
   return (
-    <SectionWrapper id="publications" className="dot-pattern !pt-0">
+    <SectionWrapper id="publications" className="dot-pattern !pt-0 !pb-0">
       {/* Scroll Progress Bar (full page only) */}
       {fullPage && (
         <div className="sticky top-16 md:top-20 z-30 h-0.5 bg-border/30">
