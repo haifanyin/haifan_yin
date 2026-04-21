@@ -3499,14 +3499,14 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       <Dialog open={selectedPhoto !== null} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
         <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl overflow-hidden" showCloseButton={false}>
           {selectedPhotoDetails && (
-            <div className="relative w-full h-full flex flex-col">
+            <div className="w-full h-full flex flex-col safe-area-inset">
               {/* Close button - Fixed position */}
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="fixed top-4 right-4 z-[100] w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed top-3 right-3 sm:top-4 sm:right-4 z-[100] w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </button>
               {/* Navigation arrows - Fixed position */}
               <button
@@ -3519,10 +3519,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === prevPhoto.src)
                   setSelectedPhoto({ category: prevPhoto.category, index: photoIdxInCat })
                 }}
-                className="fixed left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed left-1 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Previous photo"
               >
-                <ChevronLeft className="w-6 h-6 text-white" />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </button>
               <button
                 onClick={(e) => {
@@ -3534,31 +3534,31 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === nextPhoto.src)
                   setSelectedPhoto({ category: nextPhoto.category, index: photoIdxInCat })
                 }}
-                className="fixed right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed right-1 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Next photo"
               >
-                <ChevronRight className="w-6 h-6 text-white" />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </button>
               {/* Main Content - Click to close */}
               <div
-                className="flex-1 flex flex-col min-h-0 cursor-pointer"
+                className="flex-1 flex flex-col min-h-0 overflow-hidden cursor-pointer"
                 onClick={() => setSelectedPhoto(null)}
               >
-                {/* Image Container - Fixed height calculation */}
+                {/* Image Container */}
                 <div
-                  className="flex-1 min-h-0 flex items-center justify-center p-4 pt-16 sm:pt-4"
+                  className="flex-1 min-h-0 flex items-center justify-center px-2 py-14 sm:px-8 sm:py-4"
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="relative max-w-full max-h-full w-auto h-auto flex items-center justify-center">
+                  <div className="relative w-full h-full flex items-center justify-center">
                     <Image
                       src={publicAsset(selectedPhotoDetails.src)}
                       alt={selectedPhotoDetails.caption}
-                      width={1200}
-                      height={900}
-                      className="max-w-full max-h-[60vh] sm:max-h-[70vh] w-auto h-auto object-contain"
+                      fill
+                      sizes="100vw"
+                      className="!relative !w-auto !h-auto max-w-[95vw] max-h-[55vh] sm:max-h-[65vh] object-contain"
                       priority
                     />
                   </div>
@@ -3566,10 +3566,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                 {/* Thumbnail Strip */}
                 {allPhotos.length > 1 && (
                   <div
-                    className="flex-shrink-0 w-full px-4 pb-2"
+                    className="flex-shrink-0 w-full px-2 sm:px-4 pb-1"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center justify-center gap-1.5 overflow-x-auto py-2 custom-scrollbar">
+                    <div className="flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1 sm:py-2 custom-scrollbar">
                       {allPhotos.map((photo, idx) => {
                         const currentIdx = getCurrentPhotoIndex()
                         const isActive = idx === currentIdx
@@ -3584,7 +3584,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                               const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
                               setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
                             }}
-                            className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                            className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-md overflow-hidden border-2 transition-all duration-200 ${
                               isActive
                                 ? 'border-white/80 opacity-100 scale-105'
                                 : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
@@ -3605,17 +3605,17 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                 )}
                 {/* Caption bar */}
                 <div
-                  className="flex-shrink-0 w-full pt-2 pb-4 px-4"
+                  className="flex-shrink-0 w-full py-2 sm:pt-2 sm:pb-4 px-3 sm:px-6"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm sm:text-base font-medium truncate">{selectedPhotoDetails.caption}</p>
-                      <Badge variant="secondary" className="text-[10px] mt-1 bg-white/10 text-white/70 border-white/10">
+                      <p className="text-white text-xs sm:text-base font-medium truncate">{selectedPhotoDetails.caption}</p>
+                      <Badge variant="secondary" className="text-[9px] sm:text-[10px] mt-0.5 sm:mt-1 bg-white/10 text-white/70 border-white/10">
                         {selectedPhotoDetails.categoryName}
                       </Badge>
                     </div>
-                    <p className="text-white/50 text-xs sm:text-sm tabular-nums flex-shrink-0">
+                    <p className="text-white/50 text-[10px] sm:text-sm tabular-nums flex-shrink-0">
                       {getCurrentPhotoIndex() + 1} / {allPhotos.length}
                     </p>
                   </div>
