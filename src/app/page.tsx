@@ -3497,18 +3497,18 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedPhoto !== null} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
-        <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl" showCloseButton={false}>
+        <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl overflow-hidden" showCloseButton={false}>
           {selectedPhotoDetails && (
-            <div className="relative w-full h-full">
-              {/* Close button */}
+            <div className="relative w-full h-full flex flex-col">
+              {/* Close button - Fixed position */}
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-4 right-4 z-[100] w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed top-4 right-4 z-[100] w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
                 <X className="w-5 h-5 text-white" />
               </button>
-              {/* Navigation arrows */}
+              {/* Navigation arrows - Fixed position */}
               <button
                 onClick={(e) => {
                   e.stopPropagation()
@@ -3519,7 +3519,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === prevPhoto.src)
                   setSelectedPhoto({ category: prevPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Previous photo"
               >
                 <ChevronLeft className="w-6 h-6 text-white" />
@@ -3534,31 +3534,31 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === nextPhoto.src)
                   setSelectedPhoto({ category: nextPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="fixed right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
                 aria-label="Next photo"
               >
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
               {/* Main Content - Click to close */}
               <div
-                className="flex flex-col items-center justify-center w-full h-full cursor-pointer"
+                className="flex-1 flex flex-col min-h-0 cursor-pointer"
                 onClick={() => setSelectedPhoto(null)}
               >
-                {/* Image Container */}
+                {/* Image Container - Fixed height calculation */}
                 <div
-                  className="flex-1 w-full flex items-center justify-center min-h-0 p-4 sm:p-8 pb-2"
+                  className="flex-1 min-h-0 flex items-center justify-center p-4 pt-16 sm:pt-4"
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative max-w-full max-h-full w-auto h-auto flex items-center justify-center">
                     <Image
                       src={publicAsset(selectedPhotoDetails.src)}
                       alt={selectedPhotoDetails.caption}
-                      fill
-                      sizes="100vw"
-                      className="object-contain"
+                      width={1200}
+                      height={900}
+                      className="max-w-full max-h-[60vh] sm:max-h-[70vh] w-auto h-auto object-contain"
                       priority
                     />
                   </div>
@@ -3566,10 +3566,10 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                 {/* Thumbnail Strip */}
                 {allPhotos.length > 1 && (
                   <div
-                    className="flex-shrink-0 w-full px-4 sm:px-8 pb-2"
+                    className="flex-shrink-0 w-full px-4 pb-2"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center justify-center gap-1.5 overflow-x-auto py-2 px-2 custom-scrollbar">
+                    <div className="flex items-center justify-center gap-1.5 overflow-x-auto py-2 custom-scrollbar">
                       {allPhotos.map((photo, idx) => {
                         const currentIdx = getCurrentPhotoIndex()
                         const isActive = idx === currentIdx
@@ -3605,7 +3605,7 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                 )}
                 {/* Caption bar */}
                 <div
-                  className="flex-shrink-0 w-full pt-2 pb-4 px-4 sm:px-8"
+                  className="flex-shrink-0 w-full pt-2 pb-4 px-4"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex items-center justify-between gap-4">
