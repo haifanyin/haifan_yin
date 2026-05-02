@@ -1014,7 +1014,7 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
   }, [])
 
   return (
-    <SectionWrapper id="home" className="section-pattern relative overflow-hidden">
+    <SectionWrapper id="home" className="section-pattern relative overflow-hidden pb-8 md:pb-12">
       {/* Gradient mesh background layer */}
       <div className="hero-mesh-bg" aria-hidden="true" />
       {/* Floating Orbs with parallax */}
@@ -1160,7 +1160,7 @@ function TimelineItem({ period, title, subtitle, isLast = false, Icon }: { perio
 
 function AboutSection() {
   return (
-    <SectionWrapper id="about" className="bg-muted/30 pt-8 md:pt-12">
+    <SectionWrapper id="about" className="bg-muted/30 pt-4 md:pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle accent="blue" subtitle="Background, honors, and professional services">
           About
