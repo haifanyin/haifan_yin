@@ -2535,7 +2535,7 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
                     <Users className="w-4 h-4 text-violet-500/60" />
                   </div>
                   <div>
-                    <div className="text-lg font-bold tracking-tight">{teachers.length + totalCurrent + graduatedPhdStudents.length + graduatedMasterStudents.length}</div>
+                    <div className="text-lg font-bold tracking-tight">{teachers.length + totalCurrent}</div>
                     <div className="text-[10px] text-muted-foreground">Total Members</div>
                   </div>
                 </div>
