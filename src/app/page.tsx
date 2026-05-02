@@ -2449,21 +2449,12 @@ function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (
 }
 
 function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
-  const [topicFilter, setTopicFilter] = useState<string>('all')
   const [destFilter, setDestFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
   // Sort helpers
   const sortByEnrollDesc = (a: Student, b: Student) => (b.enrollDate || '').localeCompare(a.enrollDate || '')
   const sortByGradDesc = (a: Student, b: Student) => (b.gradDate || '').localeCompare(a.gradDate || '')
-
-  const allStudents = useMemo(() => [...phdStudents, ...masterStudents, ...graduatedPhdStudents, ...graduatedMasterStudents], [])
-
-  const allTopics = useMemo(() => {
-    const topics = new Set<string>()
-    allStudents.forEach(s => s.researchTopics.forEach(t => topics.add(t)))
-    return ['all', ...Array.from(topics).sort()]
-  }, [allStudents])
 
   const allDestinations = useMemo(() => {
     const dests = new Set<string>()
@@ -2477,39 +2468,39 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
     const q = searchQuery.trim().toLowerCase()
     const base = phdStudents.filter(s => {
       if (q && !s.name.toLowerCase().includes(q) && !s.nameCn.includes(q) && !s.researchTopics.some(t => t.toLowerCase().includes(q))) return false
-      return topicFilter === 'all' || s.researchTopics.includes(topicFilter)
+      return true
     })
     return [...base].sort(sortByEnrollDesc)
-  }, [topicFilter, searchQuery])
+  }, [searchQuery])
 
   const filteredMaster = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
     const base = masterStudents.filter(s => {
       if (q && !s.name.toLowerCase().includes(q) && !s.nameCn.includes(q) && !s.researchTopics.some(t => t.toLowerCase().includes(q))) return false
-      return topicFilter === 'all' || s.researchTopics.includes(topicFilter)
+      return true
     })
     return [...base].sort(sortByEnrollDesc)
-  }, [topicFilter, searchQuery])
+  }, [searchQuery])
 
   const filteredGraduatedPhd = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
     let base = graduatedPhdStudents.filter(s => {
       if (q && !s.name.toLowerCase().includes(q) && !s.nameCn.includes(q) && !s.researchTopics.some(t => t.toLowerCase().includes(q))) return false
-      return topicFilter === 'all' || s.researchTopics.includes(topicFilter)
+      return true
     })
     if (destFilter !== 'all') base = base.filter(s => s.destination === destFilter)
     return [...base].sort(sortByGradDesc)
-  }, [topicFilter, destFilter, searchQuery])
+  }, [destFilter, searchQuery])
 
   const filteredGraduatedMaster = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
     let base = graduatedMasterStudents.filter(s => {
       if (q && !s.name.toLowerCase().includes(q) && !s.nameCn.includes(q) && !s.researchTopics.some(t => t.toLowerCase().includes(q))) return false
-      return topicFilter === 'all' || s.researchTopics.includes(topicFilter)
+      return true
     })
     if (destFilter !== 'all') base = base.filter(s => s.destination === destFilter)
     return [...base].sort(sortByGradDesc)
-  }, [topicFilter, destFilter, searchQuery])
+  }, [destFilter, searchQuery])
 
   const graduatedTotal = filteredGraduatedPhd.length + filteredGraduatedMaster.length
 
@@ -2600,9 +2591,8 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
           </motion.div>
         )}
 
-        {/* Research Topic Filter */}
-        <motion.div variants={fadeInUp} className="mb-8 space-y-3">
-          {/* Search bar */}
+        {/* Search */}
+        <motion.div variants={fadeInUp} className="mb-8">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -2616,22 +2606,6 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-4 h-4 text-muted-foreground" />
-            {allTopics.map((topic) => (
-              <button
-                key={topic}
-                onClick={() => setTopicFilter(topic)}
-                className={`px-3 py-1.5 text-xs rounded-lg transition-all font-medium ${
-                  topicFilter === topic
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground hover:bg-accent hover:text-foreground'
-                }`}
-              >
-                {topic === 'all' ? 'All Topics' : topic}
-              </button>
-            ))}
           </div>
         </motion.div>
 
