@@ -1024,6 +1024,28 @@ export interface Teacher {
 
 export const teachers: Teacher[] = [
   {
+    name: "Haifan Yin",
+    nameCn: "尹海帆",
+    avatar: "/professor.jpg",
+    title: "Professor",
+    subtitle: "Ph.D. Supervisor",
+    department: "School of Electronic Information and Communications",
+    education: "Ph.D. in Communication and Electronics, Telecom ParisTech, France",
+    email: "yin@hust.edu.cn",
+    profileUrl: "https://faculty.hust.edu.cn/yin/zh_CN",
+    researchAreas: ["5G/6G networks", "Massive MIMO", "Signal processing", "Machine learning", "RIS"],
+    awards: [
+      "2024 IEEE Stephen O. Rice Prize",
+      "2021 National Champion of High Potential Innovation Prize, Chinese Academy of Engineering",
+      "China Youth May Fourth Medal (the top honor for young Chinese)",
+      "2023 Best Mentor Award of the 15th Anniversary Celebration of National Undergraduate Innovation and Entrepreneurship",
+      "2022 Leader of Innovation and Entrepreneurship Strategic Team in Hubei Province",
+      "2022 National first prize of \"Challenge Cup\" — instructor",
+      "2021 Gold Award, 7th China International \"Internet+\" Competition — instructor",
+      "Chinese Government Award for Outstanding Self-financed Students Abroad (ranking #1 in France)",
+    ],
+  },
+  {
     name: "Li Tan",
     nameCn: "谭力",
     avatar: "/avatars/li-tan.jpg",
