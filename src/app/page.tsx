@@ -2815,7 +2815,7 @@ function QuoteBanner() {
   }, [quotes.length])
 
   return (
-    <SectionWrapper id="quote" className="relative overflow-hidden !py-10 md:!py-14">
+    <SectionWrapper id="quote" className="relative overflow-hidden !py-4 md:!py-6">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <AnimatePresence mode="wait">
           <motion.div
