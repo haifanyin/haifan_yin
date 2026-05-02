@@ -2804,8 +2804,6 @@ function QuoteBanner() {
   const quotes = [
     { text: "When something is important enough, you do it even if the odds are not in your favor.", author: "Elon Musk" },
     { text: "Innovation is the ability to see change as an opportunity — not a threat.", author: "Steve Jobs" },
-    { text: "The best way to predict the future is to invent it.", author: "Alan Kay" },
-    { text: "Research is to see what everybody else has seen, and to think what nobody else has thought.", author: "Albert Szent-Györgyi" },
   ]
   const [currentQuote, setCurrentQuote] = useState(0)
 
