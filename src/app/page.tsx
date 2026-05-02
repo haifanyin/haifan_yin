@@ -1128,7 +1128,7 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
                 { label: 'Journal Papers', value: journalPapers.length, icon: BookOpen, color: 'from-blue-500/10 to-blue-600/5' },
                 { label: 'Conf. Papers', value: conferencePapers.length, icon: FileText, color: 'from-emerald-500/10 to-emerald-600/5' },
                 { label: 'Patents', value: patents.length, icon: Award, color: 'from-amber-500/10 to-amber-600/5' },
-                { label: 'PhD Students', value: phdStudents.length, icon: Users, color: 'from-rose-500/10 to-rose-600/5' },
+                { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users, color: 'from-rose-500/10 to-rose-600/5' },
               ].map((stat) => (
                 <AnimatedStatCard key={stat.label} stat={stat} />
               ))}
