@@ -1007,6 +1007,28 @@ export const graduatedMasterStudents: Student[] = [
   },
 ];
 
+// ==================== TEACHERS ====================
+export interface Teacher {
+  name: string;
+  nameCn: string;
+  avatar: string;
+  title: string;
+  email?: string;
+  profileUrl?: string;
+  researchAreas?: string[];
+}
+
+export const teachers: Teacher[] = [
+  {
+    name: "Li Tan",
+    nameCn: "谭力",
+    avatar: "/avatars/li-tan.jpg",
+    title: "Associate Professor",
+    profileUrl: "https://faculty.hust.edu.cn/tanli1/zh_CN/index/1732761/list/index.htm",
+    researchAreas: ["Wireless communications", "Antenna design", "RIS"],
+  },
+];
+
 // ==================== STUDENTS ====================
 export const phdStudents: Student[] = [
   {

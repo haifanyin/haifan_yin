@@ -33,7 +33,8 @@ import {
   researchTopics, phdStudents, masterStudents,
   graduatedPhdStudents, graduatedMasterStudents,
   patentBreakdown, citationStats, getStudentFirstAuthorPapers,
-  type Publication, type ResearchTopic, type Student
+  teachers,
+  type Publication, type ResearchTopic, type Student, type Teacher
 } from '@/lib/data'
 
 // ============ Page Types ============
@@ -2127,6 +2128,87 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
 }
 
 // ============ Students Section ============
+// ============ Teacher Card ============
+function TeacherCard({ teacher }: { teacher: Teacher }) {
+  return (
+    <motion.div variants={staggerItem}>
+      <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-phd">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
+            <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
+              <Image
+                src={publicAsset(teacher.avatar)}
+                alt={teacher.name}
+                width={192}
+                height={256}
+                className="w-full h-full object-cover student-avatar-img"
+              />
+            </div>
+
+            <div className="flex-1 min-w-0 w-full sm:w-auto text-center sm:text-left">
+              <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+                <h4 className="font-semibold text-sm">
+                  {teacher.name}
+                  <span className="text-muted-foreground font-normal ml-1.5">({teacher.nameCn})</span>
+                </h4>
+                <Badge className="text-[10px] px-2 py-0 border bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25">
+                  {teacher.title}
+                </Badge>
+              </div>
+
+              {teacher.email && (
+                <div className="flex items-center gap-1 mt-1 justify-center sm:justify-start">
+                  <a
+                    href={`mailto:${teacher.email}`}
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                  >
+                    <Mail className="w-3 h-3" />
+                    {teacher.email}
+                  </a>
+                </div>
+              )}
+
+              {teacher.researchAreas && teacher.researchAreas.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2 justify-center sm:justify-start">
+                  {teacher.researchAreas.map((area) => (
+                    <Badge
+                      key={area}
+                      variant="secondary"
+                      className="text-[10px] px-2 py-0 border bg-primary/5 text-primary/70 border-primary/10"
+                    >
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* View Profile link */}
+              <div className="mt-3 pt-2 border-t border-border/30">
+                {teacher.profileUrl ? (
+                  <a
+                    href={teacher.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-primary/70 hover:text-primary font-medium flex items-center gap-1 transition-colors"
+                  >
+                    <ArrowRight className="w-3 h-3" />
+                    View Profile
+                  </a>
+                ) : (
+                  <span className="text-[11px] text-primary/50 font-medium flex items-center gap-1 cursor-default">
+                    <ArrowRight className="w-3 h-3" />
+                    View Profile
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
+}
+
 function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (page: PageName) => void }) {
   const [showPapers, setShowPapers] = useState(false)
   const [emailCopied, setEmailCopied] = useState(false)
@@ -2401,8 +2483,18 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
                     <Users className="w-4 h-4 text-violet-500/60" />
                   </div>
                   <div>
-                    <div className="text-lg font-bold tracking-tight">{totalCurrent + graduatedPhdStudents.length + graduatedMasterStudents.length}</div>
+                    <div className="text-lg font-bold tracking-tight">{teachers.length + totalCurrent + graduatedPhdStudents.length + graduatedMasterStudents.length}</div>
                     <div className="text-[10px] text-muted-foreground">Total Members</div>
+                  </div>
+                </div>
+                <div className="w-px h-8 bg-border/60 hidden sm:block" />
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/5 flex items-center justify-center">
+                    <Briefcase className="w-4 h-4 text-violet-500/60" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-bold tracking-tight">{teachers.length}</div>
+                    <div className="text-[10px] text-muted-foreground">Teachers</div>
                   </div>
                 </div>
                 <div className="w-px h-8 bg-border/60 hidden sm:block" />
@@ -2436,6 +2528,22 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Teachers Section */}
+        {teachers.length > 0 && (
+          <motion.div variants={fadeInUp} className="mb-10">
+            <div className="flex items-center gap-2.5 mb-5">
+              <Briefcase className="w-5 h-5 text-violet-600/70 dark:text-violet-400/70" />
+              <h3 className="text-lg font-semibold text-violet-700 dark:text-violet-400">Teachers</h3>
+              <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25">{teachers.length}</Badge>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {teachers.map((teacher) => (
+                <TeacherCard key={teacher.name} teacher={teacher} />
+              ))}
             </div>
           </motion.div>
         )}
