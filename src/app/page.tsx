@@ -2130,6 +2130,8 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
 // ============ Students Section ============
 // ============ Teacher Card ============
 function TeacherCard({ teacher }: { teacher: Teacher }) {
+  const [showAwards, setShowAwards] = useState(false)
+
   return (
     <motion.div variants={staggerItem}>
       <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-phd">
@@ -2154,7 +2156,26 @@ function TeacherCard({ teacher }: { teacher: Teacher }) {
                 <Badge className="text-[10px] px-2 py-0 border bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25">
                   {teacher.title}
                 </Badge>
+                {teacher.subtitle && (
+                  <Badge className="text-[10px] px-2 py-0 border bg-primary/5 text-primary/70 border-primary/10">
+                    {teacher.subtitle}
+                  </Badge>
+                )}
               </div>
+
+              {teacher.department && (
+                <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1 justify-center sm:justify-start">
+                  <School className="w-3 h-3 flex-shrink-0" />
+                  {teacher.department}
+                </p>
+              )}
+
+              {teacher.education && (
+                <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1 justify-center sm:justify-start">
+                  <GraduationCap className="w-3 h-3 flex-shrink-0" />
+                  {teacher.education}
+                </p>
+              )}
 
               {teacher.email && (
                 <div className="flex items-center gap-1 mt-1 justify-center sm:justify-start">
@@ -2179,6 +2200,37 @@ function TeacherCard({ teacher }: { teacher: Teacher }) {
                       {area}
                     </Badge>
                   ))}
+                </div>
+              )}
+
+              {teacher.awards && teacher.awards.length > 0 && (
+                <div className="mt-2.5">
+                  <button
+                    onClick={() => setShowAwards(!showAwards)}
+                    className="flex items-center gap-1.5 text-xs font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors"
+                  >
+                    <Award className="w-3.5 h-3.5" />
+                    {showAwards ? 'Hide' : 'Show'} Honors ({teacher.awards.length})
+                    {showAwards ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  </button>
+                  <AnimatePresence>
+                    {showAwards && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
+                          {teacher.awards.map((award, i) => (
+                            <div key={i} className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed bg-amber-50/50 dark:bg-amber-900/10 rounded-lg p-2">
+                              {award}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 

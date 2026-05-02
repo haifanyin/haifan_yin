@@ -1013,9 +1013,13 @@ export interface Teacher {
   nameCn: string;
   avatar: string;
   title: string;
+  subtitle?: string;
+  department?: string;
+  education?: string;
   email?: string;
   profileUrl?: string;
   researchAreas?: string[];
+  awards?: string[];
 }
 
 export const teachers: Teacher[] = [
@@ -1024,8 +1028,18 @@ export const teachers: Teacher[] = [
     nameCn: "谭力",
     avatar: "/avatars/li-tan.jpg",
     title: "Associate Professor",
+    subtitle: "Master's Supervisor",
+    department: "School of Electronic Information and Communications",
+    education: "Ph.D. in Communication and Information Systems, Huazhong University of Science and Technology",
     profileUrl: "https://faculty.hust.edu.cn/tanli1/zh_CN/index/1732761/list/index.htm",
     researchAreas: ["Wireless communications", "Antenna design", "RIS"],
+    awards: [
+      "2024 IEEE Communications Society Stephen O. Rice Prize",
+      "2023 Gold Award, China International College Students' \"Internet+\" Innovation and Entrepreneurship Competition — Instructor",
+      "2023 Special Prize, 18th \"Challenge Cup\" National College Student Curricular Academic Science and Technology Works Competition — Instructor",
+      "2022 First Prize, 17th \"Challenge Cup\" — Instructor",
+      "2021 Gold Award, 7th China International \"Internet+\" Competition — Instructor",
+    ],
   },
 ];
 
