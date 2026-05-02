@@ -221,8 +221,12 @@ function SectionDivider({ flip = false }: { flip?: boolean }) {
 
 // ============ BibTeX Generator ============
 function generateBibTeX(pub: Publication, index: number): string {
-  const id = pub.title.split(' ').slice(0, 2).join('').replace(/[^a-zA-Z]/g, '') + pub.year.replace(/[^0-9]/g, '')
+  // Generate ID in format: firstAuthorLastName + year + firstTitleWord (e.g., "han2026power")
+  const firstAuthor = pub.authors.split(',')[0].trim().split(' ').pop()?.toLowerCase() || 'unknown'
   const year = pub.year.match(/\d{4}/)?.[0] || '2024'
+  const firstTitleWord = pub.title.split(' ').find(w => w.length > 2)?.toLowerCase().replace(/[^a-z]/g, '') || 'paper'
+  const id = `${firstAuthor}${year}${firstTitleWord}`
+
   const type = pub.venue.toLowerCase().includes('conference') || pub.venue.toLowerCase().includes('icassp') || pub.venue.toLowerCase().includes('icc') || pub.venue.toLowerCase().includes('globecom') || pub.venue.toLowerCase().includes('wcnc') || pub.venue.toLowerCase().includes('pimrc') || pub.venue.toLowerCase().includes('spawc') || pub.venue.toLowerCase().includes('asilomar') || pub.venue.toLowerCase().includes('iswcs') || pub.venue.toLowerCase().includes('iccc')
     ? 'inproceedings'
     : 'article'
