@@ -589,6 +589,14 @@ html {
   background: linear-gradient(to bottom, oklch(0.65 0.10 175), oklch(0.55 0.08 175), transparent) !important;
 }
 
+.student-card-teacher::before {
+  background: linear-gradient(to bottom, oklch(0.55 0.15 290), oklch(0.50 0.12 290), transparent) !important;
+}
+
+.dark .student-card-teacher::before {
+  background: linear-gradient(to bottom, oklch(0.65 0.12 290), oklch(0.55 0.10 290), transparent) !important;
+}
+
 /* ============ Student card hover scale ============ */
 .student-card-hover {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;

@@ -2134,7 +2134,7 @@ function TeacherCard({ teacher }: { teacher: Teacher }) {
 
   return (
     <motion.div variants={staggerItem}>
-      <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-phd">
+      <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-teacher">
         <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
             <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
