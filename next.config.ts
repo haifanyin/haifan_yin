@@ -1,12 +1,16 @@
 import type { NextConfig } from "next";
 
 /**
- * Vercel deployment configuration.
+ * Cloudflare Pages deployment configuration.
  *
- * Vercel natively supports Next.js — no static export needed.
- * Image optimisation, SSR, and other server features are available out of the box.
+ * Uses static export for optimal compatibility with Cloudflare Pages.
+ * Images are unoptimized as Cloudflare doesn't support Next.js Image Optimization.
  */
 const nextConfig: NextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
