@@ -318,17 +318,17 @@ function PageHero({ page }: { page: Exclude<PageName, 'home'> }) {
         <div className="hero-orb-2 absolute bottom-[10%] right-[5%] w-[300px] h-[300px] rounded-full bg-primary/3 blur-3xl" />
         <div className="hero-orb-3 absolute top-[40%] left-[50%] w-[150px] h-[150px] rounded-full bg-accent/4 blur-3xl" />
       </div>
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-0 md:pt-8 md:pb-0 min-w-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-0 md:pt-4 md:pb-0 min-w-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex items-center gap-4 mb-2"
+          className="flex items-center gap-3 mb-1"
         >
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[oklch(0.45_0.12_260)] to-[oklch(0.35_0.08_220)] flex items-center justify-center shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[oklch(0.45_0.12_260)] to-[oklch(0.35_0.08_220)] flex items-center justify-center shadow-sm">
             <info.icon className="w-5 h-5 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight gradient-text leading-tight">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight gradient-text leading-tight">
             {info.title}
           </h1>
         </motion.div>
@@ -344,7 +344,7 @@ function PageHero({ page }: { page: Exclude<PageName, 'home'> }) {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-          className="decorative-line w-20 mt-3 mb-6 md:ml-16"
+          className="decorative-line w-20 mt-2 mb-3 md:ml-16"
         />
       </div>
     </div>
@@ -1637,7 +1637,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
               >
                 {sortDesc ? <SortDesc className="w-4 h-4" /> : <SortAsc className="w-4 h-4" />}
               </button>
-              {activeTab !== 'patents' && activeTab !== 'thesis' && (
+              {activeTab !== 'thesis' && (
                 <button
                   onClick={handleDownloadBibTeX}
                   className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
@@ -1646,7 +1646,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   <Download className="w-4 h-4" />
                 </button>
               )}
-              {showStatsBar && activeTab !== 'patents' && activeTab !== 'thesis' && (
+              {showStatsBar && activeTab !== 'thesis' && (
                 <button
                   onClick={handleExportAllBibTeX}
                   className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors border border-border/40"
@@ -1708,15 +1708,10 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                 Conference Papers
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredConferences.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="patents" className="gap-1.5">
-                <Award className="w-4 h-4" />
-                Patents
-                <Badge variant="secondary" className="ml-1 text-xs">{patents.length}</Badge>
-              </TabsTrigger>
               <TabsTrigger value="thesis" className="gap-1.5">
                 <GraduationCap className="w-4 h-4" />
                 Thesis
-                <Badge variant="secondary" className="ml-1 text-xs">1</Badge>
+                <Badge variant="secondary" className="ml-1 text-xs">{(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? 1 : 0}</Badge>
               </TabsTrigger>
             </TabsList>
             </div>
@@ -1728,8 +1723,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   <Filter className="w-3 h-3" />
                   {activeTab === 'journal' && <span>Showing {filteredJournals.length} of {journalPapers.length} journal papers</span>}
                   {activeTab === 'conference' && <span>Showing {filteredConferences.length} of {conferencePapers.length} conference papers</span>}
-                  {activeTab === 'patents' && <span>Showing {patents.length} patents</span>}
-                  {activeTab === 'thesis' && <span>Showing {(yearFilter === 'all' || yearFilter === '2015') ? 1 : 0} of 1 thesis</span>}
+                  {activeTab === 'thesis' && <span>Showing {(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? 1 : 0} of 1 thesis</span>}
                 </p>
               </motion.div>
             )}
@@ -1780,25 +1774,10 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
               </div>
             </TabsContent>
 
-            <TabsContent value="patents">
-              <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
-                <div className={`${fullPage ? '' : 'max-h-[800px]'} overflow-y-auto custom-scrollbar p-5`}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
-                    {patents.map((patent, i) => (
-                      <motion.div key={i} variants={staggerItem} className="flex gap-2 py-1.5 text-sm">
-                        <span className="pub-number text-xs mt-0.5 flex-shrink-0">[{i + 1}]</span>
-                        <span className="text-muted-foreground break-words [overflow-wrap:anywhere]">{patent}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
             <TabsContent value="thesis">
               <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
                 <div className="p-2">
-                  {(yearFilter === 'all' || yearFilter === '2015') ? (
+                  {(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? (
                     <motion.div variants={staggerItem} className="group">
                       <div className="flex gap-3 py-3.5 px-3 rounded-lg hover:bg-accent/50 transition-colors">
                         <span className="pub-number text-xs mt-1 flex-shrink-0 tabular-nums">[1]</span>
@@ -1821,13 +1800,13 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   ) : (
                     <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                       <Search className="w-8 h-8 mb-3 text-muted-foreground/40" />
-                      <p className="text-sm font-medium">No thesis for year {yearFilter}</p>
+                      <p className="text-sm font-medium">No thesis matches your filters</p>
                       <button
-                        onClick={() => setYearFilter('all')}
+                        onClick={() => { setYearFilter('all'); setAuthorFilter('all') }}
                         className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                       >
                         <Filter className="w-3 h-3" />
-                        Clear Filter
+                        Clear Filters
                       </button>
                     </div>
                   )}
@@ -1870,14 +1849,14 @@ function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: Resea
 
   return (
     <motion.div variants={staggerItem}>
-      <Card ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="overflow-hidden border-border/60 hover:shadow-lg transition-[shadow,transform] duration-300 ease-out group research-card-glow card-shimmer">
+      <Card ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="overflow-hidden border-border/60 hover:shadow-lg transition-[shadow,transform] duration-300 ease-out group">
         <div className="grid md:grid-cols-[320px_1fr] gap-0">
           <div className="relative h-52 md:h-auto md:min-h-[240px] overflow-hidden">
             <Image
               src={publicAsset(topic.image)}
               alt={topic.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-scale-down group-hover:scale-105 transition-transform duration-700 bg-muted"
             />
             <div className={`absolute inset-0 bg-gradient-to-t ${topicGradientMap[topic.id] || 'from-black/30'} via-black/10 to-black/20 md:via-black/5 md:to-transparent`} />
             {/* Paper Count Badge */}
@@ -1903,31 +1882,7 @@ function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: Resea
             <p className="text-sm text-muted-foreground leading-relaxed">
               {topic.description}
             </p>
-            {/* Impact tags */}
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {topic.id === 'massive-mimo' && <Badge variant="secondary" className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">50% perf. reduction addressed</Badge>}
-              {topic.id === 'fdd-mimo' && <Badge variant="secondary" className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">CSI feedback optimization</Badge>}
-              {topic.id === 'pilot-contamination' && <Badge variant="secondary" className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">1000+ citations</Badge>}
-              {topic.id === 'ris' && <Badge variant="secondary" className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">Stephen O. Rice Prize</Badge>}
-              {topic.id === 'superdirective' && <Badge variant="secondary" className="text-[10px] bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">M² directivity achieved</Badge>}
-            </div>
-
             {/* Top Collaborator */}
-            {topic.topCollaborator && (
-              <div className="mt-3 pt-3 border-t border-dotted border-border/60">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-[9px] font-bold text-primary/70">{topic.topCollaborator.initials}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] font-medium text-foreground/80">{topic.topCollaborator.name}</span>
-                    <span className="text-[10px] text-muted-foreground ml-1.5">{topic.topCollaborator.paperCount} papers</span>
-                  </div>
-                  <span className="text-[9px] text-muted-foreground uppercase tracking-wider flex-shrink-0">Top Collaborator</span>
-                </div>
-              </div>
-            )}
-
             {/* Related Topics */}
             {topic.relatedTopics && topic.relatedTopics.length > 0 && (
               <div className="mt-3 pt-3 border-t border-dotted border-border/60">
@@ -2025,62 +1980,13 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   }, [searchQuery])
 
   return (
-    <SectionWrapper id="research" className="bg-muted/30">
+    <SectionWrapper id="research" className={hideTitle ? '!pt-2 md:!pt-4' : 'bg-muted/30'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!hideTitle && (
           <SectionTitle subtitle="Exploring the frontiers of wireless communications and signal processing">
             Research
           </SectionTitle>
         )}
-
-        {/* Research Summary Bar */}
-        <motion.div variants={fadeInUp} className="mb-8">
-          <div className="bg-card rounded-xl border border-border/60 p-4 shadow-sm">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/5 flex items-center justify-center">
-                  <Microscope className="w-4 h-4 text-violet-500/60" />
-                </div>
-                <div>
-                  <div className="text-lg font-bold tracking-tight">{researchTopics.length}</div>
-                  <div className="text-[10px] text-muted-foreground">Research Areas</div>
-                </div>
-              </div>
-              <div className="w-px h-8 bg-border/60 hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 flex items-center justify-center">
-                  <BookMarked className="w-4 h-4 text-emerald-500/60" />
-                </div>
-                <div>
-                  <div className="text-lg font-bold tracking-tight">{totalPapers}</div>
-                  <div className="text-[10px] text-muted-foreground">Key Publications</div>
-                </div>
-              </div>
-              <div className="w-px h-8 bg-border/60 hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/10 to-amber-600/5 flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-amber-500/60" />
-                </div>
-                <div>
-                  <div className="text-lg font-bold tracking-tight">{avgPapers}</div>
-                  <div className="text-[10px] text-muted-foreground">Avg. Papers/Topic</div>
-                </div>
-              </div>
-              {/* Quick topic chips */}
-              <div className="flex-1 hidden lg:flex items-center justify-end gap-1.5 flex-wrap">
-                {researchTopics.map(topic => (
-                  <span
-                    key={topic.id}
-                    className="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-medium bg-primary/5 text-primary/60 border border-primary/10"
-                  >
-                    {topic.title.length > 18 ? topic.title.slice(0, 18) + '...' : topic.title}
-                    <span className="ml-1.5 text-[9px] text-muted-foreground">{topic.papers.length}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Search + Expand/Collapse */}
         <motion.div variants={fadeInUp} className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -2732,7 +2638,7 @@ function TeachingSection({ hideTitle = false, hideStats = false }: { hideTitle?:
   const courseIcons = [BookOpen, Braces, Library, Microscope]
 
   return (
-    <SectionWrapper id="teaching" className={hideTitle ? '' : 'bg-muted/30'}>
+    <SectionWrapper id="teaching" className={hideTitle ? '!pt-2 md:!pt-4' : 'bg-muted/30'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!hideTitle && (
           <SectionTitle accent="violet" subtitle="Courses taught at Huazhong University of Science and Technology">
@@ -2965,24 +2871,13 @@ function Footer({ onNavigate, currentPage }: { onNavigate: (page: PageName) => v
               Profiles
             </h4>
             <div className="space-y-2.5">
+              <a href={`mailto:${professorInfo.email}`} className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
+                <Mail className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
+                <span className="group-hover:translate-x-0.5 transition-transform">{professorInfo.email}</span>
+              </a>
               <a href={professorInfo.googleScholar} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
                 <School className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
                 <span className="group-hover:translate-x-0.5 transition-transform">Google Scholar</span>
-                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-              <a href="https://dblp.org/pid/y/haifanyin.html" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <Library className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">DBLP</span>
-                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-              <a href="https://haifanyin.wordpress.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <Rss className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">Personal Blog</span>
-                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-              <a href={professorInfo.chineseSite.url} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <Globe className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">Chinese Site</span>
                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
               <a href="https://ieeexplore.ieee.org/author/38493026100" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
@@ -2990,9 +2885,15 @@ function Footer({ onNavigate, currentPage }: { onNavigate: (page: PageName) => v
                 <span className="group-hover:translate-x-0.5 transition-transform">IEEE Xplore</span>
                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
-              <a href={`mailto:${professorInfo.email}`} className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <Mail className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">{professorInfo.email}</span>
+              <a href={professorInfo.chineseSite.url} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
+                <Globe className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
+                <span className="group-hover:translate-x-0.5 transition-transform">Chinese Site</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+              <a href="https://haifanyin.wordpress.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
+                <Rss className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
+                <span className="group-hover:translate-x-0.5 transition-transform">Personal Blog</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
             </div>
           </div>
@@ -3443,7 +3344,6 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       photos: [
         { src: '/gallery/team events/2025-11-Rongguang Song\'s defence.jpg', caption: "Rongguang Song's Defence (2025.11)" },
         { src: '/gallery/team events/2025-09-teacher\'s day.jpg', caption: "Teacher's Day (2025.09)" },
-        { src: '/gallery/team events/2025-08-Weidong Li\'s farewell dinner.jpg', caption: "Weidong Li's Farewell Dinner (2025.08)" },
         { src: '/gallery/team events/2025-08-Weidong Li\'s defence.jpg', caption: "Weidong Li's Defence (2025.08)" },
         { src: '/gallery/team events/2024-09-teacher\'s day 2.jpg', caption: "Teacher's Day Celebration (2024.09)" },
         { src: '/gallery/team events/2024-09-teacher\'s day.jpg', caption: "Teacher's Day (2024.09)" },
@@ -3458,7 +3358,6 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       icon: Sparkles,
       color: 'from-emerald-500 to-teal-600',
       photos: [
-        { src: '/gallery/team activities/2025-winter team activity.jpg', caption: 'Winter Team Activity (2025)' },
         { src: '/gallery/team activities/2025-summer team activity.jpg', caption: 'Summer Team Activity (2025)' },
         { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match (2025.06)' },
         { src: '/gallery/team activities/2024-winter team activity.jpg', caption: 'Winter Team Activity (2024)' },
