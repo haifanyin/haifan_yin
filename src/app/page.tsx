@@ -227,19 +227,28 @@ function generateBibTeX(pub: Publication, index: number): string {
   const firstTitleWord = pub.title.split(' ').find(w => w.length > 2)?.toLowerCase().replace(/[^a-z]/g, '') || 'paper'
   const id = `${firstAuthor}${year}${firstTitleWord}`
 
-  const type = pub.venue.toLowerCase().includes('conference') || pub.venue.toLowerCase().includes('icassp') || pub.venue.toLowerCase().includes('icc') || pub.venue.toLowerCase().includes('globecom') || pub.venue.toLowerCase().includes('wcnc') || pub.venue.toLowerCase().includes('pimrc') || pub.venue.toLowerCase().includes('spawc') || pub.venue.toLowerCase().includes('asilomar') || pub.venue.toLowerCase().includes('iswcs') || pub.venue.toLowerCase().includes('iccc')
-    ? 'inproceedings'
-    : 'article'
-  const entryType = type === 'inproceedings' ? '@inproceedings' : '@article'
+  // Parse venue to extract journal name, volume, number, pages
+  const venue = pub.venue
+  const volMatch = venue.match(/vol\.\s*(\d+)/i)
+  const noMatch = venue.match(/no\.\s*([\d-]+)/i)
+  const ppMatch = venue.match(/pp\.\s*([\d-]+)/i)
+  // Extract journal/booktitle name: remove the trailing ", vol. ..." part
+  const venueName = venue.replace(/,\s*vol\..*$/i, '').trim()
+
+  const isConference = venue.toLowerCase().includes('conference') || venue.toLowerCase().includes('workshops') || venue.toLowerCase().includes('icassp') || venue.toLowerCase().includes('icc') || venue.toLowerCase().includes('globecom') || venue.toLowerCase().includes('wcnc') || venue.toLowerCase().includes('pimrc') || venue.toLowerCase().includes('spawc') || venue.toLowerCase().includes('asilomar') || venue.toLowerCase().includes('iswcs') || venue.toLowerCase().includes('iccc')
+  const entryType = isConference ? '@inproceedings' : '@article'
+  const entryKey = isConference ? 'booktitle' : 'journal'
+
   const lines = [
     `${entryType}{${id},`,
     `  author = {${pub.authors}},`,
     `  title = {${pub.title}},`,
-    type === 'inproceedings'
-      ? `  booktitle = {${pub.venue}},`
-      : `  journal = {${pub.venue}},`,
-    `  year = {${year}}`,
+    `  ${entryKey} = {${venueName}},`,
   ]
+  if (!isConference && volMatch) lines.push(`  volume = {${volMatch[1]}},`)
+  if (!isConference && noMatch) lines.push(`  number = {${noMatch[1]}},`)
+  if (ppMatch) lines.push(`  pages = {${ppMatch[1]}},`)
+  lines.push(`  year = {${year}}`)
   if (pub.link) lines.push(`  url = {${pub.link}}`)
   lines.push('}')
   return lines.join('\n')
@@ -966,8 +975,9 @@ function KeyHighlightsRibbon() {
     { label: 'Total Publications', value: journalPapers.length + conferencePapers.length, icon: FileText },
     { label: 'Journal Papers', value: journalPapers.length, icon: BookOpen },
     { label: 'Conference Papers', value: conferencePapers.length, icon: BookMarked },
-    { label: 'Patents', value: patents.length, icon: Award },
     { label: 'Research Areas', value: researchTopics.length, icon: Microscope },
+    { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users },
+    { label: 'Alumni', value: graduatedPhdStudents.length + graduatedMasterStudents.length, icon: GraduationCap },
   ]
 
   return (
@@ -979,7 +989,7 @@ function KeyHighlightsRibbon() {
         <div className="absolute bottom-[30%] left-[50%] w-1.5 h-1.5 rounded-full bg-white/10 blur-sm" />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 relative z-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-4">
           {stats.map((stat) => (
             <HighlightStat key={stat.label} stat={stat} />
           ))}
@@ -1131,8 +1141,8 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
               {[
                 { label: 'Journal Papers', value: journalPapers.length, icon: BookOpen, color: 'from-blue-500/10 to-blue-600/5' },
                 { label: 'Conf. Papers', value: conferencePapers.length, icon: FileText, color: 'from-emerald-500/10 to-emerald-600/5' },
-                { label: 'Patents', value: patents.length, icon: Award, color: 'from-amber-500/10 to-amber-600/5' },
                 { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users, color: 'from-rose-500/10 to-rose-600/5' },
+                { label: 'Alumni', value: graduatedPhdStudents.length + graduatedMasterStudents.length, icon: GraduationCap, color: 'from-amber-500/10 to-amber-600/5' },
               ].map((stat) => (
                 <AnimatedStatCard key={stat.label} stat={stat} />
               ))}
@@ -1192,7 +1202,7 @@ function AboutSection() {
             {/* Short Bio */}
             <div>
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Short Bio</h3>
-              <p className="text-sm leading-[1.8] text-foreground/85 bio-text-highlight rounded-lg px-1 -mx-1 py-0.5">
+              <p className="text-sm leading-[1.8] text-foreground/85 rounded-lg px-1 -mx-1 py-0.5">
                 {professorInfo.bio}
               </p>
             </div>
@@ -1313,6 +1323,16 @@ function extractYear(yearStr: string): string {
 
 function getVenueBadge(venue: string): { label: string; colorClass: string } | null {
   const v = venue.toLowerCase()
+  // Venues to exclude from badges
+  const excludedVenues = [
+    'ieee open journal of the communications society',
+    'china communications',
+    'ieee communications surveys & tutorials',
+    'ieee systems journal',
+    'ieee communications magazine',
+    'ieee journal of selected topics in signal processing',
+  ]
+  if (excludedVenues.some(e => v.includes(e))) return null
   if (v.includes('ieee transactions on wireless communications')) return { label: 'IEEE TWC', colorClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25' }
   if (v.includes('ieee transactions on communications') && !v.includes('wireless')) return { label: 'IEEE TCOM', colorClass: 'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-900/15 dark:text-teal-400 dark:border-teal-800/25' }
   if (v.includes('ieee journal on selected areas')) return { label: 'IEEE JSAC', colorClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25' }
@@ -1367,7 +1387,7 @@ function PublicationItem({ pub, index, type }: { pub: Publication; index: number
             })}
             , &ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
             <em className="text-muted-foreground">{pub.venue}</em>, {pub.year}.
-            {(() => { const badge = getVenueBadge(pub.venue); return badge ? (
+            {type !== 'conference' && (() => { const badge = getVenueBadge(pub.venue); return badge ? (
               <Badge variant="secondary" className={`text-[9px] px-1.5 py-0 rounded ml-1.5 align-middle border ${badge.colorClass}`}>{badge.label}</Badge>
             ) : null })()}
             {pub.link && (
@@ -2040,12 +2060,11 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
 // ============ Students Section ============
 // ============ Teacher Card ============
 function TeacherCard({ teacher }: { teacher: Teacher }) {
-  const [showAwards, setShowAwards] = useState(false)
 
   return (
     <motion.div variants={staggerItem}>
-      <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-teacher">
-        <CardContent className="p-4 sm:p-5">
+      <Card className="overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent student-card-teacher !py-3 !gap-3">
+        <CardContent className="p-3 sm:p-4">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
             <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
@@ -2067,8 +2086,17 @@ function TeacherCard({ teacher }: { teacher: Teacher }) {
                   {teacher.title}
                 </Badge>
                 {teacher.subtitle && (
-                  <Badge className="text-[10px] px-2 py-0 border bg-primary/5 text-primary/70 border-primary/10">
+                  <Badge className={`text-[10px] px-2 py-0 border ${
+                    teacher.subtitle === 'Ph.D. Supervisor'
+                      ? 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25'
+                      : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25'
+                  }`}>
                     {teacher.subtitle}
+                  </Badge>
+                )}
+                {teacher.name === 'Haifan Yin' && (
+                  <Badge className="text-[10px] px-2 py-0 border bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">
+                    Master's Supervisor
                   </Badge>
                 )}
               </div>
@@ -2113,37 +2141,6 @@ function TeacherCard({ teacher }: { teacher: Teacher }) {
                 </div>
               )}
 
-              {teacher.awards && teacher.awards.length > 0 && (
-                <div className="mt-2.5">
-                  <button
-                    onClick={() => setShowAwards(!showAwards)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400 transition-colors"
-                  >
-                    <Award className="w-3.5 h-3.5" />
-                    {showAwards ? 'Hide' : 'Show'} Honors ({teacher.awards.length})
-                    {showAwards ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                  </button>
-                  <AnimatePresence>
-                    {showAwards && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
-                          {teacher.awards.map((award, i) => (
-                            <div key={i} className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed bg-amber-50/50 dark:bg-amber-900/10 rounded-lg p-2">
-                              {award}
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-
               {/* View Profile link */}
               <div className="mt-3 pt-2 border-t border-border/30">
                 {teacher.profileUrl ? (
@@ -2184,8 +2181,8 @@ function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (
 
   return (
     <motion.div variants={staggerItem}>
-      <Card className={`overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent ${degreeClass}`}>
-        <CardContent className="p-4 sm:p-5">
+      <Card className={`overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent ${degreeClass} !py-3 !gap-3`}>
+        <CardContent className="p-3 sm:p-4">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
             <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
@@ -2261,28 +2258,15 @@ function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (
               </div>
 
               <div className="flex flex-wrap gap-1.5 mt-2">
-                {student.researchTopics.map((topic) => {
-                  const topicKey = Object.keys(topicGradientMap).find(k => topic.toLowerCase().includes(k.replace(/-/g, ' ').split(' ')[0]) || topic.toLowerCase().includes('fdd') && k === 'fdd-mimo' || topic.toLowerCase().includes('ris') && k === 'ris' || topic.toLowerCase().includes('massive') && k === 'massive-mimo' || topic.toLowerCase().includes('superdirective') && k === 'superdirective' || topic.toLowerCase().includes('channel') && k === 'channel-prediction' || topic.toLowerCase().includes('holographic') && k === 'holographic')
-                  const gradientColors: Record<string, string> = {
-                    blue: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25',
-                    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25',
-                    violet: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
-                    amber: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25',
-                    rose: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/15 dark:text-rose-400 dark:border-rose-800/25',
-                    cyan: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-900/15 dark:text-cyan-400 dark:border-cyan-800/25',
-                  }
-                  const colorKey = topicKey ? Object.keys(gradientColors)[Object.keys(topicGradientMap).indexOf(topicKey) % Object.keys(gradientColors).length] : null
-                  return (
-                    <Badge
-                      key={topic}
-                      variant="secondary"
-                      className={`text-[10px] px-2 py-0 border cursor-pointer hover:opacity-80 transition-opacity ${colorKey ? gradientColors[colorKey] : 'bg-primary/5 text-primary/70 border-primary/10'}`}
-                      onClick={() => onNavigate?.('research')}
-                    >
-                      {topic}
-                    </Badge>
-                  )
-                })}
+                {student.researchTopics.map((topic) => (
+                  <Badge
+                    key={topic}
+                    variant="secondary"
+                    className="text-[10px] px-2 py-0 border bg-muted text-muted-foreground border-border/60"
+                  >
+                    {topic}
+                  </Badge>
+                ))}
               </div>
 
               {student.awards && student.awards.length > 0 && (
@@ -2777,20 +2761,6 @@ function Footer({ onNavigate, currentPage }: { onNavigate: (page: PageName) => v
 
   return (
     <>
-    {/* Wave Separator Before Footer */}
-    <div className="w-full overflow-hidden leading-[0] mt-auto">
-      <svg className="w-full h-[40px] md:h-[60px] relative" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M0,20 C360,60 720,0 1080,30 C1260,45 1380,20 1440,20 L1440,60 L0,60 Z"
-          className="fill-card dark:fill-[var(--color-card,#0a0a0a)]"
-          fillOpacity="0.5"
-        />
-        <path
-          d="M0,35 C240,10 480,50 720,25 C960,0 1200,40 1440,35 L1440,60 L0,60 Z"
-          className="fill-card dark:fill-[var(--color-card,#0a0a0a)]"
-        />
-      </svg>
-    </div>
     <footer className="bg-card border-t-0 mt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
@@ -3333,7 +3303,6 @@ function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       color: 'from-blue-500 to-cyan-600',
       photos: [
         { src: '/gallery/conference attendance/2024-11-the 3rd RIS forum.jpg', caption: 'The 3rd RIS Forum (2024.11)' },
-        { src: '/gallery/conference attendance/2024-09-EURECOM.jpg', caption: 'EURECOM Conference (2024.09)' },
       ]
     },
     {

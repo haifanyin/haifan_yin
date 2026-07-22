@@ -131,6 +131,48 @@ export const professorInfo = {
 // ==================== PUBLICATIONS ====================
 export const journalPapers: Publication[] = [
   {
+      authors: 'Kewei Zhu, Haifan Yin, Tao Wang, Deepak Mishra, Jinhong Yuan, Yuhao Zhang',
+      title: 'Movable Antenna-Based Phased Array: Beam Pattern Synthesis and Experimental Validations',
+      venue: 'IEEE Transactions on Communications, vol. 74, pp. 10612-10626',
+      year: '2026',
+      link: 'https://doi.org/10.1109/TCOMM.2026.3706606',
+  },
+  {
+      authors: 'Mengyao Zeng, Haifan Yin, Weidong Li, Kewei Zhu',
+      title: 'Enhancing Wireless Sensing by Phased Array With Movable Antennas',
+      venue: 'IEEE Wireless Communications Letters, vol. 15, pp. 3646-3650',
+      year: '2026',
+      link: 'https://doi.org/10.1109/LWC.2026.3703849',
+  },
+  {
+      authors: 'Xilong Pei, Haifan Yin, Lin Cao, Rongguang Song, Yuanwei Liu',
+      title: 'Geometry-Guided Pinching Antenna Positioning for Enhanced Localization Accuracy',
+      venue: 'IEEE Wireless Communications Letters, vol. 15, pp. 2749-2753',
+      year: '2026',
+      link: 'https://doi.org/10.1109/LWC.2026.3686239',
+  },
+  {
+      authors: 'Liangcheng Han, Haifan Yin',
+      title: 'Rydberg-Atom-Based Superdirective Receivers: Array Modeling and Performance Analysis',
+      venue: 'IEEE Transactions on Communications, vol. 74, pp. 7556-7569',
+      year: '2026',
+      link: 'https://doi.org/10.1109/TCOMM.2026.3684242',
+  },
+  {
+      authors: 'Ye Yao, Yan Dong, Haifan Yin, Kun Zou, Limei Hu, Xiaodan Shao',
+      title: 'ARIS-Assisted Capacity Enhancement and Energy Offloading for LEO Satellite With QoS Constraint',
+      venue: 'IEEE Wireless Communications Letters, vol. 15, pp. 2258-2262',
+      year: '2026',
+      link: 'https://doi.org/10.1109/LWC.2026.3667043',
+  },
+  {
+      authors: 'Lin Cao, Haifan Yin, Xilong Pei, Rongguang Song',
+      title: 'Initial Excitation Estimation for DMAs via Amplitude-Only Measurements',
+      venue: 'IEEE Transactions on Antennas and Propagation, vol. 74, no. 5, pp. 4324-4338',
+      year: '2026',
+      link: 'https://doi.org/10.1109/TAP.2026.3658552',
+  },
+  {
       authors: 'Liangcheng Han, Haifan Yin, Robert W. Heath, Joseph Carlson',
       title: 'Power Scaling Law of Superdirective Multi-User Beamforming in Compact Arrays',
       venue: 'IEEE Transactions on Communications, vol. 74, pp. 3659-3673',
@@ -213,6 +255,13 @@ export const journalPapers: Publication[] = [
       venue: 'IEEE Transactions on Communications, vol. 73, no. 3, pp. 1833-1846',
       year: '2025',
       link: 'https://doi.org/10.1109/TCOMM.2024.3450568',
+  },
+  {
+      authors: 'Ziao Qin, Haifan Yin',
+      title: 'A review of codebooks for CSI feedback in 5G new radio and beyond',
+      venue: 'China Communications, vol. 22, no. 2, pp. 112-127',
+      year: '2025',
+      link: 'https://doi.org/10.23919/JCC.ja.2023-0117',
   },
   {
       authors: 'Liangcheng Han, Haifan Yin, Mengying Gao, Jingcheng Xie',
@@ -371,6 +420,13 @@ export const journalPapers: Publication[] = [
 ];
 
 export const conferencePapers: Publication[] = [
+  {
+      authors: 'Zhen Wen, Haiyang Ding, Wankai Tang, Shilian Wang, Haifan Yin, Jules M. Moualeu',
+      title: 'Transform-Domain M-PSK Constellation Design for RIS-Enabled Backscatter Systems',
+      venue: '2026 IEEE International Conference on Communications Workshops (ICC Workshops), pp. 1-6',
+      year: '2026',
+      link: 'https://doi.org/10.1109/ICCWorkshops63917.2026.11586307',
+  },
   {
       authors: 'Yali Zhang, Haifan Yin, Weidong Li, Emil Björnson, Mérouane Debbah',
       title: 'Fluid Antenna Port Prediction based on Large Language Models',
@@ -884,7 +940,7 @@ export const graduatedPhdStudents: Student[] = [
     enrollDate: "2020-09",
     gradDate: "2024-06",
     awards: ["Merit Student"],
-    researchTopics: ["FDD", "Massive MIMO"],
+    researchTopics: ["Massive MIMO"],
   },
   {
     name: "Weidong Li",
@@ -897,7 +953,7 @@ export const graduatedPhdStudents: Student[] = [
     enrollDate: "2020-09",
     gradDate: "2025-09",
     awards: ["National First Prize of National University Bio-networking Technology and Application \"Three Innovations\" Competition"],
-    researchTopics: ["Mobility of Massive MIMO"],
+    researchTopics: ["Mobility of massive MIMO"],
   },];
 
 export const graduatedMasterStudents: Student[] = [
@@ -925,7 +981,7 @@ export const graduatedMasterStudents: Student[] = [
     gradDate: "2024-06",
     coSupervised: "Prof. Yingzhuang Liu",
     awards: ['Gold Award of the 7th "Internet+" Competition', "Merit Student"],
-    researchTopics: ["Massive MIMO", "Random matrix theory"],
+    researchTopics: ["Massive MIMO", "RIS"],
   },
   {
     name: "Kai Wang",
@@ -989,7 +1045,7 @@ export const graduatedMasterStudents: Student[] = [
     gradDate: "2024-06",
     coSupervised: "Prof. Yingzhuang Liu",
     awards: ['Gold Award of the 7th "Internet+" Competition', "Merit Student", "Special Prize of Challenge Cup Competition in Hubei Province"],
-    researchTopics: ["mmWave MIMO"],
+    researchTopics: ["Massive MIMO"],
   },
   {
     name: "Zipeng Wang",
@@ -1052,7 +1108,7 @@ export const teachers: Teacher[] = [
     title: "Associate Professor",
     subtitle: "Master's Supervisor",
     department: "School of Electronic Information and Communications",
-    education: "Ph.D. in Communication and Information Systems, Huazhong University of Science and Technology",
+    education: "Ph.D. in Communication and Information Systems, Huazhong University of Science and Technology, China",
     profileUrl: "https://faculty.hust.edu.cn/tanli1/zh_CN/index/1732761/list/index.htm",
     researchAreas: ["Wireless communications", "Antenna design", "RIS"],
     awards: [
@@ -1075,7 +1131,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2021-09",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"', "Merit Student", "The first prize of the National Undergraduate Electronics Design Contest"],
-    researchTopics: ["RIS"],
+    researchTopics: ["RIS", "Dynamic metasurface antenna", "Pinching antenna"],
     profileUrl: "https://ai-rabbit.github.io/",
   },
   {
@@ -1095,7 +1151,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2020-09",
     awards: ["Special Prize of Electronic Design Competition for College Students in Hubei Province", "Prize of National College Students' IC Design Competition"],
-    researchTopics: ["RIS"],
+    researchTopics: ["RIS", "Dynamic metasurface antenna", "Pinching antenna"],
   },
   {
     name: "Liangcheng Han",
@@ -1105,7 +1161,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2021-09",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"'],
-    researchTopics: ["Superdirective antenna theory"],
+    researchTopics: ["Superdirective antenna theory", "Rydberg atomic receiver"],
   },
   {
     name: "Mengying Gao",
@@ -1125,7 +1181,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2023-09",
     awards: ["National Scholarship (2022)", "National Scholarship (2025)"],
-    researchTopics: ["Signal processing", "Channel estimation", "Holographic communications"],
+    researchTopics: ["Channel estimation", "Holographic communications", "Rydberg atomic receiver"],
   },
   {
     name: "Yali Zhang",
@@ -1135,7 +1191,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2023-09",
     awards: [],
-    researchTopics: ["Machine learning", "Wireless communications", "Array signal processing", "Superdirective antennas", "Fluid antennas"],
+    researchTopics: ["Machine learning", "Array signal processing", "Superdirective antennas", "Fluid antennas"],
   },
 ];
 
