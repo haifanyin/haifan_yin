@@ -33,6 +33,7 @@ import {
   researchTopics, phdStudents, masterStudents,
   graduatedPhdStudents, graduatedMasterStudents,
   patentBreakdown, citationStats, getStudentFirstAuthorPapers,
+  getPublicationsByTopic, formatPublicationCitation,
   teachers,
   type Publication, type ResearchTopic, type Student, type Teacher
 } from '@/lib/data'
@@ -909,7 +910,7 @@ function ContactDialog() {
             <div>
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Address</p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {professorInfo.office.slice(0, 3).join(', ')}
+                {professorInfo.address}
               </p>
             </div>
           </div>
@@ -1734,6 +1735,9 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
 function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number }) {
   const [expanded, setExpanded] = useState(false)
 
+  // 动态查询该 topic 关联的论文
+  const topicPubs = useMemo(() => getPublicationsByTopic(topic.id), [topic.id])
+
   // 3D tilt effect
   const cardRef = useRef<HTMLDivElement>(null)
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -1771,7 +1775,7 @@ function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number })
               <h3 className="text-lg font-bold">{topic.title}</h3>
               <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
                 <BookMarked className="w-3 h-3 mr-1" />
-                {topic.papers.length}
+                {topicPubs.length}
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -1779,14 +1783,14 @@ function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number })
             </p>
             {/* Top Collaborator */}
 
-            {topic.papers.length > 0 && (
+            {topicPubs.length > 0 && (
               <div className="mt-4 flex-1">
                 <button
                   onClick={() => setExpanded(!expanded)}
                   className="flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                 >
                   <BookMarked className="w-3.5 h-3.5" />
-                  {expanded ? 'Hide' : 'Show'} Key Papers ({topic.papers.length})
+                  {expanded ? 'Hide' : 'Show'} Key Papers ({topicPubs.length})
                   {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
                 <AnimatePresence>
@@ -1798,12 +1802,12 @@ function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number })
                       className="overflow-hidden"
                     >
                       <div className="mt-3 space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
-                        {topic.papers.map((paper, i) => (
+                        {topicPubs.map((pub, i) => (
                           <div key={i} className="text-xs text-muted-foreground leading-relaxed bg-muted/50 rounded-lg p-2.5">
                             <span className="font-medium text-foreground/70">[{i + 1}]</span>{' '}
-                            {paper.citation}
-                            {paper.link && (
-                              <a href={paper.link} target="_blank" rel="noopener noreferrer" className="academic-link ml-1 text-xs">[Link]</a>
+                            {formatPublicationCitation(pub)}
+                            {pub.link && (
+                              <a href={pub.link} target="_blank" rel="noopener noreferrer" className="academic-link ml-1 text-xs">[Link]</a>
                             )}
                           </div>
                         ))}
@@ -1842,7 +1846,8 @@ function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number })
 
 function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [searchQuery, setSearchQuery] = useState('')
-  const totalPapers = useMemo(() => researchTopics.reduce((acc, t) => acc + t.papers.length, 0), [])
+  const totalPapers = useMemo(() =>
+    researchTopics.reduce((acc, t) => acc + getPublicationsByTopic(t.id).length, 0), [])
   const avgPapers = useMemo(() => Math.round(totalPapers / researchTopics.length), [totalPapers])
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) return researchTopics
@@ -1851,7 +1856,10 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
       t.title.toLowerCase().includes(q) ||
       (t.subtitle || '').toLowerCase().includes(q) ||
       t.description.toLowerCase().includes(q) ||
-      t.papers.some(p => p.citation.toLowerCase().includes(q))
+      getPublicationsByTopic(t.id).some(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.authors.some(a => a.toLowerCase().includes(q))
+      )
     )
   }, [searchQuery])
 

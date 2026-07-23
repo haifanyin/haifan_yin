@@ -10,6 +10,7 @@ export interface Publication {
   highlight?: string;
   abstract?: string;
   link?: string;
+  topicIds?: string[];
 }
 
 export interface ResearchTopic {
@@ -18,7 +19,7 @@ export interface ResearchTopic {
   subtitle?: string;
   description: string;
   image: string;
-  papers: { citation: string; link?: string }[];
+  papers?: { citation: string; link?: string }[];
   blogPosts?: { title: string; link: string }[];
   topCollaborator?: { name: string; initials: string; paperCount: number };
   relatedTopics?: string[];
@@ -51,13 +52,13 @@ export const professorInfo = {
     "Mobile Communications and Signal Processing Laboratory (MCSP Lab)",
     "School of Electronic Information and Communications",
     "Huazhong University of Science and Technology",
-    "1037 Luoyu Road, Wuhan, 430074, China",
   ],
   officeLinks: [
     { text: "School of Electronic Information and Communications", url: "http://ei.hust.edu.cn/" },
     { text: "Huazhong University of Science and Technology", url: "https://www.hust.edu.cn/" },
   ],
   email: "yin@hust.edu.cn",
+  address: "Room C107, East 17 Building, Huazhong University of Science and Technology, 1037 Luoyu Road, Wuhan, 430074, China",
   chineseSite: { text: "faculty.hust.edu.cn/yin", url: "https://faculty.hust.edu.cn/yin/zh_CN" },
   googleScholar: "https://scholar.google.com/citations?user=tUXifW0AAAAJ&hl=en",
   recruiting: "Always looking for self-motivated master/Ph.D. students and post-doc researchers. Students majoring in other disciplines, e.g., Mathematics, Physics, Optoelectronics, are also highly encouraged to apply!",
@@ -1068,9 +1069,9 @@ export const graduatedPhdStudents: Student[] = [
     degree: "phd",
     graduated: true,
     destination: "China Unicom",
-    enrollDate: "2019-09",
+    enrollDate: "2021-09",
     gradDate: "2025-12",
-    researchTopics: ["RIS", "Dynamic Metasurface Antenna"],
+    researchTopics: ["RIS", "Dynamic metasurface antenna"],
   },
   {
     name: "Ziao Qin",
@@ -1290,10 +1291,10 @@ export const graduatedMasterStudents: Student[] = [
     researchTopics: ["Reconfigurable antenna"],
   },
   {
-    name: "Chenyu Hui",
+    name: "Chenyu Xi",
     nameCn: "惠晨昱",
     email: "chenyu_hui@qq.com",
-    avatar: "/avatars/chenyu-hui.jpg",
+    avatar: "/avatars/chenyu-xi.jpg",
     degree: "master",
     graduated: true,
     destination: "China Information and Communication Technology Group",
@@ -1604,4 +1605,18 @@ export function getStudentFirstAuthorPapers(studentName: string): { citation: st
         : `${p.authors.join(', ')}, "${p.title}," ${p.booktitle}, pp. ${p.pages}, ${p.year}.`,
       link: p.link,
     }));
+}
+
+export function getPublicationsByTopic(topicId: string): Publication[] {
+  const allPubs = [...journalPapers, ...conferencePapers];
+  return allPubs
+    .filter(p => p.topicIds?.includes(topicId))
+    .sort((a, b) => b.year - a.year);
+}
+
+export function formatPublicationCitation(pub: Publication): string {
+  if (pub.journal) {
+    return `${pub.authors.join(', ')}, "${pub.title}," ${pub.journal}, vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}, ${pub.year}.`;
+  }
+  return `${pub.authors.join(', ')}, "${pub.title}," ${pub.booktitle}, pp. ${pub.pages}, ${pub.year}.`;
 }
