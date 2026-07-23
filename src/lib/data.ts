@@ -88,12 +88,6 @@ export const professorInfo = {
     "Top 3 of IEEE International Future Energy Challenge (IFEC), Melbourne, Australia, 2009",
     "First prize of Intel Cup Embedded System Design Contest (ESDC), Shanghai, China, 2008",
   ],
-  teaching: [
-    { semester: "Fall 2019", course: "Fundamentals of Wireless Communication", description: "Core course covering wireless channel modeling, modulation, OFDM, MIMO basics" },
-    { semester: "Spring 2020", course: "Fundamentals of Wireless Communication", description: "Core course covering wireless channel modeling, modulation, OFDM, MIMO basics" },
-    { semester: "Fall 2020", course: "Theories and Technologies of MIMO", description: "Advanced course on massive MIMO, beamforming, channel estimation, and 5G/6G" },
-    { semester: "Fall 2021", course: "Signal Processing for Communications", description: "Digital signal processing, adaptive filtering, and multiuser detection" },
-  ],
   news: [
     { date: "2024", text: "Received the 2024 IEEE Stephen O. Rice Prize!", highlight: true },
     { date: "2024", text: "Multiple papers accepted by IEEE TCOM, TWC, TAP, and PIMRC 2024" },

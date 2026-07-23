@@ -38,7 +38,7 @@ import {
 } from '@/lib/data'
 
 // ============ Page Types ============
-type PageName = 'home' | 'publications' | 'research' | 'team' | 'teaching' | 'gallery'
+type PageName = 'home' | 'publications' | 'research' | 'team' | 'gallery'
 
 // ============ Animation Variants ============
 const fadeInUp = {
@@ -313,7 +313,6 @@ const pageInfoMap: Record<Exclude<PageName, 'home'>, { title: string; subtitle: 
   publications: { title: 'Publications', subtitle: 'Selected publications in top-tier journals and conferences', icon: BookOpen },
   research: { title: 'Research', subtitle: 'Exploring the frontiers of wireless communications and signal processing', icon: Microscope },
   team: { title: 'Team', subtitle: 'Meet the talented researchers in our group', icon: Users },
-  teaching: { title: 'Teaching', subtitle: 'Courses taught at Huazhong University of Science and Technology', icon: GraduationCap },
   gallery: { title: 'Gallery', subtitle: 'Moments of achievement, collaboration, and team life', icon: Camera },
 }
 
@@ -510,7 +509,6 @@ function CommandPalette({ visible, onClose, onNavigate }: { visible: boolean; on
       { id: 'p-res', label: 'Research', icon: Microscope, group: 'Pages', action: () => onNavigate('research') },
       { id: 'p-pub', label: 'Publications', icon: BookOpen, group: 'Pages', action: () => onNavigate('publications') },
       { id: 'p-team', label: 'Team', icon: Users, group: 'Pages', action: () => onNavigate('team') },
-      { id: 'p-teach', label: 'Teaching', icon: GraduationCap, group: 'Pages', action: () => onNavigate('teaching') },
       { id: 'p-gal', label: 'Gallery', icon: Camera, group: 'Pages', action: () => onNavigate('gallery') },
     ]
     const pubs: CommandItem[] = [...journalPapers, ...conferencePapers].slice(0, 20).map((p, i) => ({
@@ -694,7 +692,6 @@ function Navigation({ currentPage, darkMode, toggleDarkMode, onNavigate }: { cur
     { id: 'research', label: 'Research', icon: Microscope },
     { id: 'publications', label: 'Publications', icon: BookOpen },
     { id: 'team', label: 'Team', icon: Users },
-    { id: 'teaching', label: 'Teaching', icon: GraduationCap },
     { id: 'gallery', label: 'Gallery', icon: Camera },
   ]
 
@@ -1903,24 +1900,6 @@ function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: Resea
               {topic.description}
             </p>
             {/* Top Collaborator */}
-            {/* Related Topics */}
-            {topic.relatedTopics && topic.relatedTopics.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-dotted border-border/60">
-                <span className="text-[9px] text-muted-foreground uppercase tracking-wider">Related Topics</span>
-                <div className="flex flex-wrap gap-1 mt-1.5">
-                  {topic.relatedTopics.map((rtId) => {
-                    const rt = researchTopics.find(t => t.id === rtId)
-                    if (!rt) return null
-                    return (
-                      <Badge key={rtId} variant="secondary" className="text-[10px] bg-primary/5 text-primary/70 border-primary/10 hover:bg-primary/10 hover:text-primary cursor-default">
-                        <Link2 className="w-2.5 h-2.5 mr-0.5 opacity-50" />
-                        {rt.title}
-                      </Badge>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
 
             {topic.papers.length > 0 && (
               <div className="mt-4 flex-1">
@@ -2616,83 +2595,6 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   )
 }
 
-// ============ Teaching Section ============
-function TeachingSection({ hideTitle = false, hideStats = false }: { hideTitle?: boolean; hideStats?: boolean } = {}) {
-  const teachingData = professorInfo.teaching || []
-  const courseIcons = [BookOpen, Braces, Library, Microscope]
-
-  return (
-    <SectionWrapper id="teaching" className={hideTitle ? '!pt-2 md:!pt-4' : 'bg-muted/30'}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {!hideTitle && (
-          <SectionTitle accent="violet" subtitle="Courses taught at Huazhong University of Science and Technology">
-            Teaching
-          </SectionTitle>
-        )}
-
-        {/* Stats Highlight Strip */}
-        {!hideStats && (
-        <motion.div variants={fadeInUp} className="mb-8">
-          <div className="bg-card rounded-xl border border-border/60 p-4 shadow-sm">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[
-                { label: 'Journal Papers', value: journalPapers.length, icon: BookOpen, color: 'text-blue-500/60 dark:text-blue-400/60' },
-                { label: 'Conference Papers', value: conferencePapers.length, icon: FileText, color: 'text-emerald-500/60 dark:text-emerald-400/60' },
-                { label: 'Patents', value: patents.length, icon: Award, color: 'text-amber-500/60 dark:text-amber-400/60' },
-                { label: 'Research Areas', value: researchTopics.length, icon: Microscope, color: 'text-rose-500/60 dark:text-rose-400/60' },
-              ].map((stat) => (
-                <div key={stat.label} className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-muted/50 flex items-center justify-center flex-shrink-0">
-                    <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold tracking-tight">{stat.value}</div>
-                    <div className="text-[10px] text-muted-foreground">{stat.label}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-        )}
-
-        {/* Course Cards Grid */}
-        <motion.div variants={fadeInUp}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {teachingData.map((course, i) => {
-              const CourseIcon = courseIcons[i % courseIcons.length]
-              return (
-                <Card key={i} className="border-border/60 hover:shadow-md transition-all duration-300 group overflow-hidden card-glow">
-                  <CardContent className="p-0">
-                    <div className="h-1 bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
-                    <div className="p-5">
-                      <div className="flex items-start gap-3.5">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 group-hover:from-primary/15 group-hover:to-primary/8 transition-all duration-300">
-                          <CourseIcon className="w-4 h-4 text-primary/50 group-hover:text-primary/70 transition-colors" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <Badge variant="secondary" className="text-[10px] bg-primary/5 text-primary/60 border-primary/10 mb-2">
-                            <Calendar className="w-2.5 h-2.5 mr-1" />
-                            {course.semester}
-                          </Badge>
-                          <p className="text-sm font-semibold leading-relaxed mb-1.5">{course.course}</p>
-                          {'description' in course && (
-                            <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{course.description}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
-        </motion.div>
-      </div>
-    </SectionWrapper>
-  )
-}
-
 // ============ Quote Banner ============
 function QuoteBanner() {
   const quotes = [
@@ -2755,7 +2657,6 @@ function Footer({ onNavigate, currentPage }: { onNavigate: (page: PageName) => v
     { label: 'Research', page: 'research' as PageName },
     { label: 'Publications', page: 'publications' as PageName },
     { label: 'Team', page: 'team' as PageName },
-    { label: 'Teaching', page: 'teaching' as PageName },
     { label: 'Gallery', page: 'gallery' as PageName },
   ]
 
@@ -3260,20 +3161,6 @@ function TeamPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
   )
 }
 
-// ============ Teaching Page ============
-function TeachingPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [])
-
-  return (
-    <main>
-      <PageHero page="teaching" />
-      <TeachingSection hideTitle hideStats />
-    </main>
-  )
-}
-
 // ============ Gallery Page ============
 function GalleryPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
   const [selectedPhoto, setSelectedPhoto] = useState<{ category: string; index: number } | null>(null)
@@ -3666,7 +3553,7 @@ export default function Home() {
   // This is the recommended pattern for reading browser state after hydration
   useEffect(() => {
     const hash = window.location.hash.replace('#', '')
-    if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'teaching' || hash === 'gallery') {
+    if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'gallery') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentPage(hash)
     }
@@ -3678,7 +3565,7 @@ export default function Home() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '')
-      if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'teaching' || hash === 'gallery') {
+      if (hash === 'publications' || hash === 'research' || hash === 'team' || hash === 'gallery') {
         setCurrentPage(hash)
       } else {
         setCurrentPage('home')
@@ -3748,11 +3635,6 @@ export default function Home() {
           {currentPage === 'team' && (
             <motion.div key="team" initial={{ opacity: 0, y: 12, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6, filter: 'blur(1px)' }} transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}>
               <TeamPage onNavigate={handleNavigate} />
-            </motion.div>
-          )}
-          {currentPage === 'teaching' && (
-            <motion.div key="teaching" initial={{ opacity: 0, y: 12, filter: 'blur(2px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6, filter: 'blur(1px)' }} transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}>
-              <TeachingPage onNavigate={handleNavigate} />
             </motion.div>
           )}
           {currentPage === 'gallery' && (
