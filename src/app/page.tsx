@@ -132,39 +132,6 @@ function useTypewriter(text: string, speed = 80, startDelay = 400) {
   return displayed
 }
 
-// ============ Hero Particles (CSS-only) ============
-function HeroParticles() {
-  const particles = useMemo(() =>
-    Array.from({ length: 25 }, (_, i) => ({
-      size: [2, 3, 3, 4][i % 4],
-      opacity: [0.1, 0.15, 0.2, 0.25, 0.3][i % 5],
-      duration: 15 + (i * 7 % 16),
-      delay: (i * 1.3) % 10,
-      top: `${5 + (i * 37 % 85)}%`,
-      left: `${3 + (i * 43 % 90)}%`,
-    })), [])
-
-  return (
-    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-      {particles.map((p, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-primary"
-          style={{
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-            top: p.top,
-            left: p.left,
-            animation: `particle-float ${p.duration}s ease-in-out infinite`,
-            animationDelay: `${p.delay}s`,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
 // ============ Animated Stat Card ============
 function AnimatedStatCard({ stat }: { stat: { label: string; value: number; icon: React.ComponentType<{ className?: string }>; color: string } }) {
   const { count, ref } = useAnimatedCounter(stat.value)
@@ -222,33 +189,26 @@ function SectionDivider({ flip = false }: { flip?: boolean }) {
 // ============ BibTeX Generator ============
 function generateBibTeX(pub: Publication, index: number): string {
   // Generate ID in format: firstAuthorLastName + year + firstTitleWord (e.g., "han2026power")
-  const firstAuthor = pub.authors.split(',')[0].trim().split(' ').pop()?.toLowerCase() || 'unknown'
-  const year = pub.year.match(/\d{4}/)?.[0] || '2024'
+  const firstAuthor = pub.authors[0].split(' ').pop()?.toLowerCase() || 'unknown'
+  const yearStr = pub.year.toString()
   const firstTitleWord = pub.title.split(' ').find(w => w.length > 2)?.toLowerCase().replace(/[^a-z]/g, '') || 'paper'
-  const id = `${firstAuthor}${year}${firstTitleWord}`
+  const id = `${firstAuthor}${yearStr}${firstTitleWord}`
 
-  // Parse venue to extract journal name, volume, number, pages
-  const venue = pub.venue
-  const volMatch = venue.match(/vol\.\s*(\d+)/i)
-  const noMatch = venue.match(/no\.\s*([\d-]+)/i)
-  const ppMatch = venue.match(/pp\.\s*([\d-]+)/i)
-  // Extract journal/booktitle name: remove the trailing ", vol. ..." part
-  const venueName = venue.replace(/,\s*vol\..*$/i, '').trim()
-
-  const isConference = venue.toLowerCase().includes('conference') || venue.toLowerCase().includes('workshops') || venue.toLowerCase().includes('icassp') || venue.toLowerCase().includes('icc') || venue.toLowerCase().includes('globecom') || venue.toLowerCase().includes('wcnc') || venue.toLowerCase().includes('pimrc') || venue.toLowerCase().includes('spawc') || venue.toLowerCase().includes('asilomar') || venue.toLowerCase().includes('iswcs') || venue.toLowerCase().includes('iccc')
+  const isConference = !!pub.booktitle
   const entryType = isConference ? '@inproceedings' : '@article'
   const entryKey = isConference ? 'booktitle' : 'journal'
+  const venueName = pub.journal || pub.booktitle || ''
 
   const lines = [
     `${entryType}{${id},`,
-    `  author = {${pub.authors}},`,
+    `  author = {${pub.authors.join(', ')}},`,
     `  title = {${pub.title}},`,
     `  ${entryKey} = {${venueName}},`,
   ]
-  if (!isConference && volMatch) lines.push(`  volume = {${volMatch[1]}},`)
-  if (!isConference && noMatch) lines.push(`  number = {${noMatch[1]}},`)
-  if (ppMatch) lines.push(`  pages = {${ppMatch[1]}},`)
-  lines.push(`  year = {${year}}`)
+  if (!isConference && pub.volume) lines.push(`  volume = {${pub.volume}},`)
+  if (!isConference && pub.number) lines.push(`  number = {${pub.number}},`)
+  if (pub.pages) lines.push(`  pages = {${pub.pages}},`)
+  lines.push(`  year = {${yearStr}}`)
   if (pub.link) lines.push(`  url = {${pub.link}}`)
   lines.push('}')
   return lines.join('\n')
@@ -258,7 +218,7 @@ function generateBibTeX(pub: Publication, index: number): string {
 function getYearDistribution(pubs: Publication[]): { year: string; count: number }[] {
   const yearMap = new Map<string, number>()
   pubs.forEach(p => {
-    const y = p.year.match(/\d{4}/)?.[0] || 'Other'
+    const y = p.year.toString()
     yearMap.set(y, (yearMap.get(y) || 0) + 1)
   })
   return Array.from(yearMap.entries())
@@ -653,7 +613,7 @@ function getHighlightBadge(highlight: string): { icon: React.ComponentType<{ cla
     return { icon: Trophy, label: highlight, colorClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30', borderClass: 'border-l-amber-400 dark:border-l-amber-500' }
   }
   if (h.includes('esi') || h.includes('highly cited')) {
-    return { icon: Star, label: highlight, colorClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30', borderClass: 'border-l-emerald-400 dark:border-l-emerald-500' }
+    return { icon: Star, label: highlight, colorClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30', borderClass: 'border-l-amber-400 dark:border-l-amber-500' }
   }
   if (h.includes('invited')) {
     return { icon: Sparkles, label: highlight, colorClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/30', borderClass: 'border-l-violet-400 dark:border-l-violet-500' }
@@ -1033,7 +993,6 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
         <div className="hero-orb-1 absolute top-[10%] left-[5%] w-[200px] h-[200px] rounded-full bg-primary/5 blur-3xl" style={{ transform: `translate(${mousePos.x * 15}px, ${mousePos.y * 10}px)` }} />
         <div className="hero-orb-2 absolute bottom-[10%] right-[5%] w-[300px] h-[300px] rounded-full bg-primary/3 blur-3xl" style={{ transform: `translate(${mousePos.x * -10}px, ${mousePos.y * -8}px)` }} />
         <div className="hero-orb-3 absolute top-[40%] left-[50%] w-[150px] h-[150px] rounded-full bg-accent/4 blur-3xl" style={{ transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 12}px)` }} />
-        <HeroParticles />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -1109,9 +1068,9 @@ function HeroSection({ onNavigate }: { onNavigate: (page: PageName) => void }) {
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <div className="bg-gradient-to-r from-primary/5 via-primary/8 to-primary/3 p-4 rounded-xl border border-primary/10">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100/30 dark:from-blue-950/20 dark:to-blue-900/10 p-4 rounded-xl border border-blue-200/60 dark:border-blue-800/30">
                 <div className="flex items-start gap-2.5">
-                  <Sparkles className="w-5 h-5 text-primary/60 mt-0.5 flex-shrink-0" />
+                  <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                   <p className="text-xs sm:text-sm leading-relaxed">{professorInfo.recruiting}</p>
                 </div>
               </div>
@@ -1313,11 +1272,6 @@ function AboutSection() {
 }
 
 // ============ Publications Section ============
-function extractYear(yearStr: string): string {
-  const match = yearStr.match(/\d{4}/)
-  return match ? match[0] : 'Other'
-}
-
 function getVenueBadge(venue: string): { label: string; colorClass: string } | null {
   const v = venue.toLowerCase()
   // Venues to exclude from badges
@@ -1337,11 +1291,18 @@ function getVenueBadge(venue: string): { label: string; colorClass: string } | n
   if (v.includes('ieee transactions on antennas')) return { label: 'IEEE TAP', colorClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25' }
   if (v.includes('ieee transactions on vehicular')) return { label: 'IEEE TVT', colorClass: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-900/15 dark:text-cyan-400 dark:border-cyan-800/25' }
   if (v.includes('ieee wireless communications letters')) return { label: 'IEEE WCL', colorClass: 'bg-lime-50 text-lime-700 border-lime-200 dark:bg-lime-900/15 dark:text-lime-400 dark:border-lime-800/25' }
-  if (v.includes('ieee communications magazine')) return { label: 'IEEE COM', colorClass: 'bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-900/15 dark:text-pink-400 dark:border-pink-800/25' }
+  // Conference badges
   if (v.includes('globecom')) return { label: 'GLOBECOM', colorClass: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/15 dark:text-orange-400 dark:border-orange-800/25' }
-  if (v.includes('ieee icc') || v === 'ieee icc 2013, budapest, hungary' || v === '2022 ieee icc, seoul, south korea' || v === '2020 ieee icc, dublin, ireland') return { label: 'ICC', colorClass: 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/15 dark:text-sky-400 dark:border-sky-800/25' }
+  if (v.includes('international conference on communications') || v.includes('ieee icc')) return { label: 'ICC', colorClass: 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/15 dark:text-sky-400 dark:border-sky-800/25' }
+  if (v.includes('vehicular technology conference') || v.includes('vtc')) return { label: 'VTC', colorClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25' }
+  if (v.includes('pimrc')) return { label: 'PIMRC', colorClass: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/15 dark:text-purple-400 dark:border-purple-800/25' }
+  if (v.includes('wcnc')) return { label: 'WCNC', colorClass: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25' }
+  if (v.includes('eucap')) return { label: 'EuCAP', colorClass: 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/15 dark:text-yellow-400 dark:border-yellow-800/25' }
   if (v.includes('icassp')) return { label: 'ICASSP', colorClass: 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/15 dark:text-indigo-400 dark:border-indigo-800/25' }
+  if (v.includes('spawc')) return { label: 'SPAWC', colorClass: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 dark:bg-fuchsia-900/15 dark:text-fuchsia-400 dark:border-fuchsia-800/25' }
   if (v.includes('submitted') || v === 'submitted') return { label: 'Submitted', colorClass: 'bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-800/15 dark:text-gray-400 dark:border-gray-700/25' }
+  // Hide badge for unmatched conferences
+  if (v.includes('conference') || v.includes('symposium') || v.includes('workshop') || v.includes('asilomar') || v.includes('iswcs') || v.includes('iccc') || v.includes('iwrf')) return null
   const words = venue.split(' ').slice(0, 3).join(' ')
   return { label: words.length > 20 ? words.slice(0, 20) + '…' : words, colorClass: 'bg-neutral-50 text-neutral-600 border-neutral-200 dark:bg-neutral-800/15 dark:text-neutral-400 dark:border-neutral-700/25' }
 }
@@ -1351,7 +1312,10 @@ function PublicationItem({ pub, index, type }: { pub: Publication; index: number
   const [bibtexOpen, setBibtexOpen] = useState(false)
   const [bibtexCopied, setBibtexCopied] = useState(false)
   const [abstractOpen, setAbstractOpen] = useState(false)
-  const citationText = `[${index + 1}] ${pub.authors}, \"${pub.title},\" ${pub.venue}, ${pub.year}.`
+  const venueDisplay = pub.journal
+    ? `${pub.journal}, vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}`
+    : `${pub.booktitle}, pp. ${pub.pages}`
+  const citationText = `[${index + 1}] ${pub.authors.join(', ')}, \"${pub.title},\" ${venueDisplay}, ${pub.year}.`
   const bibtexText = generateBibTeX(pub, index)
   const highlightBadge = pub.highlight ? getHighlightBadge(pub.highlight) : null
 
@@ -1375,7 +1339,7 @@ function PublicationItem({ pub, index, type }: { pub: Publication; index: number
         <span className="pub-number text-xs mt-1 flex-shrink-0 tabular-nums">[{index + 1}]</span>
         <div className="flex-1 min-w-0">
           <p className="text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
-            {pub.authors.split(',').map((author, i) => {
+            {pub.authors.map((author, i) => {
               const name = author.trim()
               if (name === 'Haifan Yin') {
                 return <span key={i}>{i > 0 ? <span className="text-muted-foreground">, </span> : ''}<strong className="text-foreground">{name}</strong></span>
@@ -1383,22 +1347,19 @@ function PublicationItem({ pub, index, type }: { pub: Publication; index: number
               return <span key={i} className="text-muted-foreground">{i > 0 ? ', ' : ''}{name}</span>
             })}
             , &ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
-            <em className="text-muted-foreground">{pub.venue}</em>, {pub.year}.
-            {type !== 'conference' && (() => { const badge = getVenueBadge(pub.venue); return badge ? (
+            <em className="text-muted-foreground">{venueDisplay}, {pub.year}.</em>
+            {(() => { const badge = getVenueBadge(pub.journal || pub.booktitle || ''); return badge ? (
               <Badge variant="secondary" className={`text-[9px] px-1.5 py-0 rounded ml-1.5 align-middle border ${badge.colorClass}`}>{badge.label}</Badge>
             ) : null })()}
+            {pub.highlight && (
+              <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 rounded border ml-1.5 align-middle ${highlightBadge ? highlightBadge.colorClass : 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30'}`}>
+                {pub.highlight}
+              </Badge>
+            )}
             {pub.link && (
               <a href={pub.link} target="_blank" rel="noopener noreferrer" className="academic-link ml-1 text-xs">
                 [Link]
               </a>
-            )}
-            {pub.highlight && (
-              <span className="ml-2 inline-flex items-center gap-1">
-                {highlightBadge && <highlightBadge.icon className="w-3 h-3" />}
-                <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 rounded border ${highlightBadge ? highlightBadge.colorClass : 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30'}`}>
-                  {pub.highlight}
-                </Badge>
-              </span>
             )}
           </p>
           {/* Abstract expandable */}
@@ -1504,7 +1465,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
     const authorCount = new Map<string, number>()
     const allPubs = [...journalPapers, ...conferencePapers]
     allPubs.forEach(p => {
-      p.authors.split(',').forEach(a => {
+      p.authors.forEach(a => {
         const trimmed = a.trim()
         if (trimmed && trimmed !== 'et al.') {
           authorCount.set(trimmed, (authorCount.get(trimmed) || 0) + 1)
@@ -1533,8 +1494,8 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
 
   const allYears = useMemo(() => {
     const years = new Set<string>()
-    journalPapers.forEach(p => years.add(extractYear(p.year)))
-    conferencePapers.forEach(p => years.add(extractYear(p.year)))
+    journalPapers.forEach(p => years.add(p.year.toString()))
+    conferencePapers.forEach(p => years.add(p.year.toString()))
     const sorted = Array.from(years).sort((a, b) => b.localeCompare(a))
     return ['all', ...sorted]
   }, [])
@@ -1542,7 +1503,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
   const filterPubs = useCallback((pubs: Publication[]) => {
     let filtered = pubs
     if (yearFilter !== 'all') {
-      filtered = filtered.filter(p => extractYear(p.year) === yearFilter)
+      filtered = filtered.filter(p => p.year.toString() === yearFilter)
     }
     if (authorFilter !== 'all') {
       filtered = filtered.filter(p => p.authors.includes(authorFilter))
@@ -1550,7 +1511,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
       filtered = filtered.filter(
-        p => p.title.toLowerCase().includes(q) || p.authors.toLowerCase().includes(q) || p.venue.toLowerCase().includes(q)
+        p => p.title.toLowerCase().includes(q) || p.authors.some(a => a.toLowerCase().includes(q)) || (p.journal || p.booktitle || '').toLowerCase().includes(q)
       )
     }
     if (!sortDesc) {
@@ -1561,20 +1522,6 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
 
   const filteredJournals = filterPubs(journalPapers)
   const filteredConferences = filterPubs(conferencePapers)
-
-  const handleDownloadBibTeX = () => {
-    const pubs = activeTab === 'journal' ? filteredJournals : activeTab === 'conference' ? filteredConferences : []
-    if (pubs.length === 0) return
-    const allBibTeX = pubs.map((pub, i) => generateBibTeX(pub, i)).join('\n\n')
-    const blob = new Blob([allBibTeX], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${activeTab}-references.bib`
-    a.click()
-    URL.revokeObjectURL(url)
-    setToastVisible(true)
-  }
 
   const handleExportAllBibTeX = () => {
     const allPubs = [...filteredJournals, ...filteredConferences]
@@ -1601,7 +1548,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
           />
         </div>
       )}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 min-w-0">
         {!hideTitle && (
           <SectionTitle subtitle="Selected publications in top-tier journals and conferences">
             Publications
@@ -1654,16 +1601,7 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
               >
                 {sortDesc ? <SortDesc className="w-4 h-4" /> : <SortAsc className="w-4 h-4" />}
               </button>
-              {activeTab !== 'thesis' && (
-                <button
-                  onClick={handleDownloadBibTeX}
-                  className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
-                  title="Download BibTeX"
-                >
-                  <Download className="w-4 h-4" />
-                </button>
-              )}
-              {showStatsBar && activeTab !== 'thesis' && (
+              {showStatsBar && (
                 <button
                   onClick={handleExportAllBibTeX}
                   className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors border border-border/40"
@@ -1725,11 +1663,6 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                 Conference Papers
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredConferences.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="thesis" className="gap-1.5">
-                <GraduationCap className="w-4 h-4" />
-                Thesis
-                <Badge variant="secondary" className="ml-1 text-xs">{(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? 1 : 0}</Badge>
-              </TabsTrigger>
             </TabsList>
             </div>
 
@@ -1740,7 +1673,6 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                   <Filter className="w-3 h-3" />
                   {activeTab === 'journal' && <span>Showing {filteredJournals.length} of {journalPapers.length} journal papers</span>}
                   {activeTab === 'conference' && <span>Showing {filteredConferences.length} of {conferencePapers.length} conference papers</span>}
-                  {activeTab === 'thesis' && <span>Showing {(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? 1 : 0} of 1 thesis</span>}
                 </p>
               </motion.div>
             )}
@@ -1780,46 +1712,6 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
                       <p className="text-sm font-medium">No publications match your filters</p>
                       <button
                         onClick={() => { setSearchQuery(''); setYearFilter('all'); setAuthorFilter('all') }}
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
-                      >
-                        <Filter className="w-3 h-3" />
-                        Clear Filters
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="thesis">
-              <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
-                <div className="p-2">
-                  {(yearFilter === 'all' || yearFilter === '2015') && (authorFilter === 'all' || authorFilter === 'Haifan Yin') ? (
-                    <motion.div variants={staggerItem} className="group">
-                      <div className="flex gap-3 py-3.5 px-3 rounded-lg hover:bg-accent/50 transition-colors">
-                        <span className="pub-number text-xs mt-1 flex-shrink-0 tabular-nums">[1]</span>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
-                            <strong className="text-foreground">Haifan Yin</strong>, &ldquo;<span className="text-foreground/90">Interference mitigation in massive MIMO systems,</span>&rdquo;{' '}
-                            <em className="text-muted-foreground">PhD dissertation, Télécom ParisTech</em>, Dec. 2015.
-                            <a
-                              href="/documents/thesis-haifan-yin.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="academic-link ml-1 text-xs"
-                            >
-                              [Link]
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                      <Search className="w-8 h-8 mb-3 text-muted-foreground/40" />
-                      <p className="text-sm font-medium">No thesis matches your filters</p>
-                      <button
-                        onClick={() => { setYearFilter('all'); setAuthorFilter('all') }}
                         className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                       >
                         <Filter className="w-3 h-3" />
@@ -2761,11 +2653,6 @@ function Footer({ onNavigate, currentPage }: { onNavigate: (page: PageName) => v
                 <span className="group-hover:translate-x-0.5 transition-transform">Chinese Site</span>
                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
-              <a href="https://haifanyin.wordpress.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <Rss className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">Personal Blog</span>
-                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
             </div>
           </div>
         </div>
@@ -2846,8 +2733,6 @@ function BackToTop() {
 
 // ============ Page Components ============
 function HomePage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
-  const recentPapers = useMemo(() => journalPapers.slice(0, 3), [])
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
@@ -2859,167 +2744,8 @@ function HomePage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
       <AboutSection />
       <SectionDivider flip />
 
-      {/* Recent Publications Preview */}
-      <SectionWrapper id="recent-pubs" className="bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <SectionTitle accent="emerald" subtitle="Latest journal papers from our group">Recent Publications</SectionTitle>
-            <button
-              onClick={() => onNavigate('publications')}
-              className="hidden sm:flex items-center gap-1 text-sm font-medium text-primary/70 hover:text-primary transition-colors group"
-            >
-              View All
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {recentPapers.map((paper, i) => (
-              <motion.div
-                key={i}
-                variants={staggerItem}
-                onClick={() => onNavigate('publications')}
-                className="bg-card rounded-xl border border-border/60 p-5 hover:shadow-md hover:border-primary/20 transition-all duration-300 cursor-pointer group"
-              >
-                <p className="text-sm font-medium leading-relaxed line-clamp-2 mb-3 group-hover:text-primary/80 transition-colors">
-                  {paper.title.length > 80 ? paper.title.slice(0, 80) + '…' : paper.title}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <BookMarked className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate">{paper.venue}</span>
-                  <span className="ml-auto flex-shrink-0 tabular-nums">{paper.year.match(/\d{4}/)?.[0]}</span>
-                </div>
-                {paper.highlight && (
-                  <Badge variant="secondary" className="text-[10px] bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30 mt-3">
-                    {paper.highlight}
-                  </Badge>
-                )}
-              </motion.div>
-            ))}
-          </div>
-          {/* Mobile View All link */}
-          <button
-            onClick={() => onNavigate('publications')}
-            className="sm:hidden mt-4 flex items-center gap-1 text-sm font-medium text-primary/70 hover:text-primary transition-colors mx-auto"
-          >
-            View All Publications
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </SectionWrapper>
-
-      <SectionDivider />
-      <NewsSection />
-      <SectionDivider flip />
       <QuoteBanner />
     </main>
-  )
-}
-
-// ============ News & Announcements Timeline Section ============
-function NewsSection() {
-  const newsItems = professorInfo.news || []
-
-  if (newsItems.length === 0) return null
-
-  return (
-    <SectionWrapper id="news" className="bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle accent="amber" subtitle="Latest updates and achievements from our group">
-          News & Announcements
-        </SectionTitle>
-
-        <motion.div variants={fadeInUp}>
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            {/* Left: Highlighted News */}
-            <div className="space-y-4">
-              {newsItems.filter(n => n.highlight).map((item, i) => (
-                <motion.div
-                  key={i}
-                  variants={staggerItem}
-                  className="relative overflow-hidden rounded-xl border border-amber-200/50 dark:border-amber-800/30 bg-gradient-to-br from-amber-50/80 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/5 p-5 group hover:shadow-md transition-all duration-300"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-200/30 to-transparent dark:from-amber-800/10 rounded-bl-full" />
-                  <div className="relative z-10 flex items-start gap-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center">
-                      <Star className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge variant="secondary" className="text-[10px] bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30">
-                          <Zap className="w-2.5 h-2.5 mr-1" />
-                          Highlight
-                        </Badge>
-                        <span className="text-[11px] text-muted-foreground font-medium tabular-nums">{item.date}</span>
-                      </div>
-                      <p className="text-sm font-medium leading-relaxed">{item.text}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* If no highlight news, show first item as featured */}
-              {newsItems.filter(n => n.highlight).length === 0 && newsItems.length > 0 && (
-                <motion.div
-                  variants={staggerItem}
-                  className="relative overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-primary/[0.02] p-5 group hover:shadow-md transition-all duration-300"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
-                  <div className="relative z-10 flex items-start gap-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="text-[11px] text-muted-foreground font-medium tabular-nums">{newsItems[0].date}</span>
-                      <p className="text-sm font-medium leading-relaxed mt-1">{newsItems[0].text}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Right: Timeline with scrollbar */}
-            <div className="max-h-[380px] overflow-y-auto custom-scrollbar pr-2 relative">
-              <div className="absolute left-[18px] top-0 bottom-0 w-px bg-border/60" />
-              <div className="space-y-1">
-                {newsItems.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    variants={staggerItem}
-                    className="relative flex items-start gap-4 py-2.5 group"
-                  >
-                    {/* Timeline icon */}
-                    <div className={`relative flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center z-10 transition-colors ${
-                      item.highlight
-                        ? 'bg-amber-100 dark:bg-amber-900/30'
-                        : 'bg-muted group-hover:bg-accent'
-                    }`}>
-                      {(() => {
-                        const t = item.text.toLowerCase()
-                        if (t.includes('prize') || t.includes('award')) return <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                        if (t.includes('paper') || t.includes('published') || t.includes('accepted')) return <FileText className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                        if (t.includes('research') || t.includes('direction') || t.includes('holographic')) return <Microscope className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
-                        if (t.includes('professor') || t.includes('joined')) return <GraduationCap className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        if (t.includes('medal')) return <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                        if (t.includes('competition') || t.includes('cup') || t.includes('champion')) return <Zap className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-                        if (t.includes('mentor') || t.includes('instructor')) return <Users className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-                        if (t.includes('leader') || t.includes('expert')) return <Star className="w-3.5 h-3.5 text-primary/70" />
-                        return <Rss className="w-3.5 h-3.5 text-muted-foreground" />
-                      })()}
-                    </div>
-                    <div className="flex-1 min-w-0 rounded-lg px-3 py-2 -ml-2 hover:bg-accent/50 transition-colors">
-                      <span className="text-[11px] text-muted-foreground font-medium tabular-nums">{item.date}</span>
-                      <p className={`text-sm leading-relaxed mt-0.5 ${item.highlight ? 'font-medium text-foreground' : 'text-muted-foreground'}`}>
-                        {item.text}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </SectionWrapper>
   )
 }
 
@@ -3127,13 +2853,13 @@ function TeamPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
-          className="relative overflow-hidden rounded-xl border border-border/60 bg-gradient-to-r from-primary/5 via-primary/[0.08] to-primary/3 shadow-sm"
+          className="relative overflow-hidden rounded-xl border border-blue-200/60 dark:border-blue-800/30 bg-gradient-to-r from-blue-50 dark:from-blue-950/20 via-blue-100/50 dark:via-blue-900/10 to-blue-50/50 dark:to-blue-950/10 shadow-sm"
         >
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary to-primary/50 rounded-r-full" />
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-600 to-blue-400 rounded-r-full" />
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 pl-6 sm:pl-7">
             <div className="flex items-start gap-4 flex-1 min-w-0">
-              <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center">
-                <Mail className="w-5 h-5 text-primary" />
+              <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-800/10 flex items-center justify-center">
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="space-y-1.5 min-w-0">
                 <p className="text-sm sm:text-base font-semibold text-foreground leading-snug">
@@ -3146,7 +2872,7 @@ function TeamPage({ onNavigate }: { onNavigate: (page: PageName) => void }) {
             </div>
             <a
               href={`mailto:${professorInfo.email}`}
-              className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
+              className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
             >
               Contact Us
               <ArrowRight className="w-4 h-4" />
