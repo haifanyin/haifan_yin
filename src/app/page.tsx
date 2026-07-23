@@ -1731,12 +1731,8 @@ function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage
 }
 
 // ============ Research Section ============
-function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: ResearchTopic; index: number; allExpanded?: boolean; onToggleAll?: () => void }) {
-  const [localExpanded, setLocalExpanded] = useState(false)
-  const expanded = allExpanded !== undefined ? allExpanded : localExpanded
-  const setExpanded = useCallback((val: boolean) => {
-    if (allExpanded === undefined) setLocalExpanded(val)
-  }, [allExpanded])
+function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number }) {
+  const [expanded, setExpanded] = useState(false)
 
   // 3D tilt effect
   const cardRef = useRef<HTMLDivElement>(null)
@@ -1765,29 +1761,19 @@ function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: Resea
               src={publicAsset(topic.image)}
               alt={topic.title}
               fill
-              className="object-scale-down group-hover:scale-105 transition-transform duration-700 bg-muted"
+              className="object-scale-down group-hover:scale-105 transition-transform duration-700"
             />
-            <div className={`absolute inset-0 bg-gradient-to-t ${topicGradientMap[topic.id] || 'from-black/30'} via-black/10 to-black/20 md:via-black/5 md:to-transparent`} />
-            {/* Paper Count Badge */}
-            <div className="absolute top-3 right-3 z-10">
-              <Badge className="text-[10px] px-2 py-0.5 bg-black/50 text-white/90 border-white/20 backdrop-blur-sm font-medium shadow-sm">
+          </div>
+
+          <CardContent className="p-5 md:p-6 flex flex-col">
+            {/* Title + Paper Count */}
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-bold">{topic.title}</h3>
+              <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
                 <BookMarked className="w-3 h-3 mr-1" />
                 {topic.papers.length}
               </Badge>
             </div>
-            {/* Decorative corner accent */}
-            <div className="absolute top-3 left-3 z-10 w-8 h-8 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 flex items-center justify-center">
-              <Microscope className="w-4 h-4 text-white/70" />
-            </div>
-            <div className="absolute bottom-3 left-3 right-3">
-              <h3 className="text-white font-bold text-lg drop-shadow-md">{topic.title}</h3>
-              {topic.subtitle && (
-                <p className="text-white/80 text-xs font-medium mt-0.5">{topic.subtitle}</p>
-              )}
-            </div>
-          </div>
-
-          <CardContent className="p-5 md:p-6 flex flex-col">
             <p className="text-sm text-muted-foreground leading-relaxed">
               {topic.description}
             </p>
@@ -1855,7 +1841,6 @@ function ResearchCard({ topic, index, allExpanded, onToggleAll }: { topic: Resea
 }
 
 function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
-  const [allExpanded, setAllExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const totalPapers = useMemo(() => researchTopics.reduce((acc, t) => acc + t.papers.length, 0), [])
   const avgPapers = useMemo(() => Math.round(totalPapers / researchTopics.length), [totalPapers])
@@ -1900,20 +1885,13 @@ function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
             {searchQuery && (
               <span className="text-xs text-muted-foreground">{filteredTopics.length} result{filteredTopics.length !== 1 ? 's' : ''}</span>
             )}
-            <button
-              onClick={() => setAllExpanded(!allExpanded)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border/60 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              {allExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-              {allExpanded ? 'Collapse All Papers' : 'Expand All Papers'}
-            </button>
           </div>
         </motion.div>
 
         <div className="space-y-6">
           {filteredTopics.length > 0 ? (
             filteredTopics.map((topic, i) => (
-              <ResearchCard key={topic.id} topic={topic} index={i} allExpanded={allExpanded} onToggleAll={() => setAllExpanded(!allExpanded)} />
+              <ResearchCard key={topic.id} topic={topic} index={i} />
             ))
           ) : (
             <motion.div variants={staggerItem} className="text-center py-16">
@@ -2081,7 +2059,7 @@ function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (
                   {isPhd ? 'Ph.D.' : 'Master'}
                 </Badge>
                 {student.graduated && student.destination && (
-                  <Badge className="text-[10px] px-2 py-0 border bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25">
+                  <Badge className="text-[10px] px-2 py-0 border bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25 whitespace-normal">
                     → {student.destination}
                   </Badge>
                 )}
@@ -2217,9 +2195,9 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [destFilter, setDestFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Sort helpers
-  const sortByEnrollDesc = (a: Student, b: Student) => (b.enrollDate || '').localeCompare(a.enrollDate || '')
-  const sortByGradDesc = (a: Student, b: Student) => (b.gradDate || '').localeCompare(a.gradDate || '')
+  // Sort helpers: primary by date desc, secondary by name pinyin when dates equal
+  const sortByEnrollDesc = (a: Student, b: Student) => (b.enrollDate || '').localeCompare(a.enrollDate || '') || (a.nameCn || '').localeCompare(b.nameCn || '', 'zh')
+  const sortByGradDesc = (a: Student, b: Student) => (b.gradDate || '').localeCompare(a.gradDate || '') || (a.nameCn || '').localeCompare(b.nameCn || '', 'zh')
 
   const allDestinations = useMemo(() => {
     const dests = new Set<string>()
@@ -2416,38 +2394,6 @@ function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
               <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400">Alumni</h3>
               <Badge variant="secondary" className="text-xs bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25">{graduatedTotal}</Badge>
             </div>
-
-            {/* Alumni Destination Filter */}
-            {allDestinations.length > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-muted-foreground font-medium">Destination:</span>
-                  <button
-                    onClick={() => setDestFilter('all')}
-                    className={`px-3 py-1 text-xs rounded-full transition-all font-medium ${
-                      destFilter === 'all'
-                        ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                        : 'bg-muted text-muted-foreground hover:bg-accent hover:text-foreground'
-                    }`}
-                  >
-                    All
-                  </button>
-                  {allDestinations.map((dest) => (
-                    <button
-                      key={dest}
-                      onClick={() => setDestFilter(dest)}
-                      className={`px-3 py-1 text-xs rounded-full transition-all font-medium ${
-                        destFilter === dest
-                          ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                          : 'bg-muted text-muted-foreground hover:bg-accent hover:text-foreground'
-                      }`}
-                    >
-                      {dest}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {filteredGraduatedPhd.length > 0 && (
               <div className="mb-8">
