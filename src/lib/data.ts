@@ -1263,6 +1263,7 @@ export const graduatedMasterStudents: Student[] = [
     enrollDate: "2023-09",
     gradDate: "2026-06",
     researchTopics: ["Reconfigurable antenna"],
+    awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"'],
   },
   {
     name: "Jiwang Wu",
@@ -1299,6 +1300,18 @@ export const graduatedMasterStudents: Student[] = [
     enrollDate: "2022-09",
     gradDate: "2025-06",
     researchTopics: ["Massive MIMO"],
+  },
+  {
+    name: "Lianjie Zhang",
+    nameCn: "张连杰",
+    email: "3206315156@qq.com",
+    avatar: "/avatars/lianjie-zhang.jpg",
+    degree: "master",
+    graduated: true,
+    destination: "Aviation Industry Corporation of China",
+    enrollDate: "2022-09",
+    gradDate: "2025-06",
+    researchTopics: ["RIS"],
   },
 ];
 
@@ -1429,7 +1442,7 @@ export const phdStudents: Student[] = [
     avatar: "/avatars/yali-zhang.jpg",
     degree: "phd",
     enrollDate: "2023-09",
-    awards: [],
+    awards: ['National Scholarship (2025)'],
     researchTopics: ["Machine learning", "Array signal processing", "Superdirective antennas", "Fluid antennas"],
   },
   {
@@ -1542,6 +1555,33 @@ export const masterStudents: Student[] = [
     degree: "master",
     enrollDate: "2024-09",
     researchTopics: [],
+  },
+  {
+    name: "Junran Li",
+    nameCn: "李骏然",
+    email: "lijunran@hust.edu.cn",
+    avatar: "/avatars/junran-li.jpg",
+    degree: "master",
+    enrollDate: "2024-09",
+    researchTopics: ["Beamforming"],
+  },
+  {
+    name: "Qi Zhou",
+    nameCn: "周奇",
+    email: "zhouqi_hust@outlook.com",
+    avatar: "/avatars/qi-zhou.jpg",
+    degree: "master",
+    enrollDate: "2025-09",
+    researchTopics: ["Reconfigurable antenna"],
+  },
+  {
+    name: "Xinyu Pan",
+    nameCn: "潘鑫宇",
+    email: "panxinyu@hust.edu.cn",
+    avatar: "/avatars/xinyu-pan.jpg",
+    degree: "master",
+    enrollDate: "2024-09",
+    researchTopics: ["Wireless LAN"],
   },
 ];
 
