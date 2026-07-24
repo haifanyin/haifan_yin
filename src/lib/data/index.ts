@@ -1,6 +1,3 @@
-// Re-export all types for backward compatibility
-export type { Publication, ResearchTopic, Student, Teacher } from "@/types";
-
 // Professor
 export { professorInfo } from "./professor";
 

@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart3, BookOpen, Calendar, Clock, FileText, TrendingUp, Trophy } from 'lucide-react'
 import { journalPapers, conferencePapers, citationStats } from '@/lib/data'
-import { getYearDistribution } from '@/lib/utils'
+import { getYearDistribution } from '@/lib/publication'
 import { fadeInUp } from '@/lib/constants'
 import SparklineChart from '@/components/publications/SparklineChart'
 export default function PubStatsBar() {

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { BookMarked, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
-import type { ResearchTopic } from '@/lib/data'
+import type { ResearchTopic } from '@/types'
 export default function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number }) {
   const [expanded, setExpanded] = useState(false)
 

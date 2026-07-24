@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, GraduationCap, Mail, School } from 'lucide-react'
 import { staggerItem } from '@/lib/constants'
-import type { Teacher } from '@/lib/data'
+import type { Teacher } from '@/types'
 export default function TeacherCard({ teacher }: { teacher: Teacher }) {
 
   return (

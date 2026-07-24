@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Award, BookMarked, Calendar, Check, ChevronDown, ChevronUp, Copy, Mail, Users } from 'lucide-react'
 import { staggerItem } from '@/lib/constants'
 import { getStudentFirstAuthorPapers } from '@/lib/data'
-import type { Student } from '@/lib/data'
+import type { Student } from '@/types'
 import type { PageName } from '@/types'
 export default function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (page: PageName) => void }) {
   const [showPapers, setShowPapers] = useState(false)
