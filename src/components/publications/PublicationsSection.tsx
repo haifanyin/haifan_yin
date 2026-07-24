@@ -8,13 +8,13 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { journalPapers, conferencePapers } from '@/lib/data'
 import { fadeInUp } from '@/lib/constants'
-import { generateBibTeX } from '@/lib/publication'
+import { generateBibTeX } from '@/lib/data'
 import type { Publication } from '@/types'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
 import PubStatsBar from '@/components/publications/PubStatsBar'
 import PublicationItem from '@/components/publications/PublicationItem'
-import Toast from '@/components/Toast'
+import Toast from '@/components/ui/toast'
 export default function PublicationsSection({ fullPage = false, hideTitle = false }: { fullPage?: boolean; hideTitle?: boolean }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('journal')

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Braces, Check, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { staggerItem } from '@/lib/constants'
-import { generateBibTeX, getHighlightBadge, getVenueBadge } from '@/lib/publication'
+import { generateBibTeX, getHighlightBadge, getVenueBadge } from '@/lib/data'
 import type { Publication } from '@/types'
 export default function PublicationItem({ pub, index }: { pub: Publication; index: number }) {
   const [copied, setCopied] = useState(false)

@@ -1,4 +1,4 @@
-export default function TimelineItem({ period, title, subtitle, isLast = false }: { period: string; title: string; subtitle: string; isLast?: boolean; Icon?: React.ComponentType<{ className?: string }> }) {
+export default function TimelineItem({ period, title, subtitle, isLast = false }: { period: string; title: string; subtitle: string; isLast?: boolean }) {
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center">

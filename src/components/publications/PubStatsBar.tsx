@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart3, Calendar, FileText, TrendingUp } from 'lucide-react'
 import { journalPapers, conferencePapers, citationStats } from '@/lib/data'
-import { getYearDistribution } from '@/lib/publication'
+import { getYearDistribution } from '@/lib/data'
 import SparklineChart from '@/components/publications/SparklineChart'
 export default function PubStatsBar() {
   const allPubs = useMemo(() => [...journalPapers, ...conferencePapers], [])

@@ -57,7 +57,6 @@ export default function AboutSection() {
                     title={`${edu.degree} in ${edu.field}`}
                     subtitle={edu.school}
                     isLast={i === professorInfo.education.length - 1}
-                    Icon={i === 0 ? GraduationCap : undefined}
                   />
                 ))}
               </div>
@@ -77,7 +76,6 @@ export default function AboutSection() {
                     title={exp.role}
                     subtitle={exp.org}
                     isLast={i === professorInfo.experience.length - 1}
-                    Icon={i === 0 ? Briefcase : undefined}
                   />
                 ))}
               </div>

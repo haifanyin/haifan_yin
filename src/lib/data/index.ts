@@ -12,3 +12,9 @@ export { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedM
 
 // Helpers
 export { getStudentFirstAuthorPapers, getPublicationsByTopic, formatPublicationCitation } from "./helpers";
+
+// Publication utilities
+export { generateBibTeX } from "./bibtex";
+export { getYearDistribution } from "./pub-stats";
+export { getHighlightBadge } from "./highlight-badge";
+export { getVenueBadge } from "./venue-badge";

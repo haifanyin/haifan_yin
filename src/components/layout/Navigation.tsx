@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookOpen, Camera, HomeIcon, Mail, Menu, Microscope, Moon, Sun, Users, X } from 'lucide-react'
 import { professorInfo } from '@/lib/data'
@@ -16,11 +17,18 @@ const navItems = [
   { href: '/gallery', label: 'Gallery', icon: Camera },
 ]
 
-export default function Navigation({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMode: () => void }) {
+export default function Navigation() {
   const pathname = usePathname()
+  const { resolvedTheme, setTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  // Avoid hydration mismatch for theme icon
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,6 +48,9 @@ export default function Navigation({ darkMode, toggleDarkMode }: { darkMode: boo
 
   const closeMobile = () => setMobileOpen(false)
   const isActive = (href: string) => pathname === href
+  const isDark = mounted ? resolvedTheme === 'dark' : false
+
+  const toggleTheme = () => setTheme(isDark ? 'light' : 'dark')
 
   return (
     <>
@@ -82,9 +93,9 @@ export default function Navigation({ darkMode, toggleDarkMode }: { darkMode: boo
                 <a href={`mailto:${professorInfo.email}`} onClick={closeMobile} className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
                   <Mail className="w-4 h-4 text-primary/50" />Contact
                 </a>
-                <button onClick={() => { toggleDarkMode(); closeMobile() }} className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-                  {darkMode ? <Sun className="w-4 h-4 text-primary/50" /> : <Moon className="w-4 h-4 text-primary/50" />}
-                  {darkMode ? 'Light Mode' : 'Dark Mode'}
+                <button onClick={() => { toggleTheme(); closeMobile() }} className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+                  {isDark ? <Sun className="w-4 h-4 text-primary/50" /> : <Moon className="w-4 h-4 text-primary/50" />}
+                  {isDark ? 'Light Mode' : 'Dark Mode'}
                 </button>
               </div>
             </motion.div>
@@ -119,14 +130,14 @@ export default function Navigation({ darkMode, toggleDarkMode }: { darkMode: boo
                   {isActive(item.href) && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
                 </Link>
               ))}
-              <button onClick={toggleDarkMode} className="ml-1 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all" title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              <button onClick={toggleTheme} className="ml-1 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all" title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             </nav>
 
             <div className="flex md:hidden items-center gap-1">
-              <button onClick={toggleDarkMode} className="p-2 rounded-lg hover:bg-accent transition-colors">
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-accent transition-colors">
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-lg hover:bg-accent transition-colors">
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
