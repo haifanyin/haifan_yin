@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { getBasePath } from "@/lib/base-path";
+import AppShell from "@/components/layout/AppShell";
 
 const assetBase = getBasePath();
 // TODO: Replace with your actual Vercel domain, e.g. "https://mcsp-lab.vercel.app"
@@ -94,7 +95,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        {children}
+        <AppShell>{children}</AppShell>
         <Toaster />
       </body>
     </html>
