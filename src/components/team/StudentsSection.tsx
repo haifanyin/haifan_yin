@@ -7,27 +7,18 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from '@/lib/data'
 import { fadeInUp } from '@/lib/constants'
-import type { PageName } from '@/types'
 import type { Student } from '@/types'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
 import TeacherCard from '@/components/team/TeacherCard'
 import StudentCard from '@/components/team/StudentCard'
 export default function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
-  const [destFilter, setDestFilter] = useState<string>('all')
+  const [destFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
   // Sort helpers: primary by date desc, secondary by name pinyin when dates equal
   const sortByEnrollDesc = (a: Student, b: Student) => (b.enrollDate || '').localeCompare(a.enrollDate || '') || (a.nameCn || '').localeCompare(b.nameCn || '', 'zh')
   const sortByGradDesc = (a: Student, b: Student) => (b.gradDate || '').localeCompare(a.gradDate || '') || (a.nameCn || '').localeCompare(b.nameCn || '', 'zh')
-
-  const allDestinations = useMemo(() => {
-    const dests = new Set<string>()
-    ;[...graduatedPhdStudents, ...graduatedMasterStudents].forEach(s => {
-      if (s.destination) dests.add(s.destination)
-    })
-    return Array.from(dests).sort()
-  }, [])
 
   const filteredPhd = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()

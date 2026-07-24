@@ -10,7 +10,7 @@ import { staggerItem } from '@/lib/constants'
 import { getStudentFirstAuthorPapers } from '@/lib/data'
 import type { Student } from '@/types'
 import type { PageName } from '@/types'
-export default function StudentCard({ student, onNavigate }: { student: Student; onNavigate?: (page: PageName) => void }) {
+export default function StudentCard({ student }: { student: Student; onNavigate?: (page: PageName) => void }) {
   const [showPapers, setShowPapers] = useState(false)
   const [emailCopied, setEmailCopied] = useState(false)
   const isPhd = student.degree === 'phd'

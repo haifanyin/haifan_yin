@@ -5,8 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { ArrowRight, Camera, ChevronLeft, ChevronRight, Globe, Maximize2, Sparkles, Trophy, Users as UsersIcon, X } from 'lucide-react'
-import { fadeInUp } from '@/lib/constants'
+import { Camera, ChevronLeft, ChevronRight, Globe, Maximize2, Sparkles, Trophy, Users as UsersIcon, X } from 'lucide-react'
 export default function GalleryPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<{ category: string; index: number } | null>(null)
   const touchStartX = useRef<number | null>(null)

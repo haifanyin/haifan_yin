@@ -9,7 +9,7 @@ import { BookMarked, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/types'
-export default function ResearchCard({ topic, index }: { topic: ResearchTopic; index: number }) {
+export default function ResearchCard({ topic }: { topic: ResearchTopic; index: number }) {
   const [expanded, setExpanded] = useState(false)
 
   // 动态查询该 topic 关联的论文

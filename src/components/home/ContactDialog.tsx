@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Check, Copy, Mail } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { professorInfo } from '@/lib/data'
 export default function ContactDialog() {

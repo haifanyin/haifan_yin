@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 import { Trophy, Star, Sparkles } from 'lucide-react'
 
 // ============ BibTeX Generator ============
-export function generateBibTeX(pub: Publication, index: number): string {
+export function generateBibTeX(pub: Publication): string {
   // Generate ID in format: firstAuthorLastName + year + firstTitleWord (e.g., "han2026power")
   const firstAuthor = pub.authors[0].split(' ').pop()?.toLowerCase() || 'unknown'
   const yearStr = pub.year.toString()

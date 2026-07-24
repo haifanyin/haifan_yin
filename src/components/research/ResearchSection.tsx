@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Search, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
 import { researchTopics } from '@/lib/data'
 import { getPublicationsByTopic } from '@/lib/data'
 import { fadeInUp, staggerItem } from '@/lib/constants'
@@ -12,9 +11,6 @@ import SectionTitle from '@/components/layout/SectionTitle'
 import ResearchCard from '@/components/research/ResearchCard'
 export default function ResearchSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [searchQuery, setSearchQuery] = useState('')
-  const totalPapers = useMemo(() =>
-    researchTopics.reduce((acc, t) => acc + getPublicationsByTopic(t.id).length, 0), [])
-  const avgPapers = useMemo(() => Math.round(totalPapers / researchTopics.length), [totalPapers])
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) return researchTopics
     const q = searchQuery.toLowerCase()

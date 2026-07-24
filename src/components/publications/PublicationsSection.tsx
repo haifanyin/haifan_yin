@@ -22,11 +22,8 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
   const [authorFilter, setAuthorFilter] = useState<string>('all')
   const [sortDesc, setSortDesc] = useState(true)
   const [toastVisible, setToastVisible] = useState(false)
-  const [toastMsg, setToastMsg] = useState('')
   const [scrollProgress, setScrollProgress] = useState(0)
   const searchRef = useRef<HTMLInputElement>(null)
-  const prevJCountRef = useRef(journalPapers.length)
-  const prevCCountRef = useRef(conferencePapers.length)
 
   // Scroll progress bar (full page only)
   useEffect(() => {
@@ -62,7 +59,7 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
     })
     // Only show authors with 3+ papers, sort by count, limit to 8
     return Array.from(authorCount.entries())
-      .filter(([_, count]) => count >= 3)
+      .filter(([, count]) => count >= 3)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 8)
       .map(([name, count]) => ({ name, count }))
@@ -114,7 +111,7 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
   const handleExportAllBibTeX = () => {
     const allPubs = [...filteredJournals, ...filteredConferences]
     if (allPubs.length === 0) return
-    const allBibTeX = allPubs.map((pub, i) => generateBibTeX(pub, i)).join('\n\n')
+    const allBibTeX = allPubs.map((pub) => generateBibTeX(pub)).join('\n\n')
     const blob = new Blob([allBibTeX], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -269,9 +266,9 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
               <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
                 <div className={`${fullPage ? '' : 'max-h-[800px]'} overflow-y-auto custom-scrollbar p-2`}>
                   {filteredJournals.map((pub, i) => (
-                    <PublicationItem key={i} pub={pub} index={i} type="journal" />
-                  ))}
-                  {filteredJournals.length === 0 && (
+<PublicationItem key={i} pub={pub} index={i} />
+                    ))}
+                    {filteredJournals.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                       <Search className="w-8 h-8 mb-3 text-muted-foreground/40" />
                       <p className="text-sm font-medium">No publications match your filters</p>
@@ -292,9 +289,9 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
               <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
                 <div className={`${fullPage ? '' : 'max-h-[800px]'} overflow-y-auto custom-scrollbar p-2`}>
                   {filteredConferences.map((pub, i) => (
-                    <PublicationItem key={i} pub={pub} index={i} type="conference" />
-                  ))}
-                  {filteredConferences.length === 0 && (
+<PublicationItem key={i} pub={pub} index={i} />
+                    ))}
+                    {filteredConferences.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                       <Search className="w-8 h-8 mb-3 text-muted-foreground/40" />
                       <p className="text-sm font-medium">No publications match your filters</p>

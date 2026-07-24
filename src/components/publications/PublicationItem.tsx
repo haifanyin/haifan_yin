@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Braces, Check, ChevronDown, ChevronUp, Copy, ExternalLink } from 'lucide-react'
+import { Braces, Check, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { staggerItem } from '@/lib/constants'
 import { generateBibTeX, getHighlightBadge, getVenueBadge } from '@/lib/publication'
 import type { Publication } from '@/types'
-export default function PublicationItem({ pub, index, type }: { pub: Publication; index: number; type: 'journal' | 'conference' }) {
+export default function PublicationItem({ pub, index }: { pub: Publication; index: number }) {
   const [copied, setCopied] = useState(false)
   const [bibtexOpen, setBibtexOpen] = useState(false)
   const [bibtexCopied, setBibtexCopied] = useState(false)
@@ -16,7 +16,7 @@ export default function PublicationItem({ pub, index, type }: { pub: Publication
     ? `${pub.journal}, vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}`
     : `${pub.booktitle}, pp. ${pub.pages}`
   const citationText = `[${index + 1}] ${pub.authors.join(', ')}, \"${pub.title},\" ${venueDisplay}, ${pub.year}.`
-  const bibtexText = generateBibTeX(pub, index)
+  const bibtexText = generateBibTeX(pub)
   const highlightBadge = pub.highlight ? getHighlightBadge(pub.highlight) : null
 
   const handleCopy = () => {
