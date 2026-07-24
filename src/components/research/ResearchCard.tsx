@@ -6,10 +6,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BookMarked, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/types'
-export default function ResearchCard({ topic }: { topic: ResearchTopic; index: number }) {
+export default function ResearchCard({ topic, index, compact = false, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; index: number; compact?: boolean; hasChildren?: boolean; childCount?: number }) {
   const [expanded, setExpanded] = useState(false)
 
   // 动态查询该 topic 关联的论文
@@ -36,8 +37,8 @@ export default function ResearchCard({ topic }: { topic: ResearchTopic; index: n
   return (
     <motion.div variants={staggerItem} id={topic.id} className="scroll-mt-20">
       <Card ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="overflow-hidden border-border/60 hover:shadow-lg transition-[shadow,transform] duration-300 ease-out group">
-        <div className="grid md:grid-cols-[380px_1fr] gap-0">
-          <div className="relative h-52 md:h-auto md:min-h-[260px] overflow-hidden bg-muted/30">
+        <div className={`grid md:grid-cols-[${compact ? '280px' : '380px'}_1fr] gap-0`}>
+          <div className={`relative overflow-hidden bg-muted/30 ${compact ? 'h-44 md:h-auto md:min-h-[200px]' : 'h-52 md:h-auto md:min-h-[260px]'}`}>
             <Image
               src={topic.image}
               alt={topic.title}
@@ -46,19 +47,29 @@ export default function ResearchCard({ topic }: { topic: ResearchTopic; index: n
             />
           </div>
 
-          <CardContent className="p-5 md:p-6 flex flex-col">
+          <CardContent className={`${compact ? 'p-4 md:p-5' : 'p-5 md:p-6'} flex flex-col`}>
             {/* Title + Paper Count */}
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h3 className="text-xl font-bold tracking-tight">{topic.title}</h3>
+                <h3 className={`font-bold tracking-tight ${compact ? 'text-base' : 'text-xl'}`}>{topic.title}</h3>
                 <div className="decorative-line-blue w-12 mt-1.5" />
               </div>
-              <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
-                <BookMarked className="w-3 h-3 mr-1" />
-                {topicPubs.length}
-              </Badge>
+              <div className="flex items-center gap-2">
+                {hasChildren && (
+                  <Link
+                    href={`/research/${topic.id}`}
+                    className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-primary/5 text-primary/60 border border-primary/10 hover:bg-primary/10 transition-colors font-medium"
+                  >
+                    {childCount} sub-topic{childCount !== 1 ? 's' : ''}
+                  </Link>
+                )}
+                <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
+                  <BookMarked className="w-3 h-3 mr-1" />
+                  {topicPubs.length}
+                </Badge>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className={`${compact ? 'text-xs' : 'text-sm'} text-muted-foreground leading-relaxed`}>
               {topic.description}
             </p>
             {/* Top Collaborator */}

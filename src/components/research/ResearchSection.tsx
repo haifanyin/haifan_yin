@@ -25,6 +25,27 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
     )
   }, [searchQuery])
 
+  // Group topics into parents and children
+  const { parents, childrenMap, orphanChildren } = useMemo(() => {
+    const parentIds = new Set(filteredTopics.map(t => t.id))
+    const parents = filteredTopics.filter(t => !t.parentId)
+    const childrenMap = new Map<string, typeof filteredTopics>()
+    const orphanChildren: typeof filteredTopics = []
+
+    for (const t of filteredTopics) {
+      if (t.parentId) {
+        if (parentIds.has(t.parentId)) {
+          const siblings = childrenMap.get(t.parentId) || []
+          siblings.push(t)
+          childrenMap.set(t.parentId, siblings)
+        } else {
+          orphanChildren.push(t)
+        }
+      }
+    }
+    return { parents, childrenMap, orphanChildren }
+  }, [filteredTopics])
+
   return (
     <SectionWrapper id="research" className={hideTitle ? '!pt-2 md:!pt-4' : 'bg-muted/30'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,11 +79,31 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
           </div>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {filteredTopics.length > 0 ? (
-            filteredTopics.map((topic, i) => (
-              <ResearchCard key={topic.id} topic={topic} index={i} />
-            ))
+            <>
+              {parents.map((parent, i) => {
+                const children = childrenMap.get(parent.id) || []
+                return (
+                  <div key={parent.id} className="space-y-4">
+                    <ResearchCard
+                      topic={parent}
+                      index={i}
+                      hasChildren={children.length > 0}
+                      childCount={children.length}
+                    />
+                    {children.map((child, j) => (
+                      <div key={child.id} className="md:pl-14 border-l-2 border-primary/10 pl-4">
+                        <ResearchCard topic={child} index={i + j + 1} />
+                      </div>
+                    ))}
+                  </div>
+                )
+              })}
+              {orphanChildren.map((topic, i) => (
+                <ResearchCard key={topic.id} topic={topic} index={parents.length + i} />
+              ))}
+            </>
           ) : (
             <motion.div variants={staggerItem} className="text-center py-16">
               <Search className="w-8 h-8 text-muted-foreground/20 mx-auto mb-3" />

@@ -25,6 +25,7 @@ export interface ResearchTopic {
   blogPosts?: { title: string; link: string }[];
   topCollaborator?: { name: string; initials: string; paperCount: number };
   relatedTopics?: string[];
+  parentId?: string;
 }
 
 export interface Student {

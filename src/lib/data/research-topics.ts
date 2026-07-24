@@ -68,6 +68,7 @@ export const researchTopics: ResearchTopic[] = [
   {
     id: "fdd-mimo",
     title: "FDD Massive MIMO",
+    parentId: "massive-mimo",
     image: "/research/research-fdd-mimo.jpg",
     description:
       "In frequency division duplex (FDD) massive MIMO systems, acquiring accurate downlink channel state information (CSI) at the base station is fundamentally challenging due to the lack of channel reciprocity. Our research explores partial reciprocity-based channel prediction, manifold learning-based CSI feedback, and codebook design to bridge the FDD CSI gap, achieving near-optimal performance with minimal overhead.",

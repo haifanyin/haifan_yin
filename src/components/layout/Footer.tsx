@@ -66,7 +66,7 @@ export default function Footer() {
               <Microscope className="w-3.5 h-3.5" />Research Areas
             </h4>
             <div className="space-y-2">
-              {researchTopics.map(topic => (
+              {researchTopics.filter(t => !t.parentId).map(topic => (
                 <Link
                   key={topic.id}
                   href={`/research#${topic.id}`}
