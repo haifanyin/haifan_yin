@@ -37,6 +37,7 @@ export const journalPapers: Publication[] = [
       pages: "7556-7569",
       year: 2026,
       link: 'https://doi.org/10.1109/TCOMM.2026.3684242',
+      topicIds: ['rydberg-atomic-receiver'],
   },
   {
       authors: ['Ye Yao', 'Yan Dong', 'Haifan Yin', 'Kun Zou', 'Limei Hu', 'Xiaodan Shao'],

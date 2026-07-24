@@ -34,22 +34,25 @@ export default function ResearchCard({ topic }: { topic: ResearchTopic; index: n
   }, [])
 
   return (
-    <motion.div variants={staggerItem}>
+    <motion.div variants={staggerItem} id={topic.id} className="scroll-mt-20">
       <Card ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="overflow-hidden border-border/60 hover:shadow-lg transition-[shadow,transform] duration-300 ease-out group">
-        <div className="grid md:grid-cols-[320px_1fr] gap-0">
-          <div className="relative h-52 md:h-auto md:min-h-[240px] overflow-hidden">
+        <div className="grid md:grid-cols-[380px_1fr] gap-0">
+          <div className="relative h-52 md:h-auto md:min-h-[260px] overflow-hidden bg-muted/30">
             <Image
               src={topic.image}
               alt={topic.title}
               fill
-              className="object-scale-down group-hover:scale-105 transition-transform duration-700"
+              className="object-contain group-hover:scale-105 transition-transform duration-700 p-4"
             />
           </div>
 
           <CardContent className="p-5 md:p-6 flex flex-col">
             {/* Title + Paper Count */}
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-bold">{topic.title}</h3>
+              <div>
+                <h3 className="text-xl font-bold tracking-tight">{topic.title}</h3>
+                <div className="decorative-line-blue w-12 mt-1.5" />
+              </div>
               <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
                 <BookMarked className="w-3 h-3 mr-1" />
                 {topicPubs.length}

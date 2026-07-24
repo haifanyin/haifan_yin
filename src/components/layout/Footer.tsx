@@ -36,11 +36,6 @@ export default function Footer() {
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mb-4">
               MCSP Lab, School of Electronic Information and Communications, Huazhong University of Science and Technology.
             </p>
-            <div className="bg-primary/[0.03] dark:bg-primary/[0.06] rounded-lg px-3 py-2 border border-primary/5">
-              <p className="text-xs text-muted-foreground/80 italic leading-relaxed">
-                &ldquo;Always looking for self-motivated master/Ph.D. students and post-doc researchers.&rdquo;
-              </p>
-            </div>
           </div>
 
           {/* Column 2: Quick Links */}
@@ -74,7 +69,7 @@ export default function Footer() {
               {researchTopics.map(topic => (
                 <Link
                   key={topic.id}
-                  href="/research"
+                  href={`/research#${topic.id}`}
                   className="block text-sm text-muted-foreground hover:text-foreground transition-colors group text-left"
                 >
                   <span className="flex items-center gap-2">

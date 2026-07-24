@@ -3,6 +3,15 @@ import type { ResearchTopic } from "@/types";
 // ==================== RESEARCH ====================
 export const researchTopics: ResearchTopic[] = [
   {
+    id: "rydberg-atomic-receiver",
+    title: "Rydberg Atomic Receiver",
+    image: "/research/research-rydberg-atomic-receiver.jpg",
+    description:
+      "Rydberg atomic receivers (RAREs) represent a paradigm shift from classical RF receivers to quantum-sensing-based receivers. By exploiting the giant electric dipole moments of highly excited Rydberg atoms, RAREs can sense electromagnetic fields with extraordinary sensitivity while being inherently immune to thermal noise. Our research pioneers the integration of Rydberg atomic receivers into wireless communication and sensing from a signal processing perspective. We have proposed Rydberg-atom-based superdirective receiver arrays that overcome the white noise sensitivity and mutual coupling limitations plaguing conventional compact arrays, achieving superdirectivity gains in a fundamentally new architecture. We have also developed imaging-based spectral estimation (ISE) methods that enable multi-target Direction-of-Arrival (DoA) estimation using only a single Rydberg vapor cell, transforming the spatially-resolved fluorescence profile into a spectral estimation problem solvable by Prony's method. These works open new avenues for holographic MIMO, continuous-aperture quantum sensing, and next-generation 6G receiver architectures.",
+    relatedTopics: ['superdirective', 'holographic'],
+    papers: [],
+  },
+  {
     id: "massive-mimo",
     title: "Massive MIMO",
     image: "/research/research-massive-mimo.jpg",
