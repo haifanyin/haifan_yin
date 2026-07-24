@@ -1,27 +1,41 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react'
 import Navigation from '@/components/layout/Navigation'
 import Footer from '@/components/layout/Footer'
 import BackToTop from '@/components/layout/BackToTop'
 import Toast from '@/components/Toast'
 import CommandPalette from '@/components/CommandPalette'
 
+const DARK_MODE_KEY = 'mcsp-dark-mode'
+const darkModeListeners = new Set<() => void>()
+
+function subscribeDarkMode(callback: () => void) {
+  darkModeListeners.add(callback)
+  window.addEventListener('storage', callback)
+  return () => {
+    darkModeListeners.delete(callback)
+    window.removeEventListener('storage', callback)
+  }
+}
+
+const getDarkMode = () => localStorage.getItem(DARK_MODE_KEY) === 'true'
+const getServerDarkMode = () => false
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [darkMode, setDarkMode] = useState(false)
+  const darkMode = useSyncExternalStore(subscribeDarkMode, getDarkMode, getServerDarkMode)
   const [toastVisible, setToastVisible] = useState(false)
   const [showCommandPalette, setShowCommandPalette] = useState(false)
 
   useEffect(() => {
-    setDarkMode(localStorage.getItem('mcsp-dark-mode') === 'true')
-  }, [])
-
-  useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode)
-    localStorage.setItem('mcsp-dark-mode', String(darkMode))
   }, [darkMode])
 
-  const toggleDarkMode = useCallback(() => setDarkMode(p => !p), [])
+  const toggleDarkMode = useCallback(() => {
+    const next = !getDarkMode()
+    localStorage.setItem(DARK_MODE_KEY, String(next))
+    darkModeListeners.forEach((l) => l())
+  }, [])
 
   // Command palette shortcut (Ctrl/Cmd+K)
   useEffect(() => {
