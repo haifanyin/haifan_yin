@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { getBasePath } from "@/lib/base-path";
 import AppShell from "@/components/layout/AppShell";
 
-const assetBase = getBasePath();
+const assetBase = "";
 // TODO: Replace with your actual Vercel domain, e.g. "https://mcsp-lab.vercel.app"
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mcsp-lab.vercel.app";
 

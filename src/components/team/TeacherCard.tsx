@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, GraduationCap, Mail, School } from 'lucide-react'
-import { publicAsset } from '@/lib/base-path'
 import { staggerItem } from '@/lib/constants'
 import type { Teacher } from '@/lib/data'
 export default function TeacherCard({ teacher }: { teacher: Teacher }) {
@@ -17,7 +16,7 @@ export default function TeacherCard({ teacher }: { teacher: Teacher }) {
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
             <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
-                src={publicAsset(teacher.avatar)}
+                src={teacher.avatar}
                 alt={teacher.name}
                 width={192}
                 height={256}

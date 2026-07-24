@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Camera, ChevronLeft, ChevronRight, Globe, Maximize2, Sparkles, Trophy, Users as UsersIcon, X } from 'lucide-react'
-import { publicAsset } from '@/lib/base-path'
 import { fadeInUp } from '@/lib/constants'
 export default function GalleryPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<{ category: string; index: number } | null>(null)
@@ -222,7 +221,7 @@ export default function GalleryPage() {
                   >
                     <div className="relative rounded-xl overflow-hidden border border-border/60 hover:shadow-lg transition-all duration-300 hover:border-primary/30 aspect-[4/3]">
                       <Image
-                        src={publicAsset(photo.src)}
+                        src={photo.src}
                         alt={photo.caption}
                         width={400}
                         height={300}
@@ -304,7 +303,7 @@ export default function GalleryPage() {
                 >
                   <div className="w-full h-full flex items-center justify-center p-12 sm:p-16 pb-32">
                     <img
-                      src={publicAsset(selectedPhotoDetails.src)}
+                      src={selectedPhotoDetails.src}
                       alt={selectedPhotoDetails.caption}
                       className="max-w-full max-h-full w-auto h-auto object-contain"
                       style={{ maxWidth: 'calc(100vw - 24px)', maxHeight: 'calc(100vh - 200px)' }}
@@ -339,7 +338,7 @@ export default function GalleryPage() {
                             }`}
                           >
                             <Image
-                              src={publicAsset(photo.src)}
+                              src={photo.src}
                               alt={photo.caption}
                               width={64}
                               height={64}

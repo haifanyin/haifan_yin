@@ -1,6 +1,3 @@
-'use client'
-
-
 export default function TimelineItem({ period, title, subtitle, isLast = false, Icon }: { period: string; title: string; subtitle: string; isLast?: boolean; Icon?: React.ComponentType<{ className?: string }> }) {
   return (
     <div className="flex gap-4">

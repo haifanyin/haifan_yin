@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BookMarked, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
-import { publicAsset } from '@/lib/base-path'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/lib/data'
@@ -40,7 +39,7 @@ export default function ResearchCard({ topic, index }: { topic: ResearchTopic; i
         <div className="grid md:grid-cols-[320px_1fr] gap-0">
           <div className="relative h-52 md:h-auto md:min-h-[240px] overflow-hidden">
             <Image
-              src={publicAsset(topic.image)}
+              src={topic.image}
               alt={topic.title}
               fill
               className="object-scale-down group-hover:scale-105 transition-transform duration-700"

@@ -1,6 +1,3 @@
-'use client'
-
-
 export default function SectionDivider({ flip = false }: { flip?: boolean }) {
   return (
     <div className="section-divider">

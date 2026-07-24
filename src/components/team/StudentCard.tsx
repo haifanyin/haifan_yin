@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Award, BookMarked, Calendar, Check, ChevronDown, ChevronUp, Copy, Mail, Users } from 'lucide-react'
-import { publicAsset } from '@/lib/base-path'
 import { staggerItem } from '@/lib/constants'
 import { getStudentFirstAuthorPapers } from '@/lib/data'
 import type { Student } from '@/lib/data'
@@ -29,7 +28,7 @@ export default function StudentCard({ student, onNavigate }: { student: Student;
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
             <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
-                src={publicAsset(student.avatar)}
+                src={student.avatar}
                 alt={student.name}
                 width={192}
                 height={256}
