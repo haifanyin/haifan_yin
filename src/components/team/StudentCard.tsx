@@ -129,7 +129,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                     className="flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                   >
                     <BookMarked className="w-3.5 h-3.5" />
-                    {showPapers ? 'Hide' : 'Show'} Papers ({displayPapers.length})
+                    {showPapers ? 'Hide' : 'Show'} Paper{displayPapers.length > 1 ? 's' : ''} ({displayPapers.length})
                     {showPapers ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                   </button>
                   <AnimatePresence>

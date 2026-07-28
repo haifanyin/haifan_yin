@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Search, X } from 'lucide-react'
 import { researchTopics } from '@/lib/data'
 import { getPublicationsByTopic } from '@/lib/data'
+import type { ResearchTopic } from '@/types'
 import { fadeInUp, staggerItem } from '@/lib/constants'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
@@ -25,25 +26,19 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
     )
   }, [searchQuery])
 
-  // Group topics into parents and children
-  const { parents, childrenMap, orphanChildren } = useMemo(() => {
-    const parentIds = new Set(filteredTopics.map(t => t.id))
+  // Group topics into parents — children are NOT shown on this page
+  const { parents, childrenMap } = useMemo(() => {
     const parents = filteredTopics.filter(t => !t.parentId)
-    const childrenMap = new Map<string, typeof filteredTopics>()
-    const orphanChildren: typeof filteredTopics = []
+    const childrenMap = new Map<string, ResearchTopic[]>()
 
     for (const t of filteredTopics) {
       if (t.parentId) {
-        if (parentIds.has(t.parentId)) {
-          const siblings = childrenMap.get(t.parentId) || []
-          siblings.push(t)
-          childrenMap.set(t.parentId, siblings)
-        } else {
-          orphanChildren.push(t)
-        }
+        const siblings = childrenMap.get(t.parentId) || []
+        siblings.push(t)
+        childrenMap.set(t.parentId, siblings)
       }
     }
-    return { parents, childrenMap, orphanChildren }
+    return { parents, childrenMap }
   }, [filteredTopics])
 
   return (
@@ -85,24 +80,16 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
               {parents.map((parent, i) => {
                 const children = childrenMap.get(parent.id) || []
                 return (
-                  <div key={parent.id} className="space-y-4">
+                  <div key={parent.id}>
                     <ResearchCard
                       topic={parent}
                       index={i}
                       hasChildren={children.length > 0}
                       childCount={children.length}
                     />
-                    {children.map((child, j) => (
-                      <div key={child.id} className="md:pl-14 border-l-2 border-primary/10 pl-4">
-                        <ResearchCard topic={child} index={i + j + 1} />
-                      </div>
-                    ))}
                   </div>
                 )
               })}
-              {orphanChildren.map((topic, i) => (
-                <ResearchCard key={topic.id} topic={topic} index={parents.length + i} />
-              ))}
             </>
           ) : (
             <motion.div variants={staggerItem} className="text-center py-16">

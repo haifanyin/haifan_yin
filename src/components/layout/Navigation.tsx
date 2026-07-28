@@ -47,7 +47,8 @@ export default function Navigation() {
   }, [mobileOpen])
 
   const closeMobile = () => setMobileOpen(false)
-  const isActive = (href: string) => pathname === href
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(href + '/')
   const isDark = mounted ? resolvedTheme === 'dark' : false
 
   const toggleTheme = () => setTheme(isDark ? 'light' : 'dark')

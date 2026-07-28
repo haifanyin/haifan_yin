@@ -10,11 +10,11 @@ import Link from 'next/link'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/types'
-export default function ResearchCard({ topic, index, compact = false, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; index: number; compact?: boolean; hasChildren?: boolean; childCount?: number }) {
+export default function ResearchCard({ topic, index, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; index: number; hasChildren?: boolean; childCount?: number }) {
   const [expanded, setExpanded] = useState(false)
 
-  // 动态查询该 topic 关联的论文
-  const topicPubs = useMemo(() => getPublicationsByTopic(topic.id), [topic.id])
+  // 动态查询该 topic 关联的论文（通过 publications.ts 中的 topicIds）
+  const papers = useMemo(() => getPublicationsByTopic(topic.id), [topic.id])
 
   // 3D tilt effect
   const cardRef = useRef<HTMLDivElement>(null)
@@ -37,8 +37,8 @@ export default function ResearchCard({ topic, index, compact = false, hasChildre
   return (
     <motion.div variants={staggerItem} id={topic.id} className="scroll-mt-20">
       <Card ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="overflow-hidden border-border/60 hover:shadow-lg transition-[shadow,transform] duration-300 ease-out group">
-        <div className={`grid md:grid-cols-[${compact ? '280px' : '380px'}_1fr] gap-0`}>
-          <div className={`relative overflow-hidden bg-muted/30 ${compact ? 'h-44 md:h-auto md:min-h-[200px]' : 'h-52 md:h-auto md:min-h-[260px]'}`}>
+        <div className="grid md:grid-cols-[380px_1fr] gap-0">
+          <div className="relative h-52 md:h-auto md:min-h-[260px] overflow-hidden bg-muted/30">
             <Image
               src={topic.image}
               alt={topic.title}
@@ -47,12 +47,18 @@ export default function ResearchCard({ topic, index, compact = false, hasChildre
             />
           </div>
 
-          <CardContent className={`${compact ? 'p-4 md:p-5' : 'p-5 md:p-6'} flex flex-col`}>
+          <CardContent className="p-5 md:p-6 flex flex-col">
             {/* Title + Paper Count */}
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h3 className={`font-bold tracking-tight ${compact ? 'text-base' : 'text-xl'}`}>{topic.title}</h3>
-                <div className="decorative-line-blue w-12 mt-1.5" />
+                <h3 className="font-bold tracking-tight text-xl">{topic.title}</h3>
+                <motion.div
+                  className="decorative-line-blue w-16 mt-1.5"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  style={{ transformOrigin: 'left' }}
+                  transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+                />
               </div>
               <div className="flex items-center gap-2">
                 {hasChildren && (
@@ -60,28 +66,28 @@ export default function ResearchCard({ topic, index, compact = false, hasChildre
                     href={`/research/${topic.id}`}
                     className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-primary/5 text-primary/60 border border-primary/10 hover:bg-primary/10 transition-colors font-medium"
                   >
-                    {childCount} sub-topic{childCount !== 1 ? 's' : ''}
+                    {childCount} sub-topic{childCount > 1 ? 's' : ''}
                   </Link>
                 )}
                 <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
                   <BookMarked className="w-3 h-3 mr-1" />
-                  {topicPubs.length}
+                  {papers.length}
                 </Badge>
               </div>
             </div>
-            <p className={`${compact ? 'text-xs' : 'text-sm'} text-muted-foreground leading-relaxed`}>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {topic.description}
             </p>
             {/* Top Collaborator */}
 
-            {topicPubs.length > 0 && (
+            {papers.length > 0 && (
               <div className="mt-4 flex-1">
                 <button
                   onClick={() => setExpanded(!expanded)}
                   className="flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                 >
                   <BookMarked className="w-3.5 h-3.5" />
-                  {expanded ? 'Hide' : 'Show'} Key Papers ({topicPubs.length})
+                  {expanded ? 'Hide' : 'Show'} Key Paper{papers.length > 1 ? 's' : ''} ({papers.length})
                   {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
                 <AnimatePresence>
@@ -93,7 +99,7 @@ export default function ResearchCard({ topic, index, compact = false, hasChildre
                       className="overflow-hidden"
                     >
                       <div className="mt-3 space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
-                        {topicPubs.map((pub, i) => (
+                        {papers.map((pub, i) => (
                           <div key={i} className="text-xs text-muted-foreground leading-relaxed bg-muted/50 rounded-lg p-2.5">
                             <span className="font-medium text-foreground/70">[{i + 1}]</span>{' '}
                             {formatPublicationCitation(pub)}

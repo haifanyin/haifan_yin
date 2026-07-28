@@ -121,10 +121,10 @@ export default function HeroSection() {
             {/* Research Topic Tags */}
             <motion.div variants={fadeInUp}>
               <div className="flex flex-wrap gap-2">
-                {researchTopics.map((topic) => (
+                {researchTopics.filter(t => !t.parentId).map((topic) => (
                   <button
                     key={topic.id}
-                    onClick={() => router.push('/research')}
+                    onClick={() => router.push(`/research#${topic.id}`)}
                     className="research-tag-hover inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-primary/5 text-primary/70 border border-primary/10 hover:bg-primary/10 hover:text-primary hover:border-primary/20 cursor-pointer"
                   >
                     <Tag className="w-3 h-3" />
