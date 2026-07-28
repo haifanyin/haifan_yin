@@ -89,12 +89,12 @@ export const phdStudents: Student[] = [
   {
     name: "Mengying Gao",
     nameCn: "高梦颖",
-    email: "mengyinggao12@gmail.com",
+    email: "mengyinggao@hust.edu.cn",
     avatar: "/avatars/mengying-gao.jpg",
     degree: "phd",
     enrollDate: "2021-09",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"', "Merit Student", "Honours degrees"],
-    researchTopics: ["Superdirective antenna theory"],
+    researchTopics: ["Superdirective antenna theory", "Pinching antenna"],
   },
   {
     name: "Jindiao Huang",
@@ -260,7 +260,7 @@ export const graduatedPhdStudents: Student[] = [
   {
     name: "Rongguang Song",
     nameCn: "宋镕光",
-    email: "song_rg@hust.edu.cn",
+    email: "rg_song@foxmail.com",
     avatar: "/avatars/rongguang-song.jpg",
     degree: "phd",
     graduated: true,
@@ -285,7 +285,7 @@ export const graduatedPhdStudents: Student[] = [
   {
     name: "Weidong Li",
     nameCn: "李伟东",
-    email: "l1369582713@163.com",
+    email: "weidongli@hyit.edu.cn",
     avatar: "/avatars/weidong-li.jpg",
     degree: "phd",
     graduated: true,
@@ -352,7 +352,7 @@ export const graduatedMasterStudents: Student[] = [
   {
     name: "Jiangfeng Hu",
     nameCn: "胡江峰",
-    email: "jiangfenghu@hust.edu.cn",
+    email: "hujiangfeng@epri.sgcc.com.cn",
     avatar: "/avatars/jiangfeng-hu.jpg",
     degree: "master",
     graduated: true,
@@ -463,6 +463,18 @@ export const graduatedMasterStudents: Student[] = [
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"'],
   },
   {
+    name: "Zixuan Xie",
+    nameCn: "谢子轩",
+    email: "1353523547@qq.com",
+    avatar: "/avatars/zixuan-xie.png",
+    degree: "master",
+    graduated: true,
+    destination: "Mindray",
+    enrollDate: "2023-09",
+    gradDate: "2026-06",
+    researchTopics: [],
+  },
+  {
     name: "Jiwang Wu",
     nameCn: "吴集旺",
     email: "1564484459@qq.com",
@@ -509,5 +521,17 @@ export const graduatedMasterStudents: Student[] = [
     enrollDate: "2022-09",
     gradDate: "2025-06",
     researchTopics: ["RIS"],
+  },
+  {
+    name: "Xiong Xu",
+    nameCn: "徐雄",
+    email: "1120015191@qq.com",
+    avatar: "/avatars/xiong-xu.jpg",
+    degree: "master",
+    graduated: true,
+    destination: "VeriSilicon",
+    enrollDate: "2019-09",
+    gradDate: "2021-06",
+    researchTopics: ["RIS", "Massive MIMO"],
   },
 ];

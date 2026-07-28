@@ -57,7 +57,4 @@ Avatars and gallery images live under `public/avatars/` and `public/gallery/`.
 
 ## Notes
 
-- This repository also contains unrelated scaffolding under `examples/`, `skills/`,
-  `mini-services/`, and `.zscripts/`. These are not part of the site and are excluded
-  from the TypeScript build (see `tsconfig.json`).
 - The site is a static export; the previous Prisma/database layer has been removed.

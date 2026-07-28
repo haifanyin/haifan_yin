@@ -100,7 +100,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
               </div>
 
               <div className="flex flex-wrap gap-1.5 mt-2">
-                {student.researchTopics.map((topic) => (
+                {student.researchTopics?.map((topic) => (
                   <Badge
                     key={topic}
                     variant="secondary"
