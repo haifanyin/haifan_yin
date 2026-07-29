@@ -23,10 +23,10 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
 
   return (
     <motion.div variants={staggerItem}>
-      <Card className={`overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent ${degreeClass} !py-3 !gap-3`}>
+      <Card className={`student-card-hover overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent ${degreeClass} !py-3 !gap-3`}>
         <CardContent className="p-3 sm:p-4">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
-            <div className="w-28 sm:w-48 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
+          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-3 lg:gap-4">
+            <div className="w-28 sm:w-36 lg:w-44 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
                 src={student.avatar}
                 alt={student.name}
@@ -36,8 +36,8 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
               />
             </div>
 
-            <div className="flex-1 min-w-0 w-full sm:w-auto text-center sm:text-left">
-              <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+            <div className="flex-1 min-w-0 w-full text-center lg:text-left">
+              <div className="flex items-center gap-2 flex-wrap justify-center lg:justify-start">
                 <h4 className="font-semibold text-sm">
                   {student.name}
                   <span className="text-muted-foreground font-normal ml-1.5">({student.nameCn})</span>
@@ -76,13 +76,13 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                 </p>
               )}
 
-              <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-start gap-1 mt-1 flex-wrap">
                 <a
                   href={`mailto:${student.email}`}
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-start gap-1 min-w-0"
                 >
-                  <Mail className="w-3 h-3" />
-                  {student.email}
+                  <Mail className="w-3 h-3 flex-shrink-0 mt-px" />
+                  <span className="break-all leading-snug">{student.email}</span>
                 </a>
                 <button
                   onClick={(e) => {
@@ -92,7 +92,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                       setTimeout(() => setEmailCopied(false), 2000)
                     })
                   }}
-                  className="p-1 rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                  className="flex-shrink-0 p-1 rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
                   title="Copy email"
                 >
                   {emailCopied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}

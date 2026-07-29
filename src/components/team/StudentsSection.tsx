@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import { motion, useInView, useMotionValue, animate } from 'framer-motion'
 import { Award, BookOpen, Briefcase, ChevronDown, GraduationCap, Search, Users, X } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from '@/lib/data'
@@ -12,6 +13,57 @@ import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
 import TeacherCard from '@/components/team/TeacherCard'
 import StudentCard from '@/components/team/StudentCard'
+
+/** Ruled section header: icon + title + count badge + a colored accent underline. */
+function SectionHeader({ icon: Icon, title, count, iconClass, iconGrad, badgeClass, sub = false }: { icon: LucideIcon; title: string; count: number; iconClass: string; iconGrad: string; badgeClass: string; sub?: boolean }) {
+  return (
+    <div className="mb-5">
+      <div className="flex items-center gap-2.5">
+        <div className={`flex-shrink-0 ${sub ? 'w-7 h-7' : 'w-8 h-8'} rounded-lg flex items-center justify-center bg-gradient-to-br ${iconGrad}`}>
+          <Icon className={`${sub ? 'w-3.5 h-3.5' : 'w-4 h-4'} ${iconClass}`} />
+        </div>
+        <h3 className={`font-bold tracking-tight ${sub ? 'text-lg' : 'text-xl md:text-2xl'} ${iconClass}`}>
+          {title}
+        </h3>
+        <Badge variant="secondary" className={`text-xs ${badgeClass}`}>{count}</Badge>
+      </div>
+      <div className={`mt-2 ml-1 h-0.5 w-12 rounded-full bg-gradient-to-r ${iconGrad}`} />
+    </div>
+  )
+}
+
+/** Single stats tile with a one-shot count-up animation on scroll-in. */
+function StatTile({ icon: Icon, count, label, accent, iconClass, iconGrad }: { icon: LucideIcon; count: number; label: string; accent: string; iconClass: string; iconGrad: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const mv = useMotionValue(0)
+  const [display, setDisplay] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    const controls = animate(mv, count, {
+      duration: 0.9,
+      ease: 'easeOut',
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [inView, count, mv])
+
+  return (
+    <div ref={ref} className="team-stat-tile group relative flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-border overflow-hidden">
+      {/* top accent gradient */}
+      <div className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${accent} opacity-70`} />
+      <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${iconGrad}`}>
+        <Icon className={`w-4 h-4 ${iconClass}`} />
+      </div>
+      <div className="min-w-0">
+        <div className="text-2xl font-bold tracking-tight tabular-nums leading-none">{display}</div>
+        <div className="text-xs font-medium text-muted-foreground mt-1.5">{label}</div>
+      </div>
+    </div>
+  )
+}
+
 export default function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [destFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -77,58 +129,12 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         {/* Member Stats Bar (team page: hideTitle is true) */}
         {hideTitle && (
           <motion.div variants={fadeInUp} className="mb-5">
-            <div className="bg-card rounded-xl border border-border/60 p-4 shadow-sm">
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/5 flex items-center justify-center">
-                    <Users className="w-4 h-4 text-violet-500/60" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold tracking-tight">{teachers.length + totalCurrent}</div>
-                    <div className="text-[10px] text-muted-foreground">Total Members</div>
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-border/60 hidden sm:block" />
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/5 flex items-center justify-center">
-                    <Briefcase className="w-4 h-4 text-violet-500/60" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold tracking-tight">{teachers.length}</div>
-                    <div className="text-[10px] text-muted-foreground">Teachers</div>
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-border/60 hidden sm:block" />
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/10 to-red-600/5 flex items-center justify-center">
-                    <GraduationCap className="w-4 h-4 text-red-500/60" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold tracking-tight">{phdStudents.length}</div>
-                    <div className="text-[10px] text-muted-foreground">Ph.D. Students</div>
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-border/60 hidden sm:block" />
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-emerald-500/60" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold tracking-tight">{masterStudents.length}</div>
-                    <div className="text-[10px] text-muted-foreground">Master Students</div>
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-border/60 hidden sm:block" />
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/10 to-amber-600/5 flex items-center justify-center">
-                    <Award className="w-4 h-4 text-amber-500/60" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold tracking-tight">{graduatedPhdStudents.length + graduatedMasterStudents.length}</div>
-                    <div className="text-[10px] text-muted-foreground">Alumni</div>
-                  </div>
-                </div>
-              </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <StatTile icon={Users} count={teachers.length + totalCurrent} label="Total Members" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={Briefcase} count={teachers.length} label="Teachers" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={GraduationCap} count={phdStudents.length} label="Ph.D. Students" accent="from-rose-500 to-rose-400" iconClass="text-red-800 dark:text-red-400" iconGrad="from-rose-500/15 to-rose-400/10" />
+              <StatTile icon={BookOpen} count={masterStudents.length} label="Master Students" accent="from-emerald-500 to-emerald-400" iconClass="text-emerald-600 dark:text-emerald-400" iconGrad="from-emerald-500/15 to-emerald-400/10" />
+              <StatTile icon={Award} count={graduatedPhdStudents.length + graduatedMasterStudents.length} label="Alumni" accent="from-amber-500 to-amber-400" iconClass="text-amber-600 dark:text-amber-400" iconGrad="from-amber-500/15 to-amber-400/10" />
             </div>
           </motion.div>
         )}
@@ -136,12 +142,8 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         {/* Teachers Section */}
         {teachers.length > 0 && (
           <motion.div variants={fadeInUp} className="mb-10" id="nav-teachers">
-            <div className="flex items-center gap-2.5 mb-5">
-              <Briefcase className="w-5 h-5 text-violet-600/70 dark:text-violet-400/70" />
-              <h3 className="text-lg font-semibold text-violet-700 dark:text-violet-400">Teachers</h3>
-              <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25">{teachers.length}</Badge>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <SectionHeader icon={Briefcase} title="Teachers" count={teachers.length} iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" badgeClass="bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {teachers.map((teacher) => (
                 <TeacherCard key={teacher.name} teacher={teacher} />
               ))}
@@ -169,11 +171,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
 
         {/* Ph.D. Students */}
         <motion.div variants={fadeInUp} className="mb-10" id="nav-phd">
-          <div className="flex items-center gap-2.5 mb-5">
-            <GraduationCap className="w-5 h-5 text-red-800/60 dark:text-red-400/60" />
-            <h3 className="text-lg font-semibold text-red-800 dark:text-red-400">Ph.D. Students</h3>
-            <Badge variant="secondary" className="text-xs bg-red-50 text-red-800 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25">{filteredPhd.length}</Badge>
-          </div>
+          <SectionHeader icon={GraduationCap} title="Ph.D. Students" count={filteredPhd.length} iconClass="text-red-800 dark:text-red-400" iconGrad="from-rose-500/15 to-rose-400/10" badgeClass="bg-red-50 text-red-800 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25" />
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredPhd.map((student) => (
               <StudentCard key={student.email} student={student} />
@@ -186,11 +184,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
 
         {/* Master Students */}
         <motion.div variants={fadeInUp} id="nav-master">
-          <div className="flex items-center gap-2.5 mb-5">
-            <BookOpen className="w-5 h-5 text-emerald-500/70" />
-            <h3 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Master Students</h3>
-            <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">{filteredMaster.length}</Badge>
-          </div>
+          <SectionHeader icon={BookOpen} title="Master Students" count={filteredMaster.length} iconClass="text-emerald-600 dark:text-emerald-400" iconGrad="from-emerald-500/15 to-emerald-400/10" badgeClass="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25" />
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredMaster.map((student) => (
               <StudentCard key={student.email} student={student} />
@@ -204,19 +198,11 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         {/* Alumni Section */}
         {graduatedTotal > 0 && (
           <motion.div variants={fadeInUp} className="mt-10 pt-8 border-t border-border/40" id="nav-alumni">
-            <div className="flex items-center gap-2.5 mb-5">
-              <Award className="w-5 h-5 text-amber-500/70" />
-              <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400">Alumni</h3>
-              <Badge variant="secondary" className="text-xs bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25">{graduatedTotal}</Badge>
-            </div>
+            <SectionHeader icon={Award} title="Alumni" count={graduatedTotal} iconClass="text-amber-600 dark:text-amber-400" iconGrad="from-amber-500/15 to-amber-400/10" badgeClass="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25" />
 
             {filteredGraduatedPhd.length > 0 && (
               <div className="mb-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <GraduationCap className="w-4 h-4 text-red-800/60 dark:text-red-400/60" />
-                  <h4 className="text-xl font-bold text-red-800 dark:text-red-400">Ph.D. Alumni</h4>
-                  <span className="text-xs text-muted-foreground">({filteredGraduatedPhd.length})</span>
-                </div>
+                <SectionHeader sub icon={GraduationCap} title="Ph.D. Alumni" count={filteredGraduatedPhd.length} iconClass="text-red-800 dark:text-red-400" iconGrad="from-rose-500/15 to-rose-400/10" badgeClass="bg-red-50 text-red-800 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                   {filteredGraduatedPhd.map((student) => (
                     <StudentCard key={student.email} student={student} />
@@ -227,11 +213,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
 
             {filteredGraduatedMaster.length > 0 && (
               <div className="mb-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <BookOpen className="w-4 h-4 text-emerald-500/60" />
-                  <h4 className="text-xl font-bold text-emerald-600 dark:text-emerald-400">Master Alumni</h4>
-                  <span className="text-xs text-muted-foreground">({filteredGraduatedMaster.length})</span>
-                </div>
+                <SectionHeader sub icon={BookOpen} title="Master Alumni" count={filteredGraduatedMaster.length} iconClass="text-emerald-600 dark:text-emerald-400" iconGrad="from-emerald-500/15 to-emerald-400/10" badgeClass="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25" />
 
                 <div className="relative">
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -252,11 +234,14 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
                       <div className="relative pointer-events-auto pb-6">
                         <button
                           onClick={() => setAlumniExpanded(true)}
-                          className="group flex flex-col items-center gap-1.5 px-6 py-3 rounded-2xl bg-card/90 border border-border/60 shadow-lg backdrop-blur-md hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+                          className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-card/90 border border-border/60 shadow-lg backdrop-blur-md hover:shadow-xl hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-300"
                         >
                           <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors animate-bounce" />
-                          <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                            Show All {filteredGraduatedMaster.length} Alumni
+                          <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                            Show All
+                          </span>
+                          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums transition-colors group-hover:bg-primary/15">
+                            {filteredGraduatedMaster.length}
                           </span>
                         </button>
                       </div>
