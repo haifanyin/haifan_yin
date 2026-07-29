@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Award, BookOpen, Briefcase, GraduationCap, Search, Users, X } from 'lucide-react'
+import { Award, BookOpen, Briefcase, ChevronDown, GraduationCap, Search, Users, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from '@/lib/data'
@@ -15,6 +15,8 @@ import StudentCard from '@/components/team/StudentCard'
 export default function StudentsSection({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [destFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [alumniExpanded, setAlumniExpanded] = useState(false)
+  const INITIAL_ALUMNI = 6
 
   // Sort helpers: primary by date desc, secondary by name pinyin when dates equal
   const sortByEnrollDesc = (a: Student, b: Student) => (b.enrollDate || '').localeCompare(a.enrollDate || '') || (a.nameCn || '').localeCompare(b.nameCn || '', 'zh')
@@ -133,13 +135,13 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
 
         {/* Teachers Section */}
         {teachers.length > 0 && (
-          <motion.div variants={fadeInUp} className="mb-10">
+          <motion.div variants={fadeInUp} className="mb-10" id="nav-teachers">
             <div className="flex items-center gap-2.5 mb-5">
               <Briefcase className="w-5 h-5 text-violet-600/70 dark:text-violet-400/70" />
               <h3 className="text-lg font-semibold text-violet-700 dark:text-violet-400">Teachers</h3>
               <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25">{teachers.length}</Badge>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {teachers.map((teacher) => (
                 <TeacherCard key={teacher.name} teacher={teacher} />
               ))}
@@ -166,13 +168,13 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         </motion.div>
 
         {/* Ph.D. Students */}
-        <motion.div variants={fadeInUp} className="mb-10">
+        <motion.div variants={fadeInUp} className="mb-10" id="nav-phd">
           <div className="flex items-center gap-2.5 mb-5">
             <GraduationCap className="w-5 h-5 text-red-800/60 dark:text-red-400/60" />
             <h3 className="text-lg font-semibold text-red-800 dark:text-red-400">Ph.D. Students</h3>
             <Badge variant="secondary" className="text-xs bg-red-50 text-red-800 border-red-200 dark:bg-red-900/15 dark:text-red-400 dark:border-red-800/25">{filteredPhd.length}</Badge>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredPhd.map((student) => (
               <StudentCard key={student.email} student={student} />
             ))}
@@ -183,13 +185,13 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         </motion.div>
 
         {/* Master Students */}
-        <motion.div variants={fadeInUp}>
+        <motion.div variants={fadeInUp} id="nav-master">
           <div className="flex items-center gap-2.5 mb-5">
             <BookOpen className="w-5 h-5 text-emerald-500/70" />
             <h3 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">Master Students</h3>
             <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25">{filteredMaster.length}</Badge>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredMaster.map((student) => (
               <StudentCard key={student.email} student={student} />
             ))}
@@ -201,7 +203,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
 
         {/* Alumni Section */}
         {graduatedTotal > 0 && (
-          <motion.div variants={fadeInUp} className="mt-10 pt-8 border-t border-border/40">
+          <motion.div variants={fadeInUp} className="mt-10 pt-8 border-t border-border/40" id="nav-alumni">
             <div className="flex items-center gap-2.5 mb-5">
               <Award className="w-5 h-5 text-amber-500/70" />
               <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400">Alumni</h3>
@@ -215,13 +217,14 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
                   <h4 className="text-xl font-bold text-red-800 dark:text-red-400">Ph.D. Alumni</h4>
                   <span className="text-xs text-muted-foreground">({filteredGraduatedPhd.length})</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                   {filteredGraduatedPhd.map((student) => (
                     <StudentCard key={student.email} student={student} />
                   ))}
                 </div>
               </div>
             )}
+
             {filteredGraduatedMaster.length > 0 && (
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-4">
@@ -229,15 +232,38 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
                   <h4 className="text-xl font-bold text-emerald-600 dark:text-emerald-400">Master Alumni</h4>
                   <span className="text-xs text-muted-foreground">({filteredGraduatedMaster.length})</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {filteredGraduatedMaster.map((student) => (
-                    <StudentCard key={student.email} student={student} />
-                  ))}
+
+                <div className="relative">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {(alumniExpanded ? filteredGraduatedMaster : filteredGraduatedMaster.slice(0, INITIAL_ALUMNI)).map((student) => (
+                      <StudentCard key={student.email} student={student} />
+                    ))}
+                  </div>
+
+                  {/* Fade-out overlay + Reveal button */}
+                  {!alumniExpanded && filteredGraduatedMaster.length > INITIAL_ALUMNI && (
+                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-end pointer-events-none z-10">
+                      {/* Background gradient matching the page background — full height overlap */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-background from-10% via-background/85 via-40% to-transparent to-80%" />
+                      {/* Subtle blur for the "misty" effect */}
+                      <div className="absolute inset-x-0 bottom-0 h-48 backdrop-blur-[3px] [mask-image:linear-gradient(to_top,black_20%,transparent_80%)]" />
+
+                      {/* CTA Button */}
+                      <div className="relative pointer-events-auto pb-6">
+                        <button
+                          onClick={() => setAlumniExpanded(true)}
+                          className="group flex flex-col items-center gap-1.5 px-6 py-3 rounded-2xl bg-card/90 border border-border/60 shadow-lg backdrop-blur-md hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+                        >
+                          <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors animate-bounce" />
+                          <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                            Show All {filteredGraduatedMaster.length} Alumni
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-            {graduatedTotal === 0 && destFilter !== 'all' && (
-              <div className="text-center py-8 text-muted-foreground text-sm">No alumni match the selected destination.</div>
             )}
           </motion.div>
         )}

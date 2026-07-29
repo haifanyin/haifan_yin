@@ -158,8 +158,8 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
               )}
 
               {/* View Profile link */}
-              <div className="mt-3 pt-2 border-t border-border/30">
-                {student.profileUrl ? (
+              {student.profileUrl && (
+                <div className="mt-3 pt-2 border-t border-border/30">
                   <a
                     href={student.profileUrl}
                     target="_blank"
@@ -169,13 +169,8 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                     <ArrowRight className="w-3 h-3" />
                     View Profile
                   </a>
-                ) : (
-                  <span className="text-[11px] text-primary/50 font-medium flex items-center gap-1 cursor-default">
-                    <ArrowRight className="w-3 h-3" />
-                    View Profile
-                  </span>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>

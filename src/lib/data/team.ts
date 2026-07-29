@@ -85,6 +85,7 @@ export const phdStudents: Student[] = [
     enrollDate: "2021-09",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"'],
     researchTopics: ["Superdirective antenna theory", "Rydberg atomic receiver"],
+    profileUrl: "https://scholar.google.com/citations?user=Bc9tLzYAAAAJ",
   },
   {
     name: "Mengying Gao",
@@ -95,6 +96,7 @@ export const phdStudents: Student[] = [
     enrollDate: "2021-09",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"', "Merit Student", "Honours degrees"],
     researchTopics: ["Superdirective antenna theory", "Pinching antenna"],
+    profileUrl: "https://scholar.google.com/citations?user=iomogF8AAAAJ",
   },
   {
     name: "Jindiao Huang",
@@ -115,6 +117,7 @@ export const phdStudents: Student[] = [
     enrollDate: "2023-09",
     awards: ['National Scholarship (2025)'],
     researchTopics: ["Machine learning", "Array signal processing", "Superdirective antennas", "Fluid antennas"],
+    profileUrl: "https://scholar.google.com/citations?user=XQ8shNEAAAAJ",
   },
   {
     name: "Fanpo Fu",
@@ -254,6 +257,51 @@ export const masterStudents: Student[] = [
     enrollDate: "2024-09",
     researchTopics: ["Wireless LAN"],
   },
+  {
+    name: "Dexiang Hu",
+    nameCn: "胡德祥",
+    email: "3509895667@qq.com",
+    avatar: "/avatars/dexiang-hu.jpg",
+    degree: "master",
+    enrollDate: "2025-09",
+    researchTopics: ["Holographic communications"],
+  },
+  {
+    name: "Zichun Zhang",
+    nameCn: "章子淳",
+    email: "ZhangZichun_hust@outlook.com",
+    avatar: "/avatars/zichun-zhang.jpg",
+    degree: "master",
+    enrollDate: "2025-09",
+    researchTopics: ["Beam training"],
+  },
+  {
+    name: "Mengru Sun",
+    nameCn: "孙梦茹",
+    email: "msun@hust.edu.cn",
+    avatar: "/avatars/mengru-sun.jpg",
+    degree: "master",
+    enrollDate: "2024-09",
+    researchTopics: [],
+  },
+  {
+    name: "Chi Meng",
+    nameCn: "孟驰",
+    email: "1011354191@qq.com",
+    avatar: "/avatars/chi-meng.jpg",
+    degree: "master",
+    enrollDate: "2025-09",
+    researchTopics: ["Retrodirective antenna"],
+  },
+  {
+    name: "Jiayi Sun",
+    nameCn: "孙嘉谊",
+    email: "jiayisun@hust.edu.cn",
+    avatar: "/avatars/jiayi-sun.jpg",
+    degree: "master",
+    enrollDate: "2026-09",
+    researchTopics: ["Machine learning", "Signal processing"],
+  },
 ];
 
 export const graduatedPhdStudents: Student[] = [
@@ -360,6 +408,7 @@ export const graduatedMasterStudents: Student[] = [
     enrollDate: "2020-09",
     gradDate: "2023-06",
     researchTopics: ["RIS"],
+    profileUrl: "https://scholar.google.com/citations?user=SOD2McsAAAAJ",
   },
   {
     name: "Zhanpeng Li",
@@ -400,6 +449,7 @@ export const graduatedMasterStudents: Student[] = [
     coSupervised: "Li Tan",
     awards: ['Gold Award of the 7th "Internet+" Competition', 'National first prize of "Challenge Cup"', "The first prize of the Chinese Mathematics Competitions", "The first prize of Contemporary Undergraduate Mathematical Contest in Modeling in Hubei Province"],
     researchTopics: ["RIS"],
+    profileUrl: "https://scholar.google.com/citations?user=Xh53uxIAAAAJ",
   },
   {
     name: "Tao Wang",
@@ -466,7 +516,7 @@ export const graduatedMasterStudents: Student[] = [
     name: "Zixuan Xie",
     nameCn: "谢子轩",
     email: "1353523547@qq.com",
-    avatar: "/avatars/zixuan-xie.png",
+    avatar: "/avatars/zixuan-xie.jpg",
     degree: "master",
     graduated: true,
     destination: "Mindray",

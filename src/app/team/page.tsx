@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import PageHero from '@/components/layout/PageHero'
 import StudentsSection from '@/components/team/StudentsSection'
+import FloatingNav from '@/components/team/FloatingNav'
 import { professorInfo } from '@/lib/data'
 
 export default function TeamPage() {
@@ -36,6 +37,7 @@ export default function TeamPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <StudentsSection hideTitle />
       </div>
+      <FloatingNav />
     </main>
   )
 }

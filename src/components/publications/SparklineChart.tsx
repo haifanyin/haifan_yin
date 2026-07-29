@@ -1,12 +1,20 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 export default function SparklineChart({ yearDist, maxCount }: { yearDist: { year: string; count: number }[]; maxCount: number }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [tooltipX, setTooltipX] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect()
+      setTooltipX(e.clientX - rect.left)
+    }
+  }, [])
+
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative" onMouseMove={handleMouseMove}>
       <div className="flex items-center gap-0.5 h-9" aria-label="Publications by year mini chart">
         {yearDist.map((d, idx) => (
           <div
@@ -34,7 +42,10 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
       </div>
       {/* Hover tooltip */}
       {hoveredIndex !== null && yearDist[hoveredIndex] && (
-        <div className="absolute -top-1 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div
+          className="absolute -top-1 z-20 pointer-events-none"
+          style={{ left: `${Math.min(Math.max(tooltipX, 0), (containerRef.current?.offsetWidth || 0))}px`, transform: 'translateX(-50%)' }}
+        >
           <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
             <span className="tabular-nums">{yearDist[hoveredIndex].year}</span>
             <span className="w-px h-3 bg-background/30" />
