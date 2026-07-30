@@ -2,12 +2,97 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, useInView, useMotionValue, animate } from 'framer-motion'
+import type { LucideIcon } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Camera, ChevronLeft, ChevronRight, Globe, Maximize2, Sparkles, Trophy, Users as UsersIcon, X } from 'lucide-react'
+import { Camera, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Globe, Maximize2, Sparkles, Trophy, Users as UsersIcon, X } from 'lucide-react'
+import { fadeInUp, staggerItem } from '@/lib/constants'
+import SectionWrapper from '@/components/layout/SectionWrapper'
+
+// Number of photos shown per category before expand.
+const INITIAL = 4
+
+type Photo = { src: string; caption: string }
+type GalleryCategory = {
+  name: string
+  folder: string
+  icon: LucideIcon
+  accent: string
+  iconClass: string
+  iconGrad: string
+  badgeClass: string
+  photos: Photo[]
+}
+
+/** Ruled section header: icon + title + count badge + colored accent underline. (Local copy of Team pattern.) */
+function SectionHeader({ icon: Icon, title, count, iconClass, iconGrad, badgeClass, accent }: {
+  icon: LucideIcon
+  title: string
+  count: number
+  iconClass: string
+  iconGrad: string
+  badgeClass: string
+  accent: string
+}) {
+  return (
+    <div className="mb-5">
+      <div className="flex items-center gap-2.5">
+        <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br ${iconGrad}`}>
+          <Icon className={`w-4 h-4 ${iconClass}`} />
+        </div>
+        <h3 className="font-bold tracking-tight text-xl md:text-2xl text-foreground">
+          {title}
+        </h3>
+        <Badge variant="secondary" className={`text-xs ${badgeClass}`}>{count}</Badge>
+      </div>
+      <div className={`mt-2 ml-1 h-0.5 w-12 rounded-full bg-gradient-to-r ${accent}`} />
+    </div>
+  )
+}
+
+/** Single stats tile with a one-shot count-up animation on scroll-in. (Local copy of Team pattern.) */
+function StatTile({ icon: Icon, count, label, accent, iconClass, iconGrad }: {
+  icon: LucideIcon
+  count: number
+  label: string
+  accent: string
+  iconClass: string
+  iconGrad: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const mv = useMotionValue(0)
+  const [display, setDisplay] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    const controls = animate(mv, count, {
+      duration: 0.9,
+      ease: 'easeOut',
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [inView, count, mv])
+
+  return (
+    <div ref={ref} className="team-stat-tile group relative flex items-center gap-3 rounded-xl border border-border/60 bg-card p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-border overflow-hidden">
+      <div className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${accent} opacity-70`} />
+      <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${iconGrad}`}>
+        <Icon className={`w-4 h-4 ${iconClass}`} />
+      </div>
+      <div className="min-w-0">
+        <div className="text-2xl font-bold tracking-tight tabular-nums leading-none">{display}</div>
+        <div className="text-xs font-medium text-muted-foreground mt-1.5">{label}</div>
+      </div>
+    </div>
+  )
+}
+
 export default function GalleryPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<{ category: string; index: number } | null>(null)
+  // Per-category visible count, keyed by category folder name. Falls back to INITIAL.
+  const [visibleCount, setVisibleCount] = useState<Record<string, number>>({})
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
 
@@ -15,60 +100,74 @@ export default function GalleryPage() {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
 
-  // Gallery data - organized by 4 categories
-  const galleryCategories = useMemo(() => [
+  // Gallery data — organized by 4 categories, each with its own color identity.
+  const galleryCategories = useMemo<GalleryCategory[]>(() => [
     {
       name: 'Awards',
       folder: 'awards',
       icon: Trophy,
-      color: 'from-amber-500 to-orange-600',
+      accent: 'from-amber-600 to-amber-400',
+      iconClass: 'text-amber-700 dark:text-amber-400',
+      iconGrad: 'from-amber-500/15 to-amber-400/10',
+      badgeClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25',
       photos: [
         { src: '/gallery/awards/2024-rice prize.png', caption: 'Rice Prize (2024)' },
         { src: '/gallery/awards/2024-09-Speech on the May 4th Youth Medal.jpg', caption: 'Speech on the May 4th Youth Medal (2024.09)' },
-      ]
+      ],
     },
     {
       name: 'Conference Attendance',
       folder: 'conference attendance',
       icon: Globe,
-      color: 'from-blue-500 to-cyan-600',
+      accent: 'from-blue-600 to-blue-400',
+      iconClass: 'text-blue-700 dark:text-blue-400',
+      iconGrad: 'from-blue-500/15 to-blue-400/10',
+      badgeClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25',
       photos: [
         { src: '/gallery/conference attendance/2024-11-the 3rd RIS forum.jpg', caption: 'The 3rd RIS Forum (2024.11)' },
-      ]
+      ],
     },
     {
       name: 'Team Events',
       folder: 'team events',
       icon: UsersIcon,
-      color: 'from-violet-500 to-purple-600',
+      accent: 'from-violet-600 to-violet-400',
+      iconClass: 'text-violet-700 dark:text-violet-400',
+      iconGrad: 'from-violet-500/15 to-violet-400/10',
+      badgeClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
       photos: [
-        { src: '/gallery/team events/2025-11-Rongguang Song\'s defence.jpg', caption: "Rongguang Song's Defence (2025.11)" },
-        { src: '/gallery/team events/2025-09-teacher\'s day.jpg', caption: "Teacher's Day (2025.09)" },
-        { src: '/gallery/team events/2025-08-Weidong Li\'s defence.jpg', caption: "Weidong Li's Defence (2025.08)" },
-        { src: '/gallery/team events/2024-09-teacher\'s day 2.jpg', caption: "Teacher's Day Celebration (2024.09)" },
-        { src: '/gallery/team events/2024-09-teacher\'s day.jpg', caption: "Teacher's Day (2024.09)" },
+        { src: "/gallery/team events/2025-11-Rongguang Song's defence.jpg", caption: "Rongguang Song's Defence (2025.11)" },
+        { src: "/gallery/team events/2025-09-teacher's day.jpg", caption: "Teacher's Day (2025.09)" },
+        { src: "/gallery/team events/2025-08-Weidong Li's defence.jpg", caption: "Weidong Li's Defence (2025.08)" },
+        { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day Celebration (2024.09)" },
+        { src: "/gallery/team events/2024-09-teacher's day.jpg", caption: "Teacher's Day (2024.09)" },
         { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation Ceremony (2024.06)' },
         { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation (2024.06)' },
-        { src: '/gallery/team events/2024-05-Ziao Qin\'s defence.jpg', caption: "Ziao Qin's Defence (2024.05)" },
-      ]
+        { src: "/gallery/team events/2024-05-Ziao Qin's defence.jpg", caption: "Ziao Qin's Defence (2024.05)" },
+      ],
     },
     {
       name: 'Team Activities',
       folder: 'team activities',
       icon: Sparkles,
-      color: 'from-emerald-500 to-teal-600',
+      accent: 'from-emerald-600 to-emerald-400',
+      iconClass: 'text-emerald-700 dark:text-emerald-400',
+      iconGrad: 'from-emerald-500/15 to-emerald-400/10',
+      badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25',
       photos: [
         { src: '/gallery/team activities/2025-summer team activity.jpg', caption: 'Summer Team Activity (2025)' },
         { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match (2025.06)' },
         { src: '/gallery/team activities/2024-winter team activity.jpg', caption: 'Winter Team Activity (2024)' },
         { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match (2024.09)' },
-      ]
+      ],
     },
   ], [])
 
+  const totalPhotos = useMemo(() => galleryCategories.reduce((sum, c) => sum + c.photos.length, 0), [galleryCategories])
+
   // Flatten all photos for lightbox navigation
   const allPhotos = useMemo(() => {
-    const photos: { src: string; caption: string; category: string }[] = []
+    const photos: (Photo & { category: string })[] = []
     galleryCategories.forEach(cat => {
       cat.photos.forEach(photo => {
         photos.push({ ...photo, category: cat.name })
@@ -76,6 +175,8 @@ export default function GalleryPage() {
     })
     return photos
   }, [galleryCategories])
+
+  const getVisibleFor = useCallback((cat: string) => visibleCount[cat] ?? INITIAL, [visibleCount])
 
   // Get current photo index in flattened array
   const getCurrentPhotoIndex = useCallback(() => {
@@ -170,93 +271,128 @@ export default function GalleryPage() {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="mb-8"
-        >
-          <div className="flex items-center gap-2 flex-wrap">
-            <Camera className="w-4 h-4 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground font-medium">
-              {allPhotos.length} photos across {galleryCategories.length} categories
-            </span>
-          </div>
-        </motion.div>
+      <SectionWrapper id="gallery" className="dot-pattern !pt-4 md:!pt-6 !pb-6 md:!pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Member stats bar */}
+          <motion.div variants={fadeInUp} className="mb-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <StatTile icon={Camera} count={totalPhotos} label="Total Photos" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={Trophy} count={galleryCategories[0].photos.length} label="Awards" accent="from-amber-500 to-amber-400" iconClass="text-amber-700 dark:text-amber-400" iconGrad="from-amber-500/15 to-amber-400/10" />
+              <StatTile icon={Globe} count={galleryCategories[1].photos.length} label="Conferences" accent="from-blue-500 to-blue-400" iconClass="text-blue-700 dark:text-blue-400" iconGrad="from-blue-500/15 to-blue-400/10" />
+              <StatTile icon={UsersIcon} count={galleryCategories[2].photos.length} label="Team Events" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={Sparkles} count={galleryCategories[3].photos.length} label="Activities" accent="from-emerald-500 to-emerald-400" iconClass="text-emerald-700 dark:text-emerald-400" iconGrad="from-emerald-500/15 to-emerald-400/10" />
+            </div>
+          </motion.div>
 
-        {/* 4 Categories - Stacked Vertically */}
-        <div className="space-y-12">
-          {galleryCategories.map((category, catIdx) => (
-            <motion.section
-              key={category.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: catIdx * 0.15 }}
-              className="scroll-mt-24"
-            >
-              {/* Category Header */}
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/60">
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-md`}>
-                  <category.icon className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-foreground">{category.name}</h2>
-                  <p className="text-xs text-muted-foreground">{category.photos.length} photos</p>
-                </div>
-              </div>
+          {/* 4 Categories — stacked vertically */}
+          <div className="space-y-8">
+            {galleryCategories.map((category, catIdx) => {
+              const visible = getVisibleFor(category.folder)
+              const shown = category.photos.slice(0, visible)
+              const remaining = category.photos.length - visible
+              const fullyExpanded = remaining <= 0
 
-              {/* Photos Grid - Responsive */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {category.photos.map((photo, photoIdx) => (
-                  <motion.div
-                    key={photo.src}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: catIdx * 0.1 + photoIdx * 0.05 }}
-                    className="group cursor-pointer"
-                    onClick={() => setSelectedPhoto({ category: category.name, index: photoIdx })}
-                  >
-                    <div className="relative rounded-xl overflow-hidden border border-border/60 hover:shadow-lg transition-all duration-300 hover:border-primary/30 aspect-[4/3]">
-                      <Image
-                        src={photo.src}
-                        alt={photo.caption}
-                        width={400}
-                        height={300}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {/* View icon overlay on hover */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                          <Maximize2 className="w-5 h-5 text-white" />
+              return (
+                <motion.section
+                  key={category.name}
+                  variants={fadeInUp}
+                  id={`nav-gallery-${catIdx}`}
+                  className="scroll-mt-24"
+                >
+                  <SectionHeader
+                    icon={category.icon}
+                    title={category.name}
+                    count={category.photos.length}
+                    accent={category.accent}
+                    iconClass={category.iconClass}
+                    iconGrad={category.iconGrad}
+                    badgeClass={category.badgeClass}
+                  />
+
+                  {/* Photos Grid — responsive */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {shown.map((photo, photoIdx) => (
+                      <motion.div
+                        key={photo.src}
+                        variants={staggerItem}
+                        className="group cursor-pointer"
+                        onClick={() => setSelectedPhoto({ category: category.name, index: photoIdx })}
+                      >
+                        <div className="relative rounded-xl overflow-hidden border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-border aspect-[4/3]">
+                          <Image
+                            src={photo.src}
+                            alt={photo.caption}
+                            width={400}
+                            height={300}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          {/* View icon overlay on hover */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                              <Maximize2 className="w-5 h-5 text-white" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                        {/* Caption */}
+                        <p className="mt-2.5 text-sm font-medium text-foreground line-clamp-2">{photo.caption}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Show More / Show Less */}
+                  {category.photos.length > INITIAL && (
+                    <div className="mt-5 flex justify-center">
+                      <button
+                        onClick={() => {
+                          setVisibleCount(prev => {
+                            const cur = prev[category.folder] ?? INITIAL
+                            if (cur >= category.photos.length) {
+                              // fully expanded → collapse
+                              return { ...prev, [category.folder]: INITIAL }
+                            }
+                            // expand by another INITIAL chunk (clamp to total)
+                            return { ...prev, [category.folder]: Math.min(cur + INITIAL, category.photos.length) }
+                          })
+                        }}
+                        className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-card/90 border border-border/60 shadow-lg backdrop-blur-md hover:shadow-xl hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-300"
+                      >
+                        {fullyExpanded ? (
+                          <ChevronUp className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors animate-bounce" />
+                        )}
+                        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                          {fullyExpanded ? 'Show less' : 'Show more'}
+                        </span>
+                        {!fullyExpanded && (
+                          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-semibold tabular-nums transition-colors group-hover:bg-primary/15">
+                            {remaining}
+                          </span>
+                        )}
+                      </button>
                     </div>
-                    {/* Caption - Always Visible */}
-                    <p className="mt-2.5 text-sm font-medium text-foreground line-clamp-2">{photo.caption}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
-          ))}
+                  )}
+                </motion.section>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      </SectionWrapper>
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedPhoto !== null} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
         <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !max-h-screen !rounded-none !border-0 !p-0 bg-black/95 backdrop-blur-xl overflow-hidden" showCloseButton={false}>
           {selectedPhotoDetails && (
             <div className="absolute inset-0 flex flex-col">
-              {/* Close button - Fixed position */}
+              {/* Close button — Fixed position */}
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[100] w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[100] w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 border border-white/15 hover:shadow-lg flex items-center justify-center transition-all"
                 aria-label="Close"
               >
                 <X className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </button>
-              {/* Navigation arrows - Fixed position */}
+              {/* Navigation arrows — frosted */}
               <button
                 onClick={(e) => {
                   e.stopPropagation()
@@ -267,7 +403,7 @@ export default function GalleryPage() {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === prevPhoto.src)
                   setSelectedPhoto({ category: prevPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 border border-white/15 hover:shadow-lg flex items-center justify-center transition-all"
                 aria-label="Previous photo"
               >
                 <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -282,12 +418,12 @@ export default function GalleryPage() {
                   const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === nextPhoto.src)
                   setSelectedPhoto({ category: nextPhoto.category, index: photoIdxInCat })
                 }}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[100] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 border border-white/15 hover:shadow-lg flex items-center justify-center transition-all"
                 aria-label="Next photo"
               >
                 <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </button>
-              {/* Main Content - Click to close */}
+              {/* Main Content — click backdrop to close */}
               <div
                 className="absolute inset-0 flex flex-col cursor-pointer"
                 onClick={() => setSelectedPhoto(null)}
@@ -309,7 +445,7 @@ export default function GalleryPage() {
                     />
                   </div>
                 </div>
-                {/* Thumbnail Strip - Fixed at bottom */}
+                {/* Thumbnail Strip — Fixed at bottom */}
                 {allPhotos.length > 1 && (
                   <div
                     className="absolute bottom-12 sm:bottom-14 left-0 right-0 w-full px-2 sm:px-4 py-2 bg-gradient-to-t from-black/60 to-transparent"
@@ -330,9 +466,9 @@ export default function GalleryPage() {
                               const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
                               setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
                             }}
-                            className={`flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                            className={`flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-md overflow-hidden border-2 ring-1 ring-white/10 transition-all duration-200 ${
                               isActive
-                                ? 'border-white/80 opacity-100 scale-105'
+                                ? 'border-white/80 ring-white/40 opacity-100 scale-105'
                                 : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
                             }`}
                           >
@@ -349,9 +485,9 @@ export default function GalleryPage() {
                     </div>
                   </div>
                 )}
-                {/* Caption bar - Fixed at bottom */}
+                {/* Caption bar — gradient */}
                 <div
-                  className="absolute bottom-0 left-0 right-0 w-full py-2 px-3 sm:px-6 bg-black/40"
+                  className="absolute bottom-0 left-0 right-0 w-full py-2 px-3 sm:px-6 bg-gradient-to-t from-black/70 via-black/40 to-transparent"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex items-center justify-between gap-3">
