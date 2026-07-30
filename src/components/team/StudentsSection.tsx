@@ -118,7 +118,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
   const totalCurrent = useMemo(() => phdStudents.length + masterStudents.length, [])
 
   return (
-    <SectionWrapper id="students" className="dot-pattern pt-2 md:pt-2">
+    <SectionWrapper id="students" className="dot-pattern pt-2 md:pt-2 !pb-6 md:!pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!hideTitle && (
           <SectionTitle subtitle="Meet the talented researchers in our group">

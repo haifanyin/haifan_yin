@@ -451,37 +451,43 @@ export default function GalleryPage() {
                     className="absolute bottom-12 sm:bottom-14 left-0 right-0 w-full px-2 sm:px-4 py-2 bg-gradient-to-t from-black/60 to-transparent"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1 custom-scrollbar">
-                      {allPhotos.map((photo, idx) => {
+                    <div className="flex items-center justify-center gap-1 sm:gap-1.5 py-1 custom-scrollbar">
+                      {(() => {
+                        const THUMB_WINDOW = 5
                         const currentIdx = getCurrentPhotoIndex()
-                        const isActive = idx === currentIdx
-                        const isNeighbor = Math.abs(idx - currentIdx) <= 4
-                        if (!isActive && !isNeighbor && allPhotos.length > 10) return null
-                        return (
-                          <button
-                            key={`${photo.src}-${idx}`}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              const catIdx = galleryCategories.findIndex(c => c.name === photo.category)
-                              const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
-                              setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
-                            }}
-                            className={`flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-md overflow-hidden border-2 ring-1 ring-white/10 transition-all duration-200 ${
-                              isActive
-                                ? 'border-white/80 ring-white/40 opacity-100 scale-105'
-                                : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
-                            }`}
-                          >
-                            <Image
-                              src={photo.src}
-                              alt={photo.caption}
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-cover"
-                            />
-                          </button>
-                        )
-                      })}
+                        const total = allPhotos.length
+                        const maxStart = Math.max(0, total - THUMB_WINDOW)
+                        const windowStart = Math.min(Math.max(0, currentIdx - Math.floor(THUMB_WINDOW / 2)), maxStart)
+                        const windowEnd = Math.min(total, windowStart + THUMB_WINDOW)
+                        return allPhotos.slice(windowStart, windowEnd).map((photo, offset) => {
+                          const idx = windowStart + offset
+                          const isActive = idx === currentIdx
+                          return (
+                            <button
+                              key={`${photo.src}-${idx}`}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                const catIdx = galleryCategories.findIndex(c => c.name === photo.category)
+                                const photoIdxInCat = galleryCategories[catIdx].photos.findIndex(p => p.src === photo.src)
+                                setSelectedPhoto({ category: photo.category, index: photoIdxInCat })
+                              }}
+                              className={`flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-md overflow-hidden border-2 ring-1 ring-white/10 transition-all duration-200 ${
+                                isActive
+                                  ? 'border-white/80 ring-white/40 opacity-100 scale-105'
+                                  : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/50'
+                              }`}
+                            >
+                              <Image
+                                src={photo.src}
+                                alt={photo.caption}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                              />
+                            </button>
+                          )
+                        })
+                      })()}
                     </div>
                   </div>
                 )}

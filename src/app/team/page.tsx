@@ -10,37 +10,37 @@ export default function TeamPage() {
   return (
     <main>
       <PageHero page="team" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
-        <motion.div
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } }}
-          initial="hidden" animate="visible"
-          className="team-recruit-banner relative overflow-hidden rounded-xl border border-blue-200/60 dark:border-blue-800/30 bg-gradient-to-r from-blue-50 dark:from-blue-950/20 via-blue-100/50 dark:via-blue-900/10 to-blue-50/50 dark:to-blue-950/10 shadow-sm"
-        >
-          {/* Soft radial glow behind the icon */}
-          <div className="absolute left-14 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-blue-400/15 dark:bg-blue-500/10 blur-2xl pointer-events-none" aria-hidden="true" />
-          {/* Dotted texture overlay */}
-          <div className="absolute inset-0 opacity-[0.5] dark:opacity-[0.6] team-banner-dots pointer-events-none" aria-hidden="true" />
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-600 to-blue-400 rounded-r-full" />
-          <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 pl-6 sm:pl-7">
-            <div className="flex items-start gap-4 flex-1 min-w-0">
-              <div className="relative flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-800/10 flex items-center justify-center ring-1 ring-blue-300/30 dark:ring-blue-700/30">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-blue-600 dark:text-blue-400"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <div className="dot-pattern pt-6 md:pt-6 pb-2 md:pb-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } }}
+            initial="hidden" animate="visible"
+            className="team-recruit-banner relative overflow-hidden rounded-xl border border-blue-200/60 dark:border-blue-800/30 bg-gradient-to-r from-blue-50 dark:from-blue-950 via-blue-100 dark:via-blue-900 to-blue-50 dark:to-blue-950 shadow-sm"
+          >
+            {/* Soft radial glow behind the icon */}
+            <div className="absolute left-14 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-blue-400/15 dark:bg-blue-500/10 blur-2xl pointer-events-none" aria-hidden="true" />
+            {/* Dotted texture overlay */}
+            <div className="absolute inset-0 opacity-[0.5] dark:opacity-[0.6] team-banner-dots pointer-events-none" aria-hidden="true" />
+            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-600 to-blue-400 rounded-r-full" />
+            <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 pl-6 sm:pl-7">
+              <div className="flex items-start gap-4 flex-1 min-w-0">
+                <div className="relative flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-800/10 flex items-center justify-center ring-1 ring-blue-300/30 dark:ring-blue-700/30">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-blue-600 dark:text-blue-400"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <div className="space-y-1.5 min-w-0">
+                  <p className="text-sm sm:text-base font-bold tracking-tight text-foreground leading-snug">We are actively recruiting self-motivated Ph.D. students, Master students, and Post-doc researchers!</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">Students from Mathematics, Physics, Optoelectronics and other disciplines are highly encouraged to apply.</p>
+                </div>
               </div>
-              <div className="space-y-1.5 min-w-0">
-                <p className="text-sm sm:text-base font-bold tracking-tight text-foreground leading-snug">We are actively recruiting self-motivated Ph.D. students, Master students, and Post-doc researchers!</p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">Students from Mathematics, Physics, Optoelectronics and other disciplines are highly encouraged to apply.</p>
-              </div>
+              <a href={`mailto:${professorInfo.email}`} className="team-recruit-cta group flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-[0_8px_24px_-6px_rgba(37,99,235,0.5)] hover:-translate-y-0.5">
+                Contact Us
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
             </div>
-            <a href={`mailto:${professorInfo.email}`} className="team-recruit-cta group flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-[0_8px_24px_-6px_rgba(37,99,235,0.5)] hover:-translate-y-0.5">
-              Contact Us
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
-      <div className="max-w-7xl mx-auto">
-        <StudentsSection hideTitle />
-      </div>
+      <StudentsSection hideTitle />
       <FloatingNav />
     </main>
   )
