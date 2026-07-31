@@ -221,20 +221,18 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
 
         <motion.div variants={fadeInUp} className="min-w-0">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="min-w-0">
-            <div className="w-full min-w-0 overflow-x-auto overscroll-x-contain pb-1 -mx-0.5 px-0.5 sm:mx-0 sm:px-0">
-              <TabsList className="mb-6 w-max min-w-full justify-between sm:w-fit sm:min-w-0 sm:justify-center">
+            <TabsList className="mb-4 w-fit mx-auto">
               <TabsTrigger value="journal" className="gap-1.5">
                 <BookOpen className="w-4 h-4" />
-                Journal Papers
+                <span className="hidden sm:inline">Journal Papers</span>
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredJournals.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="conference" className="gap-1.5">
                 <FileText className="w-4 h-4" />
-                Conference Papers
+                <span className="hidden sm:inline">Conference Papers</span>
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredConferences.length}</Badge>
               </TabsTrigger>
             </TabsList>
-            </div>
 
             <TabsContent value="journal">
               <div className="bg-card rounded-xl border border-border/60 overflow-hidden shadow-sm">
