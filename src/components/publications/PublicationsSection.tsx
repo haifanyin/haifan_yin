@@ -224,11 +224,13 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
             <TabsList className="mb-4 w-fit mx-auto">
               <TabsTrigger value="journal" className="gap-1.5">
                 <BookOpen className="w-4 h-4" />
+                <span className="sm:hidden">Journal</span>
                 <span className="hidden sm:inline">Journal Papers</span>
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredJournals.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="conference" className="gap-1.5">
                 <FileText className="w-4 h-4" />
+                <span className="sm:hidden">Conference</span>
                 <span className="hidden sm:inline">Conference Papers</span>
                 <Badge variant="secondary" className="ml-1 text-xs">{filteredConferences.length}</Badge>
               </TabsTrigger>
