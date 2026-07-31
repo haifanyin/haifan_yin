@@ -13,7 +13,23 @@ import SectionWrapper from '@/components/layout/SectionWrapper'
 // Number of photos shown per category before expand.
 const INITIAL = 4
 
-type Photo = { src: string; caption: string }
+type Photo = { src: string; caption: string; year?: number; month?: number }
+
+/** Format photo caption for alt text: "Title (2024-09)" or "Title (2024)". */
+function formatCaption(p: Photo): string {
+  if (p.year == null) return p.caption
+  if (p.month != null) {
+    return `${p.caption} (${p.year}-${String(p.month).padStart(2, '0')})`
+  }
+  return `${p.caption} (${p.year})`
+}
+
+/** Return a short date label string for the visual badge, e.g. "2024-09" or "2024". */
+function formatDateLabel(p: Photo): string | null {
+  if (p.year == null) return null
+  if (p.month != null) return `${p.year}-${String(p.month).padStart(2, '0')}`
+  return `${p.year}`
+}
 type GalleryCategory = {
   name: string
   folder: string
@@ -101,67 +117,80 @@ export default function GalleryPage() {
   }, [])
 
   // Gallery data — organized by 4 categories, each with its own color identity.
-  const galleryCategories = useMemo<GalleryCategory[]>(() => [
-    {
-      name: 'Awards',
-      folder: 'awards',
-      icon: Trophy,
-      accent: 'from-amber-600 to-amber-400',
-      iconClass: 'text-amber-700 dark:text-amber-400',
-      iconGrad: 'from-amber-500/15 to-amber-400/10',
-      badgeClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25',
-      photos: [
-        { src: '/gallery/awards/2024-rice prize.png', caption: 'Rice Prize (2024)' },
-        { src: '/gallery/awards/2024-09-Speech on the May 4th Youth Medal.jpg', caption: 'Speech on the May 4th Youth Medal (2024.09)' },
-      ],
-    },
-    {
-      name: 'Conference Attendance',
-      folder: 'conference attendance',
-      icon: Globe,
-      accent: 'from-blue-600 to-blue-400',
-      iconClass: 'text-blue-700 dark:text-blue-400',
-      iconGrad: 'from-blue-500/15 to-blue-400/10',
-      badgeClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25',
-      photos: [
-        { src: '/gallery/conference attendance/2024-11-the 3rd RIS forum.jpg', caption: 'The 3rd RIS Forum (2024.11)' },
-      ],
-    },
-    {
-      name: 'Team Events',
-      folder: 'team events',
-      icon: UsersIcon,
-      accent: 'from-violet-600 to-violet-400',
-      iconClass: 'text-violet-700 dark:text-violet-400',
-      iconGrad: 'from-violet-500/15 to-violet-400/10',
-      badgeClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
-      photos: [
-        { src: "/gallery/team events/2025-11-Rongguang Song's defence.jpg", caption: "Rongguang Song's Defence (2025.11)" },
-        { src: "/gallery/team events/2025-09-teacher's day.jpg", caption: "Teacher's Day (2025.09)" },
-        { src: "/gallery/team events/2025-08-Weidong Li's defence.jpg", caption: "Weidong Li's Defence (2025.08)" },
-        { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day Celebration (2024.09)" },
-        { src: "/gallery/team events/2024-09-teacher's day.jpg", caption: "Teacher's Day (2024.09)" },
-        { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation Ceremony (2024.06)' },
-        { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation (2024.06)' },
-        { src: "/gallery/team events/2024-05-Ziao Qin's defence.jpg", caption: "Ziao Qin's Defence (2024.05)" },
-      ],
-    },
-    {
-      name: 'Team Activities',
-      folder: 'team activities',
-      icon: Sparkles,
-      accent: 'from-emerald-600 to-emerald-400',
-      iconClass: 'text-emerald-700 dark:text-emerald-400',
-      iconGrad: 'from-emerald-500/15 to-emerald-400/10',
-      badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25',
-      photos: [
-        { src: '/gallery/team activities/2025-summer team activity.jpg', caption: 'Summer Team Activity (2025)' },
-        { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match (2025.06)' },
-        { src: '/gallery/team activities/2024-winter team activity.jpg', caption: 'Winter Team Activity (2024)' },
-        { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match (2024.09)' },
-      ],
-    },
-  ], [])
+  const galleryCategories = useMemo<GalleryCategory[]>(() => {
+    const sortByDateDesc = (a: Photo, b: Photo) => {
+      const ya = a.year ?? 0, yb = b.year ?? 0
+      if (ya !== yb) return yb - ya  // year descending
+      const ma = a.month ?? 0, mb = b.month ?? 0
+      return mb - ma  // month descending
+    }
+    const cats: GalleryCategory[] = [
+      {
+        name: 'Awards',
+        folder: 'awards',
+        icon: Trophy,
+        accent: 'from-amber-600 to-amber-400',
+        iconClass: 'text-amber-700 dark:text-amber-400',
+        iconGrad: 'from-amber-500/15 to-amber-400/10',
+        badgeClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/15 dark:text-amber-400 dark:border-amber-800/25',
+        photos: [
+          { src: '/gallery/awards/2025-09-Address at the Undergraduate Opening Ceremony.jpg', caption: 'Address at the Undergraduate Opening Ceremony', year: 2025, month: 9 },
+          { src: '/gallery/awards/2024-07-Rice Prize.jpg', caption: 'Rice Prize', year: 2024, month: 7 },
+          { src: '/gallery/awards/2024-04-China Youth May Fourth Medal Award Ceremony.jpg', caption: 'China Youth May Fourth Medal Award Ceremony', year: 2024, month: 4 },
+        ],
+      },
+      {
+        name: 'Conference Attendance',
+        folder: 'conference attendance',
+        icon: Globe,
+        accent: 'from-blue-600 to-blue-400',
+        iconClass: 'text-blue-700 dark:text-blue-400',
+        iconGrad: 'from-blue-500/15 to-blue-400/10',
+        badgeClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25',
+        photos: [
+          { src: '/gallery/conference attendance/2024-11-The 3rd RIS Forum.jpg', caption: 'The 3rd RIS Forum', year: 2024, month: 11 },
+        ],
+      },
+      {
+        name: 'Team Events',
+        folder: 'team events',
+        icon: UsersIcon,
+        accent: 'from-violet-600 to-violet-400',
+        iconClass: 'text-violet-700 dark:text-violet-400',
+        iconGrad: 'from-violet-500/15 to-violet-400/10',
+        badgeClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
+        photos: [
+          { src: "/gallery/team events/2025-11-Rongguang Song's defence.jpg", caption: "Rongguang Song's Defence", year: 2025, month: 11 },
+          { src: "/gallery/team events/2025-09-teacher's day.jpg", caption: "Teacher's Day", year: 2025, month: 9 },
+          { src: "/gallery/team events/2025-08-Weidong Li's defence.jpg", caption: "Weidong Li's Defence", year: 2025, month: 8 },
+          { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day Celebration", year: 2024, month: 9 },
+          { src: "/gallery/team events/2024-09-teacher's day.jpg", caption: "Teacher's Day", year: 2024, month: 9 },
+          { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation', year: 2024, month: 6 },
+          { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation', year: 2024, month: 6 },
+          { src: "/gallery/team events/2024-05-Ziao Qin's defence.jpg", caption: "Ziao Qin's Defence", year: 2024, month: 5 },
+        ],
+      },
+      {
+        name: 'Team Activities',
+        folder: 'team activities',
+        icon: Sparkles,
+        accent: 'from-emerald-600 to-emerald-400',
+        iconClass: 'text-emerald-700 dark:text-emerald-400',
+        iconGrad: 'from-emerald-500/15 to-emerald-400/10',
+        badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/15 dark:text-emerald-400 dark:border-emerald-800/25',
+        photos: [
+          { src: '/gallery/team activities/2025-06-summer team activity.jpg', caption: 'Summer Team Activity', year: 2025, month: 6 },
+          { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match', year: 2025, month: 6 },
+          { src: '/gallery/team activities/2025-01-winter team activity.jpg', caption: 'Winter Team Activity', year: 2025, month: 1 },
+          { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match', year: 2024, month: 9 },
+        ],
+      },
+    ]
+    return cats.map(cat => ({
+      ...cat,
+      photos: [...cat.photos].sort(sortByDateDesc),
+    }))
+  }, [])
 
   const totalPhotos = useMemo(() => galleryCategories.reduce((sum, c) => sum + c.photos.length, 0), [galleryCategories])
 
@@ -321,7 +350,7 @@ export default function GalleryPage() {
                         <div className="relative rounded-xl overflow-hidden border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-border aspect-[4/3]">
                           <Image
                             src={photo.src}
-                            alt={photo.caption}
+                            alt={formatCaption(photo)}
                             width={400}
                             height={300}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -334,7 +363,14 @@ export default function GalleryPage() {
                           </div>
                         </div>
                         {/* Caption */}
-                        <p className="mt-2.5 text-sm font-medium text-foreground line-clamp-2">{photo.caption}</p>
+                        <p className="mt-2.5 text-sm font-medium text-foreground line-clamp-2">
+                          {photo.caption}
+                          {photo.year != null && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium bg-muted/60 text-muted-foreground ml-1.5 align-middle leading-none">
+                              {formatDateLabel(photo)}
+                            </span>
+                          )}
+                        </p>
                       </motion.div>
                     ))}
                   </div>
@@ -439,7 +475,7 @@ export default function GalleryPage() {
                   <div className="w-full h-full flex items-center justify-center p-12 sm:p-16 pb-32">
                     <img
                       src={selectedPhotoDetails.src}
-                      alt={selectedPhotoDetails.caption}
+                      alt={formatCaption(selectedPhotoDetails)}
                       className="max-w-full max-h-full w-auto h-auto object-contain"
                       style={{ maxWidth: 'calc(100vw - 24px)', maxHeight: 'calc(100vh - 200px)' }}
                     />
@@ -479,7 +515,7 @@ export default function GalleryPage() {
                             >
                               <Image
                                 src={photo.src}
-                                alt={photo.caption}
+                                alt={formatCaption(photo)}
                                 width={64}
                                 height={64}
                                 className="w-full h-full object-cover"
@@ -498,7 +534,14 @@ export default function GalleryPage() {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-xs sm:text-sm font-medium truncate">{selectedPhotoDetails.caption}</p>
+                      <p className="text-white text-xs sm:text-sm font-medium truncate">
+                        {selectedPhotoDetails.caption}
+                        {selectedPhotoDetails.year != null && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-medium bg-white/15 text-white/80 ml-1.5 align-middle leading-none">
+                            {formatDateLabel(selectedPhotoDetails)}
+                          </span>
+                        )}
+                      </p>
                       <Badge variant="secondary" className="text-[9px] sm:text-[10px] mt-0.5 bg-white/10 text-white/70 border-white/10">
                         {selectedPhotoDetails.categoryName}
                       </Badge>
@@ -510,7 +553,7 @@ export default function GalleryPage() {
                 </div>
               </div>
               <DialogHeader className="sr-only">
-                <DialogTitle>{selectedPhotoDetails.caption}</DialogTitle>
+                <DialogTitle>{formatCaption(selectedPhotoDetails)}</DialogTitle>
               </DialogHeader>
             </div>
           )}
