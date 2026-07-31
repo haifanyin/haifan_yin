@@ -130,7 +130,7 @@ export default function StudentsSection({ hideTitle = false }: { hideTitle?: boo
         {hideTitle && (
           <motion.div variants={fadeInUp} className="mb-5">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              <StatTile icon={Users} count={teachers.length + totalCurrent} label="Total Members" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={Users} count={teachers.length + totalCurrent} label="Total Members" accent="from-blue-500 to-blue-400" iconClass="text-blue-700 dark:text-blue-400" iconGrad="from-blue-500/15 to-blue-400/10" />
               <StatTile icon={Briefcase} count={teachers.length} label="Teachers" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
               <StatTile icon={GraduationCap} count={phdStudents.length} label="Ph.D. Students" accent="from-rose-500 to-rose-400" iconClass="text-red-800 dark:text-red-400" iconGrad="from-rose-500/15 to-rose-400/10" />
               <StatTile icon={BookOpen} count={masterStudents.length} label="Master Students" accent="from-emerald-500 to-emerald-400" iconClass="text-emerald-600 dark:text-emerald-400" iconGrad="from-emerald-500/15 to-emerald-400/10" />

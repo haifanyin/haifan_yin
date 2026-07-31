@@ -15,7 +15,7 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
 
   return (
     <div ref={containerRef} className="relative" onMouseMove={handleMouseMove}>
-      <div className="flex items-center gap-0.5 h-9" aria-label="Publications by year mini chart">
+      <div className="flex items-end gap-0.5 h-16 lg:h-full min-h-[3rem]" aria-label="Publications by year mini chart">
         {yearDist.map((d, idx) => (
           <div
             key={d.year}
@@ -43,7 +43,7 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
       {/* Hover tooltip */}
       {hoveredIndex !== null && yearDist[hoveredIndex] && (
         <div
-          className="absolute -top-1 z-20 pointer-events-none"
+          className="absolute -top-5 z-20 pointer-events-none"
           style={{ left: `${Math.min(Math.max(tooltipX, 0), (containerRef.current?.offsetWidth || 0))}px`, transform: 'translateX(-50%)' }}
         >
           <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">

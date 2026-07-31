@@ -276,7 +276,7 @@ export default function GalleryPage() {
           {/* Member stats bar */}
           <motion.div variants={fadeInUp} className="mb-5">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              <StatTile icon={Camera} count={totalPhotos} label="Total Photos" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
+              <StatTile icon={Camera} count={totalPhotos} label="Total Photos" accent="from-red-500 to-red-400" iconClass="text-red-700 dark:text-red-400" iconGrad="from-red-500/15 to-red-400/10" />
               <StatTile icon={Trophy} count={galleryCategories[0].photos.length} label="Awards" accent="from-amber-500 to-amber-400" iconClass="text-amber-700 dark:text-amber-400" iconGrad="from-amber-500/15 to-amber-400/10" />
               <StatTile icon={Globe} count={galleryCategories[1].photos.length} label="Conferences" accent="from-blue-500 to-blue-400" iconClass="text-blue-700 dark:text-blue-400" iconGrad="from-blue-500/15 to-blue-400/10" />
               <StatTile icon={UsersIcon} count={galleryCategories[2].photos.length} label="Team Events" accent="from-violet-500 to-violet-400" iconClass="text-violet-700 dark:text-violet-400" iconGrad="from-violet-500/15 to-violet-400/10" />
