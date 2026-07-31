@@ -3,6 +3,15 @@ import type { Publication } from "@/types";
 // ==================== PUBLICATIONS ====================
 export const journalPapers: Publication[] = [
   {
+      authors: ['Liangcheng Han', 'Haifan Yin', 'Mérouane Debbah'],
+      title: 'Multi-Target DoA Estimation With a Single Rydberg Atomic Receiver by Spectral Analysis of Spatially Resolved Fluorescence',
+      journal: "IEEE Transactions on Communications",
+      volume: "74",
+      pages: "11741-11756",
+      year: 2026,
+      link: 'https://doi.org/10.1109/TCOMM.2026.3714300',
+  },
+  {
       authors: ['Kewei Zhu', 'Haifan Yin', 'Tao Wang', 'Deepak Mishra', 'Jinhong Yuan', 'Yuhao Zhang'],
       title: 'Movable Antenna-Based Phased Array: Beam Pattern Synthesis and Experimental Validations',
       journal: "IEEE Transactions on Communications",
@@ -330,6 +339,7 @@ export const journalPapers: Publication[] = [
       number: "12",
       pages: "8627-8640",
       year: 2021,
+      highlight: 'ESI Highly Cited Paper',
       link: 'https://doi.org/10.1109/TCOMM.2021.3116151',
   },
   {

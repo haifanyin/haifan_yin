@@ -155,6 +155,15 @@ export const phdStudents: Student[] = [
     enrollDate: "2024-09",
     researchTopics: ["Computing-in-memory"],
   },
+  {
+    name: "Jiayi Sun",
+    nameCn: "孙嘉谊",
+    email: "jiayisun@hust.edu.cn",
+    avatar: "/avatars/jiayi-sun.jpg",
+    degree: "phd",
+    enrollDate: "2026-09",
+    researchTopics: ["Machine learning", "Signal processing"],
+  },
 ];
 
 export const masterStudents: Student[] = [
@@ -292,15 +301,6 @@ export const masterStudents: Student[] = [
     degree: "master",
     enrollDate: "2025-09",
     researchTopics: ["Retrodirective antenna"],
-  },
-  {
-    name: "Jiayi Sun",
-    nameCn: "孙嘉谊",
-    email: "jiayisun@hust.edu.cn",
-    avatar: "/avatars/jiayi-sun.jpg",
-    degree: "master",
-    enrollDate: "2026-09",
-    researchTopics: ["Machine learning", "Signal processing"],
   },
 ];
 
