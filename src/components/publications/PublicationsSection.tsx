@@ -182,10 +182,10 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
               <div className="mt-4 pt-4 border-t border-border/40">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Users className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                  <span className="text-[11px] text-muted-foreground font-medium mr-1">Authors:</span>
+                  <span className="text-xs text-muted-foreground font-medium mr-1">Authors:</span>
                   <button
                     onClick={() => setAuthorFilter('all')}
-                    className={`px-2.5 py-1 text-[11px] rounded-md transition-all shrink-0 ${
+                    className={`px-2.5 py-1 text-xs rounded-md transition-all shrink-0 ${
                       authorFilter === 'all'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -197,14 +197,14 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
                     <button
                       key={author.name}
                       onClick={() => setAuthorFilter(author.name)}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-md transition-all shrink-0 ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md transition-all shrink-0 ${
                         authorFilter === author.name
                           ? 'bg-primary text-primary-foreground'
                           : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-foreground'
                       }`}
                     >
                       {author.name}
-                      <span className={`inline-flex items-center justify-center min-w-[18px] h-4 px-1.5 rounded-full text-[10px] font-medium ${
+                      <span className={`inline-flex items-center justify-center min-w-[18px] h-4 px-1.5 rounded-full text-[11px] font-medium ${
                         authorFilter === author.name
                           ? 'bg-primary-foreground/20 text-primary-foreground'
                           : 'bg-background text-muted-foreground border border-border/50'

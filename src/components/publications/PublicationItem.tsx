@@ -12,9 +12,11 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
   const [bibtexOpen, setBibtexOpen] = useState(false)
   const [bibtexCopied, setBibtexCopied] = useState(false)
   const [abstractOpen, setAbstractOpen] = useState(false)
-  const venueDisplay = pub.journal
-    ? `${pub.journal}, vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}`
-    : `${pub.booktitle}, pp. ${pub.pages}`
+  const venueName = pub.journal || pub.booktitle || ''
+  const venueDetails = pub.journal
+    ? `vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}`
+    : `pp. ${pub.pages}`
+  const venueDisplay = `${venueName}, ${venueDetails}`
   const citationText = `[${index + 1}] ${pub.authors.join(', ')}, \"${pub.title},\" ${venueDisplay}, ${pub.year}.`
   const bibtexText = generateBibTeX(pub)
   const highlightBadge = pub.highlight ? getHighlightBadge(pub.highlight) : null
@@ -47,7 +49,8 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
               return <span key={i} className="text-muted-foreground">{i > 0 ? ', ' : ''}{name}</span>
             })}
             , &ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
-            <em className="text-muted-foreground">{venueDisplay}, {pub.year}.</em>
+            <em className="text-muted-foreground">{venueName}</em>{', '}
+            <span className="text-muted-foreground">{pub.journal ? `${venueDetails}, ${pub.year}.` : `${pub.year}, ${venueDetails}.`}</span>
             {(() => { const badge = getVenueBadge(pub.journal || pub.booktitle || ''); return badge ? (
               <Badge variant="secondary" className={`text-[9px] px-1.5 py-0 rounded ml-1.5 align-middle border ${badge.colorClass}`}>{badge.label}</Badge>
             ) : null })()}

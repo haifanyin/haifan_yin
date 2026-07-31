@@ -148,7 +148,10 @@ export default function GalleryPage() {
         iconGrad: 'from-blue-500/15 to-blue-400/10',
         badgeClass: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/15 dark:text-blue-400 dark:border-blue-800/25',
         photos: [
-          { src: '/gallery/conference attendance/2024-11-The 3rd RIS Forum.jpg', caption: 'The 3rd RIS Forum', year: 2024, month: 11 },
+          { src: '/gallery/conference attendance/2026-05-2026 Conference on ICT Innovation and Frontiers.jpg', caption: '2026 Conference on ICT Innovation and Frontiers', year: 2026, month: 5 },
+          { src: '/gallery/conference attendance/2024-11-The 3rd RIS forum.jpg', caption: 'The 3rd RIS TECH Forum', year: 2024, month: 11 },
+          { src: '/gallery/conference attendance/2023-02-The 2nd RIS Forum.jpg', caption: 'The 2nd RIS TECH Forum', year: 2023, month: 2 },
+          { src: '/gallery/conference attendance/2021-09-The 1st RIS Forum.jpg', caption: 'The 1st RIS TECH Forum', year: 2021, month: 9 },
         ],
       },
       {
@@ -160,7 +163,10 @@ export default function GalleryPage() {
         iconGrad: 'from-violet-500/15 to-violet-400/10',
         badgeClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
         photos: [
+          { src: "/gallery/team events/2026-06-graduation.jpg", caption: "Graduation", year: 2026, month: 6 },
           { src: "/gallery/team events/2025-11-Rongguang Song's defence.jpg", caption: "Rongguang Song's Defence", year: 2025, month: 11 },
+          { src: "/gallery/team events/2022-09-teacher's day.jpg", caption: "Teacher's Day", year: 2022, month: 9 },
+          { src: '/gallery/team events/2022-06-graduation.jpg', caption: 'Graduation', year: 2022, month: 6 },
           { src: "/gallery/team events/2025-09-teacher's day.jpg", caption: "Teacher's Day", year: 2025, month: 9 },
           { src: "/gallery/team events/2025-08-Weidong Li's defence.jpg", caption: "Weidong Li's Defence", year: 2025, month: 8 },
           { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day Celebration", year: 2024, month: 9 },
@@ -183,6 +189,8 @@ export default function GalleryPage() {
           { src: '/gallery/team activities/2025-06-football match.jpg', caption: 'Football Match', year: 2025, month: 6 },
           { src: '/gallery/team activities/2025-01-winter team activity.jpg', caption: 'Winter Team Activity', year: 2025, month: 1 },
           { src: '/gallery/team activities/2024-09-football match.jpg', caption: 'Football Match', year: 2024, month: 9 },
+          { src: '/gallery/team activities/2022-05-summer team activity.jpg', caption: 'Summer Team Activity', year: 2022, month: 5 },
+          { src: '/gallery/team activities/2021-11-winter team activity.jpg', caption: 'Winter Team Activity', year: 2021, month: 11 },
         ],
       },
     ]
