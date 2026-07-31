@@ -31,20 +31,14 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
               }`}
               style={{ height: `${(d.count / maxCount) * 100}%` }}
             />
-            {/* Hover year label */}
-            {hoveredIndex === idx && (
-              <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-medium text-foreground tabular-nums whitespace-nowrap bg-card px-1.5 py-0.5 rounded shadow-sm border border-border/40">
-                {d.year}
-              </span>
-            )}
           </div>
         ))}
       </div>
       {/* Hover tooltip */}
       {hoveredIndex !== null && yearDist[hoveredIndex] && (
         <div
-          className="absolute -top-5 z-20 pointer-events-none"
-          style={{ left: `${Math.min(Math.max(tooltipX, 0), (containerRef.current?.offsetWidth || 0))}px`, transform: 'translateX(-50%)' }}
+          className="absolute top-1/2 z-20 pointer-events-none -translate-y-1/2"
+          style={{ left: `${Math.min(Math.max(tooltipX, 0), (containerRef.current?.offsetWidth || 0))}px`, transform: 'translate(-50%, -50%)' }}
         >
           <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
             <span className="tabular-nums">{yearDist[hoveredIndex].year}</span>
@@ -53,9 +47,17 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
           </div>
         </div>
       )}
-      <div className="flex justify-between mt-1.5">
-        <span className="text-[9px] text-muted-foreground/50 tabular-nums">{yearDist[0]?.year}</span>
-        <span className="text-[9px] text-muted-foreground/50 tabular-nums">{yearDist[yearDist.length - 1]?.year}</span>
+      <div className="flex items-end gap-0.5 mt-1.5">
+        {yearDist.map((d, idx) => (
+          <span
+            key={d.year}
+            className={`flex-1 text-center text-xs text-muted-foreground/60 tabular-nums leading-none ${
+              idx === 0 || idx === yearDist.length - 1 ? '' : 'invisible'
+            }`}
+          >
+            {d.year}
+          </span>
+        ))}
       </div>
     </div>
   )

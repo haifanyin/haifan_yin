@@ -11,7 +11,7 @@ export const teachers: Teacher[] = [
     department: "School of Electronic Information and Communications",
     education: "Ph.D. in Communication and Electronics, Telecom ParisTech, France",
     email: "yin@hust.edu.cn",
-    profileUrl: "https://faculty.hust.edu.cn/yin/zh_CN",
+    profileUrl: "http://faculty.hust.edu.cn/yin/zh_CN/index.htm",
     researchAreas: ["5G/6G networks", "Massive MIMO", "Signal processing", "Machine learning", "RIS"],
     awards: [
       "2024 IEEE Stephen O. Rice Prize",
@@ -32,7 +32,7 @@ export const teachers: Teacher[] = [
     subtitle: "Master's Supervisor",
     department: "School of Electronic Information and Communications",
     education: "Ph.D. in Communication and Information Systems, Huazhong University of Science and Technology, China",
-    profileUrl: "https://faculty.hust.edu.cn/tanli1/zh_CN/index/1732761/list/index.htm",
+    profileUrl: "http://faculty.hust.edu.cn/tanli1/zh_CN/index.htm",
     researchAreas: ["Wireless communications", "Antenna design", "RIS"],
     awards: [
       "2024 IEEE Communications Society Stephen O. Rice Prize",

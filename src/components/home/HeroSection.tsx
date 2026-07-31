@@ -56,10 +56,10 @@ export default function HeroSection() {
             </div>
 
             {/* Quick links */}
-            <div className="mt-6 flex flex-col gap-1.5 w-full max-w-[300px]">
+            <div className="mt-6 grid grid-cols-2 gap-1.5 w-full md:flex md:flex-col md:max-w-[300px]">
               <ContactDialog />
               {[
-                { icon: School, label: 'Google Scholar Profile', href: professorInfo.googleScholar, external: true },
+                { icon: School, label: 'Google Scholar', href: professorInfo.googleScholar, external: true },
                 { icon: FileText, label: 'IEEE Xplore', href: 'https://ieeexplore.ieee.org/author/38493026100', external: true },
                 { icon: Globe, label: 'Chinese Site', href: professorInfo.chineseSite.url, external: true },
               ].map((link, i) => (
