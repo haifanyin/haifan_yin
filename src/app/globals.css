@@ -822,33 +822,6 @@ html {
   }
 }
 
-/* ============ Command Palette ============ */
-.command-palette-results {
-  scrollbar-width: thin;
-  scrollbar-color: oklch(0.80 0.01 240) transparent;
-}
-
-.command-palette-results::-webkit-scrollbar {
-  width: 5px;
-}
-
-.command-palette-results::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.command-palette-results::-webkit-scrollbar-thumb {
-  background-color: oklch(0.80 0.01 240);
-  border-radius: 10px;
-}
-
-.dark .command-palette-results {
-  scrollbar-color: oklch(0.35 0.01 260) transparent;
-}
-
-.dark .command-palette-results::-webkit-scrollbar-thumb {
-  background-color: oklch(0.35 0.01 260);
-}
-
 /* ============ Card Shimmer Hover Effect ============ */
 .card-shimmer {
   position: relative;

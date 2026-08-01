@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { BookOpen, Download, FileText, Filter, Search, SortAsc, SortDesc, Users } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -22,7 +22,6 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
   const [authorFilter, setAuthorFilter] = useState<string>('all')
   const [sortDesc, setSortDesc] = useState(true)
   const [toastVisible, setToastVisible] = useState(false)
-  const searchRef = useRef<HTMLInputElement>(null)
 
   // Publication Summary Stats Bar (only on full page)
   const showStatsBar = fullPage
@@ -45,18 +44,6 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
       .sort((a, b) => b[1] - a[1])
       .slice(0, 6)
       .map(([name, count]) => ({ name, count }))
-  }, [])
-
-  // Cmd/Ctrl+K to focus search
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        searchRef.current?.focus()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
   }, [])
 
   const allYears = useMemo(() => {
@@ -125,15 +112,11 @@ export default function PublicationsSection({ fullPage = false, hideTitle = fals
                 <div className="relative w-full sm:w-1/3 min-w-[200px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    ref={searchRef}
                     placeholder="Search by title, author, venue..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9 pr-16 bg-background"
                   />
-                  <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground/60 bg-muted rounded border border-border/50">
-                    <span className="text-[9px]">⌘</span>K
-                  </kbd>
                 </div>
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />

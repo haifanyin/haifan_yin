@@ -116,7 +116,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2023-09",
     awards: ['National Scholarship (2025)'],
-    researchTopics: ["Machine learning", "Array signal processing", "Superdirective antennas", "Fluid antennas"],
+    researchTopics: ["Machine learning", "Superdirective antenna", "Fluid antenna"],
     profileUrl: "https://scholar.google.com/citations?user=XQ8shNEAAAAJ",
   },
   {
@@ -341,7 +341,7 @@ export const graduatedPhdStudents: Student[] = [
     enrollDate: "2020-09",
     gradDate: "2025-09",
     awards: ["National First Prize of National University Bio-networking Technology and Application \"Three Innovations\" Competition"],
-    researchTopics: ["Mobility of massive MIMO"],
+    researchTopics: ["Mobility of massive MIMO", "Fluid antenna"],
   },
 ];
 

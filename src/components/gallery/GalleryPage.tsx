@@ -171,7 +171,7 @@ export default function GalleryPage() {
           { src: '/gallery/team events/2022-06-graduation.jpg', caption: 'Graduation', year: 2022, month: 6 },
           { src: "/gallery/team events/2025-09-teacher's day.jpg", caption: "Teacher's Day", year: 2025, month: 9 },
           { src: "/gallery/team events/2025-08-Weidong Li's defence.jpg", caption: "Weidong Li's Defence", year: 2025, month: 8 },
-          { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day Celebration", year: 2024, month: 9 },
+          { src: "/gallery/team events/2024-09-teacher's day 2.jpg", caption: "Teacher's Day", year: 2024, month: 9 },
           { src: "/gallery/team events/2024-09-teacher's day.jpg", caption: "Teacher's Day", year: 2024, month: 9 },
           { src: '/gallery/team events/2024-06-graduation 2.jpg', caption: 'Graduation', year: 2024, month: 6 },
           { src: '/gallery/team events/2024-06-graduation.jpg', caption: 'Graduation', year: 2024, month: 6 },
@@ -494,7 +494,7 @@ export default function GalleryPage() {
                 {/* Thumbnail Strip — Fixed at bottom */}
                 {allPhotos.length > 1 && (
                   <div
-                    className="absolute bottom-12 sm:bottom-14 left-0 right-0 w-full px-2 sm:px-4 py-2 bg-gradient-to-t from-black/60 to-transparent"
+                    className="absolute bottom-8 sm:bottom-10 left-0 right-0 w-full px-2 sm:px-4 py-2 bg-gradient-to-t from-black/60 to-transparent"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="flex items-center justify-center gap-1 sm:gap-1.5 py-1 custom-scrollbar">
