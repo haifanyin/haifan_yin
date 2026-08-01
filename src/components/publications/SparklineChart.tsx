@@ -14,12 +14,12 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
   }, [])
 
   return (
-    <div ref={containerRef} className="relative" onMouseMove={handleMouseMove}>
-      <div className="flex items-end gap-0.5 h-16 lg:h-full min-h-[3rem]" aria-label="Publications by year mini chart">
+    <div ref={containerRef} className="relative w-full min-w-0" onMouseMove={handleMouseMove}>
+      <div className="flex items-end gap-0.5 h-16 lg:h-full min-h-[3rem] min-w-0" aria-label="Publications by year mini chart">
         {yearDist.map((d, idx) => (
           <div
             key={d.year}
-            className="flex-1 flex flex-col items-center justify-end h-full relative cursor-pointer"
+            className="flex-1 min-w-0 flex flex-col items-center justify-end h-full relative cursor-pointer"
             onMouseEnter={() => setHoveredIndex(idx)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
@@ -47,17 +47,11 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
           </div>
         </div>
       )}
-      <div className="flex items-end gap-0.5 mt-1.5">
-        {yearDist.map((d, idx) => (
-          <span
-            key={d.year}
-            className={`flex-1 text-center text-xs text-muted-foreground/60 tabular-nums leading-none ${
-              idx === 0 || idx === yearDist.length - 1 ? '' : 'invisible'
-            }`}
-          >
-            {d.year}
-          </span>
-        ))}
+      <div className="relative mt-1.5 h-3 text-xs text-muted-foreground/60 tabular-nums leading-none">
+        {yearDist[0] && <span className="absolute left-0 top-0 whitespace-nowrap">{yearDist[0].year}</span>}
+        {yearDist.length > 1 && (
+          <span className="absolute right-0 top-0 whitespace-nowrap">{yearDist[yearDist.length - 1].year}</span>
+        )}
       </div>
     </div>
   )

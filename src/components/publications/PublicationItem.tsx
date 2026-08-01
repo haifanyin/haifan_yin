@@ -117,7 +117,7 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
             )}
           </AnimatePresence>
         </div>
-        <div className="flex flex-col gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="publication-actions flex flex-col gap-1 flex-shrink-0 opacity-100 min-[1200px]:opacity-0 min-[1200px]:group-hover:opacity-100 transition-opacity">
           <button onClick={handleCopy} className="copy-btn p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent" title="Copy citation">
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
           </button>

@@ -150,6 +150,7 @@ export default function GalleryPage() {
         photos: [
           { src: '/gallery/conference attendance/2026-05-2026 Conference on ICT Innovation and Frontiers.jpg', caption: '2026 Conference on ICT Innovation and Frontiers', year: 2026, month: 5 },
           { src: '/gallery/conference attendance/2024-11-The 3rd RIS forum.jpg', caption: 'The 3rd RIS TECH Forum', year: 2024, month: 11 },
+          { src: '/gallery/conference attendance/2024-09-PIMRC.jpg', caption: 'PIMRC 2024', year: 2024, month: 9 },
           { src: '/gallery/conference attendance/2023-02-The 2nd RIS Forum.jpg', caption: 'The 2nd RIS TECH Forum', year: 2023, month: 2 },
           { src: '/gallery/conference attendance/2021-09-The 1st RIS Forum.jpg', caption: 'The 1st RIS TECH Forum', year: 2021, month: 9 },
         ],
@@ -164,6 +165,7 @@ export default function GalleryPage() {
         badgeClass: 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/15 dark:text-violet-400 dark:border-violet-800/25',
         photos: [
           { src: "/gallery/team events/2026-06-graduation.jpg", caption: "Graduation", year: 2026, month: 6 },
+          { src: "/gallery/team events/2025-12-graduation.jpg", caption: "Graduation", year: 2025, month: 12 },
           { src: "/gallery/team events/2025-11-Rongguang Song's defence.jpg", caption: "Rongguang Song's Defence", year: 2025, month: 11 },
           { src: "/gallery/team events/2022-09-teacher's day.jpg", caption: "Teacher's Day", year: 2022, month: 9 },
           { src: '/gallery/team events/2022-06-graduation.jpg', caption: 'Graduation', year: 2022, month: 6 },

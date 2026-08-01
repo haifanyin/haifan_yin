@@ -45,24 +45,24 @@ export default function FloatingNav() {
 
   return (
     <nav className="fixed right-1 sm:right-2 lg:right-4 top-1/2 -translate-y-1/2 z-40">
-      <ul className="group flex flex-col gap-1">
+      <ul className="group flex flex-col gap-3 sm:gap-1">
         {sections.map(({ id, label, color }) => {
           const isActive = activeId === id
           return (
-            <li key={id}>
+            <li key={id} className="flex items-center justify-end gap-2.5">
+              {/* Label — desktop only, never part of the click target */}
+              <span className="hidden sm:block rounded-md bg-card/70 border border-border/40 backdrop-blur-sm px-2 py-1 text-[11px] font-medium text-muted-foreground shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap leading-none">
+                {label}
+              </span>
               <button
+                type="button"
                 onClick={() => scrollTo(id)}
-                className="flex items-center justify-end gap-2.5 py-1.5 w-full"
+                aria-label={`Jump to ${label}`}
                 title={label}
-              >
-                {/* Label — hidden, shown on group hover with a frosted background */}
-                <span className="rounded-md bg-card/70 border border-border/40 backdrop-blur-sm px-2 py-1 text-[11px] font-medium text-muted-foreground shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap leading-none">
-                  {label}
-                </span>
-                {/* Dot — aligned to the right */}
-                <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 transition-all duration-300 ${
+                className={`block h-3 w-3 sm:h-2.5 sm:w-2.5 rounded-full p-0 transition-all duration-300 ${
                   isActive ? color + ' scale-125' : 'bg-muted-foreground/25 scale-100'
-                }`} />
+                }`}
+              >
               </button>
             </li>
           )

@@ -61,13 +61,13 @@ export default function Navigation() {
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
+              className="min-[1200px]:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
               onClick={closeMobile}
             />
             <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 z-[70] w-[280px] max-w-[80vw] bg-background border-l border-border/60 shadow-2xl flex flex-col"
+              className="min-[1200px]:hidden fixed top-0 right-0 bottom-0 z-[70] w-[280px] max-w-[80vw] bg-background border-l border-border/60 shadow-2xl flex flex-col"
             >
               <div className="flex items-center justify-end px-4 py-3 border-b border-border/40">
                 <button onClick={closeMobile} className="p-1.5 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground">
@@ -112,12 +112,12 @@ export default function Navigation() {
         style={{ backdropFilter: scrolled ? 'blur(16px)' : 'blur(8px)', WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'blur(8px)' }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center justify-between h-16 min-[1200px]:h-20">
             <Link href="/" className="flex items-center group">
-              <Image src="/MCSP_LAB_logo.svg" alt="MCSP Lab" width={200} height={22} className="h-13 md:h-14 w-auto object-contain max-w-[240px] md:max-w-none" priority />
+              <Image src="/MCSP_LAB_logo.svg" alt="MCSP Lab" width={200} height={22} className="h-13 min-[1200px]:h-14 w-auto object-contain max-w-[240px] min-[1200px]:max-w-none" priority />
             </Link>
 
-            <nav className="hidden md:flex items-center gap-0.5">
+            <nav className="hidden min-[1200px]:flex items-center gap-0.5">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -136,7 +136,7 @@ export default function Navigation() {
               </button>
             </nav>
 
-            <div className="flex md:hidden items-center gap-1">
+            <div className="flex min-[1200px]:hidden items-center gap-1">
               <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-accent transition-colors">
                 {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
