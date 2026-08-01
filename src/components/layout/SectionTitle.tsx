@@ -2,10 +2,10 @@
 
 import { motion } from 'framer-motion'
 import { fadeInUp, accentLineMap } from '@/lib/constants'
-export default function SectionTitle({ children, subtitle, accent }: { children: React.ReactNode; subtitle?: string; accent?: string }) {
+export default function SectionTitle({ children, subtitle, accent, className = '' }: { children: React.ReactNode; subtitle?: string; accent?: string; className?: string }) {
   const accentClass = accent ? accentLineMap[accent] : null
   return (
-    <motion.div variants={fadeInUp} className="mb-12 md:mb-16">
+    <motion.div variants={fadeInUp} className={`mb-12 md:mb-16 ${className}`}>
       <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold tracking-tight gradient-text leading-tight">
         {children}
       </h2>

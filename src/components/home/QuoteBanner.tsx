@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Quote } from 'lucide-react'
 import SectionWrapper from '@/components/layout/SectionWrapper'
+
 export default function QuoteBanner() {
   const quotes = [
     { text: "When something is important enough, you do it even if the odds are not in your favor.", author: "Elon Musk" },
@@ -35,7 +36,6 @@ export default function QuoteBanner() {
             </blockquote>
             <p className="text-xs text-muted-foreground mt-1.5">— {quotes[currentQuote].author}</p>
 
-            {/* Navigation Dots */}
             <div className="flex justify-center gap-2 mt-3">
               {quotes.map((_, idx) => (
                 <button

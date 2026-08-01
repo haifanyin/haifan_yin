@@ -87,6 +87,7 @@ function StatTile({ icon: Icon, count, label, accent, iconClass, iconGrad }: {
       duration: 0.9,
       ease: 'easeOut',
       onUpdate: (v) => setDisplay(Math.round(v)),
+      onComplete: () => setDisplay(count),
     })
     return () => controls.stop()
   }, [inView, count, mv])

@@ -2,7 +2,8 @@
 export { professorInfo } from "./professor";
 
 // Publications
-export { journalPapers, conferencePapers, patents, patentBreakdown, citationStats } from "./publications";
+export { journalPapers, conferencePapers, patents, patentBreakdown } from "./publications";
+export { citationStats } from "./citation-stats";
 
 // Research topics
 export { researchTopics } from "./research-topics";

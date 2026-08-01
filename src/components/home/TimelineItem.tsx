@@ -1,14 +1,14 @@
-export default function TimelineItem({ period, title, subtitle, isLast = false }: { period: string; title: string; subtitle: string; isLast?: boolean }) {
+export default function TimelineItem({ period, title, subtitle, isLast = false, isCurrent = false }: { period: string; title: string; subtitle: string; isLast?: boolean; isCurrent?: boolean }) {
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center">
-        <div className="w-3 h-3 rounded-full bg-primary/20 border-2 border-primary/40 mt-1.5 flex-shrink-0" />
+        <div className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${isCurrent ? 'bg-blue-700 border-2 border-blue-800 shadow-[0_0_0_3px_rgba(30,64,175,0.16)]' : 'bg-primary/20 border-2 border-primary/40'}`} />
         {!isLast && <div className="w-px flex-1 bg-border mt-1.5" />}
       </div>
       <div className="pb-6">
-        <p className="text-xs font-medium text-primary/60 mb-0.5 tabular-nums">{period}</p>
-        <p className="text-sm font-semibold">{title}</p>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <p className="text-[13px] font-medium text-primary/65 mb-0.5 tabular-nums">{period}</p>
+        <p className="text-[15px] font-semibold">{title}</p>
+        <p className="text-[14px] leading-6 text-muted-foreground">{subtitle}</p>
       </div>
     </div>
   )

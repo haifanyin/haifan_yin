@@ -3,16 +3,13 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { BookOpen, ExternalLink, FileText, Globe, GraduationCap, MapPin, School, Sparkles, Tag, Users } from 'lucide-react'
-import { professorInfo, researchTopics, journalPapers, conferencePapers, teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from '@/lib/data'
+import { BarChart3, BookOpen, ExternalLink, FileText, Globe, Mail, MapPin, School, Sparkles, TrendingUp, Users } from 'lucide-react'
+import { professorInfo, journalPapers, conferencePapers, citationStats, teachers, phdStudents, masterStudents } from '@/lib/data'
 import { fadeInUp } from '@/lib/constants'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import { useTypewriter } from '@/hooks/useTypewriter'
-import ContactDialog from '@/components/home/ContactDialog'
 import AnimatedStatCard from '@/components/home/AnimatedStatCard'
-import { useRouter } from 'next/navigation'
 export default function HeroSection() {
-  const router = useRouter()
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const typedName = useTypewriter(professorInfo.name)
 
@@ -45,7 +42,7 @@ export default function HeroSection() {
               <div className="absolute -inset-1.5 bg-gradient-to-br from-[oklch(0.45_0.12_260)] to-[oklch(0.35_0.08_220)] rounded-2xl opacity-15 group-hover:opacity-25 transition-opacity blur-md" />
               <div className="relative w-60 h-[310px] md:w-72 md:h-[370px] rounded-2xl shadow-lg overflow-hidden">
                 <Image
-                  src="/professor.jpg"
+                  src={professorInfo.photo}
                   alt="Prof. Haifan Yin"
                   width={288}
                   height={370}
@@ -57,7 +54,13 @@ export default function HeroSection() {
 
             {/* Quick links */}
             <div className="mt-6 grid grid-cols-2 gap-1.5 w-full md:flex md:flex-col md:max-w-[300px]">
-              <ContactDialog />
+              <a
+                href={`mailto:${professorInfo.email}`}
+                className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-lg hover:bg-accent group w-full text-left"
+              >
+                <Mail className="w-4 h-4 flex-shrink-0 text-primary/50 group-hover:text-primary/70" />
+                <span className="truncate">{professorInfo.email}</span>
+              </a>
               {[
                 { icon: School, label: 'Google Scholar', href: professorInfo.googleScholar, external: true },
                 { icon: FileText, label: 'IEEE Xplore', href: 'https://ieeexplore.ieee.org/author/38493026100', external: true },
@@ -88,6 +91,11 @@ export default function HeroSection() {
               <p className="text-sm sm:text-lg md:text-xl text-muted-foreground mt-2">
                 {professorInfo.nameCn} · {professorInfo.title}
               </p>
+              <div className="mt-5 max-w-2xl border-l-2 border-primary/35 pl-4 sm:pl-5">
+                <p className="text-sm leading-7 text-foreground/75 sm:text-[15px]">
+                  Bridging signal processing, machine learning, and large language models with novel antenna systems to develop practical technologies for 5G and 6G wireless communications.
+                </p>
+              </div>
             </motion.div>
 
             <motion.div variants={fadeInUp}>
@@ -105,6 +113,9 @@ export default function HeroSection() {
                       )}
                     </p>
                   ))}
+                  <p className="pt-1 text-xs leading-relaxed text-muted-foreground/85 sm:text-sm">
+                    {professorInfo.address}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -118,29 +129,13 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Research Topic Tags */}
-            <motion.div variants={fadeInUp}>
-              <div className="flex flex-wrap gap-2">
-                {researchTopics.filter(t => !t.parentId).map((topic) => (
-                  <button
-                    key={topic.id}
-                    onClick={() => router.push(`/research#${topic.id}`)}
-                    className="research-tag-hover inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-primary/5 text-primary/70 border border-primary/10 hover:bg-primary/10 hover:text-primary hover:border-primary/20 cursor-pointer"
-                  >
-                    <Tag className="w-3 h-3" />
-                    {topic.title}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-
             {/* Quick stats with animated counters */}
             <motion.div variants={fadeInUp} className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: 'Journal Papers', value: journalPapers.length, icon: BookOpen, color: 'from-blue-500/10 to-blue-600/5' },
-                { label: 'Conf. Papers', value: conferencePapers.length, icon: FileText, color: 'from-emerald-500/10 to-emerald-600/5' },
+                { label: 'Total Papers', value: journalPapers.length + conferencePapers.length, icon: BookOpen, color: 'from-blue-500/10 to-blue-600/5' },
+                { label: 'Citations', value: citationStats.totalCitations, icon: TrendingUp, color: 'from-emerald-500/10 to-emerald-600/5' },
+                { label: 'h-index', value: citationStats.hIndex, icon: BarChart3, color: 'from-violet-500/10 to-violet-600/5' },
                 { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users, color: 'from-rose-500/10 to-rose-600/5' },
-                { label: 'Alumni', value: graduatedPhdStudents.length + graduatedMasterStudents.length, icon: GraduationCap, color: 'from-amber-500/10 to-amber-600/5' },
               ].map((stat) => (
                 <AnimatedStatCard key={stat.label} stat={stat} />
               ))}

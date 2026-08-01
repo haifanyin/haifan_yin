@@ -779,9 +779,3 @@ export const patentBreakdown = {
   european: patents.filter(p => p.startsWith("European")).length,
   pct: patents.filter(p => p.startsWith("PCT")).length,
 }
-
-export const citationStats = {
-  totalCitations: 3700,
-  hIndex: 22,
-  i10Index: 42,
-}

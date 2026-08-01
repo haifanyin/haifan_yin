@@ -28,9 +28,9 @@ export function useAnimatedCounter(target: number, duration = 1500) {
       if (!startTime) startTime = timestamp
       const elapsed = timestamp - startTime
       const progress = Math.min(elapsed / duration, 1)
-      // Elastic bounce easing
-      const eased = 1 - Math.pow(2, -10 * progress) * Math.cos(progress * Math.PI * 3)
-      setCount(Math.round(eased * target))
+      // Monotonic easing keeps the displayed value aligned with the data source.
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(progress >= 1 ? target : Math.round(eased * target))
       if (progress < 1) {
         rafId = requestAnimationFrame(animate)
       }
