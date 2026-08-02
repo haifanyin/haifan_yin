@@ -51,7 +51,7 @@ export default function ResearchTopicClient() {
             <span className="font-medium text-foreground/80">{parent.title}</span>
           </div>
 
-          <ResearchCard topic={parent} index={0} />
+          <ResearchCard topic={parent} />
 
           {children.length > 0 && (
             <div className="mt-8 space-y-4">
@@ -67,9 +67,9 @@ export default function ResearchTopicClient() {
                   Sub-Topics
                 </h2>
               </div>
-              {children.map((child, i) => (
+              {children.map((child) => (
                 <div key={child.id} className="md:pl-14 border-l-2 border-primary/10 pl-4">
-                  <ResearchCard topic={child} index={i + 1} />
+                  <ResearchCard topic={child} />
                 </div>
               ))}
             </div>

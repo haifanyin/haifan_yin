@@ -5,6 +5,6 @@ export function generateStaticParams() {
   return researchTopics.map(t => ({ id: t.id }))
 }
 
-export default function ResearchTopicPage({ params }: { params: Promise<{ id: string }> }) {
+export default function ResearchTopicPage() {
   return <ResearchTopicClient />
 }

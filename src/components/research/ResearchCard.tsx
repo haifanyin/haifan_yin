@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/types'
-export default function ResearchCard({ topic, index, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; index: number; hasChildren?: boolean; childCount?: number }) {
+export default function ResearchCard({ topic, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; hasChildren?: boolean; childCount?: number }) {
   const [expanded, setExpanded] = useState(false)
 
   // 动态查询该 topic 关联的论文（通过 publications.ts 中的 topicIds）

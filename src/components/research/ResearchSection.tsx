@@ -77,13 +77,12 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
         <div className="space-y-4">
           {filteredTopics.length > 0 ? (
             <>
-              {parents.map((parent, i) => {
+              {parents.map((parent) => {
                 const children = childrenMap.get(parent.id) || []
                 return (
                   <div key={parent.id}>
                     <ResearchCard
                       topic={parent}
-                      index={i}
                       hasChildren={children.length > 0}
                       childCount={children.length}
                     />

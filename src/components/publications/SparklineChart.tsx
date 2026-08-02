@@ -1,10 +1,21 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 export default function SparklineChart({ yearDist, maxCount }: { yearDist: { year: string; count: number }[]; maxCount: number }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [tooltipX, setTooltipX] = useState(0)
+  const [containerWidth, setContainerWidth] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const updateWidth = () => setContainerWidth(el.offsetWidth)
+    updateWidth()
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (containerRef.current) {
@@ -38,7 +49,7 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: { yea
       {hoveredIndex !== null && yearDist[hoveredIndex] && (
         <div
           className="absolute top-1/2 z-20 pointer-events-none -translate-y-1/2"
-          style={{ left: `${Math.min(Math.max(tooltipX, 0), (containerRef.current?.offsetWidth || 0))}px`, transform: 'translate(-50%, -50%)' }}
+          style={{ left: `${Math.min(Math.max(tooltipX, 0), containerWidth)}px`, transform: 'translate(-50%, -50%)' }}
         >
           <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
             <span className="tabular-nums">{yearDist[hoveredIndex].year}</span>

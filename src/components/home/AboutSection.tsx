@@ -8,6 +8,33 @@ import { fadeInUp } from '@/lib/constants'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
 import TimelineItem from '@/components/home/TimelineItem'
+import type { ReactNode } from 'react'
+
+function renderBioWithLinks(bio: string, links: { text: string; url: string }[]) {
+  let nodes: ReactNode[] = [bio]
+  for (const link of links) {
+    const next: ReactNode[] = []
+    for (const node of nodes) {
+      if (typeof node !== 'string' || !node.includes(link.text)) {
+        next.push(node)
+        continue
+      }
+      const parts = node.split(link.text)
+      parts.forEach((part, index) => {
+        if (index > 0) {
+          next.push(
+            <a key={`${link.text}-${index}`} href={link.url} target="_blank" rel="noopener noreferrer" className="academic-link">
+              {link.text}
+            </a>,
+          )
+        }
+        if (part) next.push(part)
+      })
+    }
+    nodes = next
+  }
+  return nodes
+}
 
 const sortedHonors = professorInfo.honors
   .map((honor, index) => ({ honor, index }))
@@ -34,7 +61,7 @@ export default function AboutSection() {
               <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/50 via-primary/20 to-transparent" />
               <h3 className="text-sm font-semibold text-primary/75 uppercase tracking-[0.12em] mb-3">Short Bio</h3>
               <p className="text-[15px] leading-7 text-foreground/85">
-                {professorInfo.bio}
+                {renderBioWithLinks(professorInfo.bio, professorInfo.bioLinks)}
               </p>
             </div>
 

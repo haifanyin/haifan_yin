@@ -132,10 +132,10 @@ export default function HeroSection() {
             {/* Quick stats with animated counters */}
             <motion.div variants={fadeInUp} className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: 'Total Papers', value: journalPapers.length + conferencePapers.length, icon: BookOpen, color: 'from-blue-500/10 to-blue-600/5' },
-                { label: 'Citations', value: citationStats.totalCitations, icon: TrendingUp, color: 'from-emerald-500/10 to-emerald-600/5' },
-                { label: 'h-index', value: citationStats.hIndex, icon: BarChart3, color: 'from-violet-500/10 to-violet-600/5' },
-                { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users, color: 'from-rose-500/10 to-rose-600/5' },
+                { label: 'Total Papers', value: journalPapers.length + conferencePapers.length, icon: BookOpen, accent: 'from-blue-600 to-blue-400', iconGrad: 'from-blue-500/15 to-blue-400/10', iconClass: 'text-blue-700 dark:text-blue-400' },
+                { label: 'Citations', value: citationStats.totalCitations, icon: TrendingUp, accent: 'from-emerald-600 to-emerald-400', iconGrad: 'from-emerald-500/15 to-emerald-400/10', iconClass: 'text-emerald-700 dark:text-emerald-400' },
+                { label: 'h-index', value: citationStats.hIndex, icon: BarChart3, accent: 'from-violet-600 to-violet-400', iconGrad: 'from-violet-500/15 to-violet-400/10', iconClass: 'text-violet-700 dark:text-violet-400' },
+                { label: 'Team Members', value: teachers.length + phdStudents.length + masterStudents.length, icon: Users, accent: 'from-rose-600 to-rose-400', iconGrad: 'from-rose-500/15 to-rose-400/10', iconClass: 'text-rose-700 dark:text-rose-400' },
               ].map((stat) => (
                 <AnimatedStatCard key={stat.label} stat={stat} />
               ))}

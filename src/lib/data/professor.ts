@@ -19,6 +19,9 @@ export const professorInfo = {
   googleScholar: "https://scholar.google.com/citations?user=tUXifW0AAAAJ&hl=en",
   recruiting: "Always looking for self-motivated master/Ph.D. students and post-doc researchers. Students majoring in other disciplines, e.g., Mathematics, Physics, Optoelectronics, are also highly encouraged to apply!",
   bio: `Haifan Yin received his Ph.D. degree from Telecom ParisTech (also known as Ecole Nationale Supérieure des Télécommunications, or ENST), France, in Dec. 2015, under the supervision of Prof. David Gesbert. He received his B.S. and M.S. degrees from Huazhong University of Science and Technology in 2009 and 2012 respectively. From 2016 to 2017, he has been a DSP engineer in Sequans Communications — an IoT chipmaker based in Paris, France. From 2017 to 2019, he has been a senior research engineer in Shanghai Huawei Technologies Co., Ltd., where he made substantial contributions to physical layer research and 5G standards. Since May 2019, he has joined the School of Electronic Information and Communications at Huazhong University of Science and Technology as a full professor. He is a holder of more than 25 patents. One of his technical papers reaches over 1000 citations. His current research interests include 5G and 6G networks, signal processing, machine learning, and massive MIMO systems. He was a recipient of the China Youth May Fourth Medal (the top honor for young Chinese), the National Champion of 2021 High Potential Innovation Prize awarded by the Chinese Academy of Engineering, and a recipient of the 2024 Stephen O. Rice Prize.`,
+  bioLinks: [
+    { text: "Prof. David Gesbert", url: "https://www.eurecom.fr/cm/gesbert" },
+  ],
   education: [
     { degree: "Ph.D.", field: "Communication and Electronics", school: "EURECOM, Telecom ParisTech, Université Paris-Saclay, France", year: "2015-12" },
     { degree: "M.Sc.", field: "Communication and Information Engineering", school: "Huazhong University of Science & Technology, Wuhan, China", year: "2012-03" },
@@ -32,8 +35,11 @@ export const professorInfo = {
   honors: [
     { title: "China Youth May Fourth Medal", year: "2024", highlight: true },
     { title: "China Institute of Communications Youth Science and Technology Award", year: "2024", highlight: false },
+    { title: "Qiangguo Young Scientists", year: "2024", highlight: false },
     { title: "Stephen O. Rice Prize", year: "2024", highlight: true },
     { title: "The Best Mentor Award of the 15th Anniversary Celebration of National Undergraduate Innovation and Entrepreneurship", year: "2023", highlight: false },
+    { title: "Instructor for the \"Challenge Cup\" National Special Prize Project", year: "2023", highlight: false },
+    { title: "Instructor for the Gold Award Team at the China International College Students' Innovation Competition", year: "2023", highlight: false },
     { title: "Leader of Innovation and Entrepreneurship Strategic Team in Hubei Province", year: "2022", highlight: false },
     { title: "Instructor for the \"Challenge Cup\" National First Prize Project", year: "2022", highlight: false },
     { title: "Instructor for the Gold Award Team at the 7th China International College Students' \"Internet+\" Innovation and Entrepreneurship Competition", year: "2021", highlight: false },

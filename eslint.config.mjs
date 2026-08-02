@@ -25,6 +25,7 @@ const eslintConfig = [
       ".zscripts/**",
       "db/**",
       "mini-services/**",
+      "scripts/**",
     ],
   },
 ];

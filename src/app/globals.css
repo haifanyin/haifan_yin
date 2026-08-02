@@ -354,6 +354,12 @@ html {
   50% { opacity: 1; }
 }
 
+.timeline-dot-current {
+  background: linear-gradient(135deg, oklch(0.45 0.12 260), oklch(0.35 0.08 220));
+  border: 2px solid oklch(0.30 0.10 240);
+  box-shadow: 0 0 0 3px oklch(0.45 0.12 260 / 0.16);
+}
+
 .timeline-dot-active {
   animation: timeline-pulse 2s ease-in-out infinite;
 }

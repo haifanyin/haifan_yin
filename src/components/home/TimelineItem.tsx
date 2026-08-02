@@ -2,7 +2,7 @@ export default function TimelineItem({ period, title, subtitle, isLast = false, 
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center">
-        <div className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${isCurrent ? 'bg-blue-700 border-2 border-blue-800 shadow-[0_0_0_3px_rgba(30,64,175,0.16)]' : 'bg-primary/20 border-2 border-primary/40'}`} />
+        <div className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${isCurrent ? 'timeline-dot-current timeline-dot-active' : 'bg-primary/20 border-2 border-primary/40'}`} />
         {!isLast && <div className="w-px flex-1 bg-border mt-1.5" />}
       </div>
       <div className="pb-6">

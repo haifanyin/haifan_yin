@@ -11,6 +11,9 @@ export { researchTopics } from "./research-topics";
 // Team
 export { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from "./team";
 
+// Gallery
+export { galleryPhotos } from "./gallery";
+
 // Helpers
 export { getStudentFirstAuthorPapers, getPublicationsByTopic, formatPublicationCitation } from "./helpers";
 
