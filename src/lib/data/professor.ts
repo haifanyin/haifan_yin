@@ -63,6 +63,7 @@ export const professorInfo = {
       "IEEE Transactions on Signal Processing",
       "IEEE Transactions on Wireless Communications",
       "IEEE Transactions on Communications",
+      "IEEE Transactions on Antennas and Propagation",
       "IEEE Transactions on Mobile Computing",
       "IEEE Transactions on Vehicular Technology",
       "IEEE Access",
