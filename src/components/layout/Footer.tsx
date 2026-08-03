@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { ArrowRight, ExternalLink, FileText, Globe, HomeIcon, Mail, Microscope, School } from 'lucide-react'
 import { professorInfo, researchTopics } from '@/lib/data'
@@ -22,11 +23,17 @@ export default function Footer() {
     <footer className="bg-card border-t-0 mt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {/* Column 1: Brand / Logo / Description / Recruiting */}
+            {/* Column 1: Brand / Logo / Description / Recruiting */}
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[oklch(0.45_0.12_260)] to-[oklch(0.35_0.08_220)] flex items-center justify-center shadow-sm">
-                <span className="text-white text-sm font-bold">Y</span>
+              <div className="w-9 h-9 rounded-lg overflow-hidden shadow-sm">
+                <Image
+                  src="/sitelogo.jpg"
+                  alt="MCSP Lab logo"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <p className="text-base font-semibold">{professorInfo.name} ({professorInfo.nameCn})</p>
@@ -91,14 +98,14 @@ export default function Footer() {
                 <Mail className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
                 <span className="group-hover:translate-x-0.5 transition-transform">{professorInfo.email}</span>
               </a>
-              <a href={professorInfo.googleScholar} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
-                <School className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
-                <span className="group-hover:translate-x-0.5 transition-transform">Google Scholar</span>
-                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
               <a href="https://ieeexplore.ieee.org/author/38493026100" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
                 <FileText className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
                 <span className="group-hover:translate-x-0.5 transition-transform">IEEE Xplore</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+              <a href={professorInfo.googleScholar} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">
+                <School className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary/70 transition-colors" />
+                <span className="group-hover:translate-x-0.5 transition-transform">Google Scholar</span>
                 <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
               <a href={professorInfo.chineseSite.url} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group">

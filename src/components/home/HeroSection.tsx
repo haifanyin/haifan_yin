@@ -62,8 +62,8 @@ export default function HeroSection() {
                 <span className="truncate">{professorInfo.email}</span>
               </a>
               {[
-                { icon: School, label: 'Google Scholar', href: professorInfo.googleScholar, external: true },
                 { icon: FileText, label: 'IEEE Xplore', href: 'https://ieeexplore.ieee.org/author/38493026100', external: true },
+                { icon: School, label: 'Google Scholar', href: professorInfo.googleScholar, external: true },
                 { icon: Globe, label: 'Chinese Site', href: professorInfo.chineseSite.url, external: true },
               ].map((link, i) => (
                 <a

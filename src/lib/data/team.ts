@@ -64,7 +64,7 @@ export const phdStudents: Student[] = [
     avatar: "/avatars/yandi-cao.jpg",
     degree: "phd",
     enrollDate: "2020-09",
-    researchTopics: ["Massive MIMO"],
+    researchTopics: ["Massive MIMO", "Machine learning"],
   },
   {
     name: "Lin Cao",
@@ -116,7 +116,7 @@ export const phdStudents: Student[] = [
     degree: "phd",
     enrollDate: "2023-09",
     awards: ['National Scholarship (2025)'],
-    researchTopics: ["Machine learning", "Superdirective antenna", "Fluid antenna"],
+    researchTopics: ["LLM", "Machine learning", "Superdirective antenna", "Fluid antenna"],
     profileUrl: "https://scholar.google.com/citations?user=XQ8shNEAAAAJ",
   },
   {
@@ -168,6 +168,33 @@ export const phdStudents: Student[] = [
 
 export const masterStudents: Student[] = [
   {
+    name: "Chulin Sheng",
+    nameCn: "盛楚林",
+    email: "chulinshust@gmail.com",
+    avatar: "/avatars/chulin-sheng.jpg",
+    degree: "master",
+    enrollDate: "2024-09",
+    researchTopics: [],
+  },
+  {
+    name: "Tianyang Lu",
+    nameCn: "陆天洋",
+    email: "tlu@hust.edu.cn",
+    avatar: "/avatars/tianyang-lu.jpg",
+    degree: "master",
+    enrollDate: "2026-09",
+    researchTopics: ["Beam management"],
+  },
+  {
+    name: "Zhenqi Zhang",
+    nameCn: "张镇麒",
+    email: "1784206797@qq.com",
+    avatar: "/avatars/zhenqi-zhang.jpg",
+    degree: "master",
+    enrollDate: "2026-09",
+    researchTopics: ["Rydberg atomic receiver"],
+  },
+  {
     name: "Kewei Zhu",
     nameCn: "祝科伟",
     email: "zhu@hust.edu.cn",
@@ -210,7 +237,7 @@ export const masterStudents: Student[] = [
     avatar: "/avatars/sixu-liu.jpg",
     degree: "master",
     enrollDate: "2025-09",
-    researchTopics: [],
+    researchTopics: ["Massive MIMO"],
   },
   {
     name: "Mengyao Zeng",
@@ -219,7 +246,7 @@ export const masterStudents: Student[] = [
     avatar: "/avatars/mengyao-zeng.jpg",
     degree: "master",
     enrollDate: "2025-09",
-    researchTopics: [],
+    researchTopics: ["Movable antenna"],
   },
   {
     name: "Baiyu Chen",
@@ -291,7 +318,7 @@ export const masterStudents: Student[] = [
     avatar: "/avatars/mengru-sun.jpg",
     degree: "master",
     enrollDate: "2024-09",
-    researchTopics: [],
+    researchTopics: ["Machine learning"],
   },
   {
     name: "Chi Meng",
@@ -333,7 +360,7 @@ export const graduatedPhdStudents: Student[] = [
   {
     name: "Weidong Li",
     nameCn: "李伟东",
-    email: "weidongli@hyit.edu.cn",
+    email: "weidongli@hau.edu.cn",
     avatar: "/avatars/weidong-li.jpg",
     degree: "phd",
     graduated: true,
@@ -497,7 +524,7 @@ export const graduatedMasterStudents: Student[] = [
     destination: "China Yajiang Group",
     enrollDate: "2022-09",
     gradDate: "2025-06",
-    researchTopics: ["Superdirective antenna"],
+    researchTopics: ["Superdirective antenna theory"],
   },
   {
     name: "Cheng Lu",
