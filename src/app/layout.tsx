@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/layout/AppShell";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -7,16 +6,6 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 const assetBase = "";
 // TODO: Replace with your actual Vercel domain, e.g. "https://mcsp-lab.vercel.app"
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mcsp-lab.vercel.app";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Haifan Yin (尹海帆) — Professor, HUST",
@@ -91,9 +80,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
-      >
+      <body className="antialiased bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AppShell>{children}</AppShell>
         </ThemeProvider>

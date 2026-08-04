@@ -18,14 +18,8 @@ export interface Publication {
 export interface ResearchTopic {
   id: string;
   title: string;
-  subtitle?: string;
   description: string;
   image: string;
-  papers?: { citation: string; link?: string }[];
-  blogPosts?: { title: string; link: string }[];
-  topCollaborator?: { name: string; initials: string; paperCount: number };
-  relatedTopics?: string[];
-  parentId?: string;
 }
 
 export interface Student {

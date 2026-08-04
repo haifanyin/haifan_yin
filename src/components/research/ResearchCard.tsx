@@ -5,16 +5,23 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { BookMarked, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
-import Link from 'next/link'
+import { BookMarked, CalendarDays, ChevronDown, ChevronUp } from 'lucide-react'
 import { staggerItem } from '@/lib/constants'
 import { getPublicationsByTopic, formatPublicationCitation } from '@/lib/data'
 import type { ResearchTopic } from '@/types'
-export default function ResearchCard({ topic, hasChildren = false, childCount = 0 }: { topic: ResearchTopic; hasChildren?: boolean; childCount?: number }) {
+export default function ResearchCard({ topic }: { topic: ResearchTopic }) {
   const [expanded, setExpanded] = useState(false)
 
   // 动态查询该 topic 关联的论文（通过 publications.ts 中的 topicIds）
   const papers = useMemo(() => getPublicationsByTopic(topic.id), [topic.id])
+  const publicationYears = papers.map((paper) => paper.year)
+  const publicationYearRange = publicationYears.length === 0
+    ? '—'
+    : (() => {
+        const firstYear = Math.min(...publicationYears)
+        const lastYear = Math.max(...publicationYears)
+        return firstYear === lastYear ? String(firstYear) : `${firstYear}–${lastYear}`
+      })()
 
   // 3D tilt effect
   const cardRef = useRef<HTMLDivElement>(null)
@@ -48,7 +55,7 @@ export default function ResearchCard({ topic, hasChildren = false, childCount = 
           </div>
 
           <CardContent className="p-5 md:p-6 flex flex-col">
-            {/* Title + Paper Count */}
+            {/* Title + Publication Year Range */}
             <div className="flex items-center justify-between mb-2">
               <div>
                 <h3 className="font-bold tracking-tight text-xl">{topic.title}</h3>
@@ -61,25 +68,18 @@ export default function ResearchCard({ topic, hasChildren = false, childCount = 
                 />
               </div>
               <div className="flex items-center gap-2">
-                {hasChildren && (
-                  <Link
-                    href={`/research/${topic.id}`}
-                    className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-primary/5 text-primary/60 border border-primary/10 hover:bg-primary/10 transition-colors font-medium"
-                  >
-                    {childCount} sub-topic{childCount > 1 ? 's' : ''}
-                  </Link>
-                )}
-                <Badge className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium">
-                  <BookMarked className="w-3 h-3 mr-1" />
-                  {papers.length}
+                <Badge
+                  title="Publication years"
+                  className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary/70 border-primary/10 font-medium"
+                >
+                  <CalendarDays className="w-3 h-3 mr-1" />
+                  {publicationYearRange}
                 </Badge>
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {topic.description}
             </p>
-            {/* Top Collaborator */}
-
             {papers.length > 0 && (
               <div className="mt-4 flex-1">
                 <button
@@ -87,7 +87,7 @@ export default function ResearchCard({ topic, hasChildren = false, childCount = 
                   className="flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
                 >
                   <BookMarked className="w-3.5 h-3.5" />
-                  {expanded ? 'Hide' : 'Show'} Key Paper{papers.length > 1 ? 's' : ''} ({papers.length})
+                  {expanded ? 'Hide' : 'Show'} Papers ({papers.length})
                   {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
                 <AnimatePresence>
@@ -115,25 +115,6 @@ export default function ResearchCard({ topic, hasChildren = false, childCount = 
               </div>
             )}
 
-            {topic.blogPosts && topic.blogPosts.length > 0 && (
-              <div className="mt-4 pt-3 border-t border-border/50">
-                <p className="text-xs font-medium text-muted-foreground mb-2">Blog Posts:</p>
-                <div className="flex flex-wrap gap-2">
-                  {topic.blogPosts.map((post, i) => (
-                    <a
-                      key={i}
-                      href={post.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs academic-link flex items-center gap-1"
-                    >
-                      {post.title}
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
           </CardContent>
         </div>
       </Card>

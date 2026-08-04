@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { Search, X } from 'lucide-react'
 import { researchTopics } from '@/lib/data'
 import { getPublicationsByTopic } from '@/lib/data'
-import type { ResearchTopic } from '@/types'
 import { fadeInUp, staggerItem } from '@/lib/constants'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
@@ -17,7 +16,6 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
     const q = searchQuery.toLowerCase()
     return researchTopics.filter(t =>
       t.title.toLowerCase().includes(q) ||
-      (t.subtitle || '').toLowerCase().includes(q) ||
       t.description.toLowerCase().includes(q) ||
       getPublicationsByTopic(t.id).some(p =>
         p.title.toLowerCase().includes(q) ||
@@ -25,21 +23,6 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
       )
     )
   }, [searchQuery])
-
-  // Group topics into parents — children are NOT shown on this page
-  const { parents, childrenMap } = useMemo(() => {
-    const parents = filteredTopics.filter(t => !t.parentId)
-    const childrenMap = new Map<string, ResearchTopic[]>()
-
-    for (const t of filteredTopics) {
-      if (t.parentId) {
-        const siblings = childrenMap.get(t.parentId) || []
-        siblings.push(t)
-        childrenMap.set(t.parentId, siblings)
-      }
-    }
-    return { parents, childrenMap }
-  }, [filteredTopics])
 
   return (
     <SectionWrapper id="research" className={hideTitle ? '!pt-2 md:!pt-4' : 'bg-muted/30'}>
@@ -77,18 +60,11 @@ export default function ResearchSection({ hideTitle = false }: { hideTitle?: boo
         <div className="space-y-4">
           {filteredTopics.length > 0 ? (
             <>
-              {parents.map((parent) => {
-                const children = childrenMap.get(parent.id) || []
-                return (
-                  <div key={parent.id}>
-                    <ResearchCard
-                      topic={parent}
-                      hasChildren={children.length > 0}
-                      childCount={children.length}
-                    />
-                  </div>
-                )
-              })}
+              {filteredTopics.map((topic) => (
+                <div key={topic.id}>
+                  <ResearchCard topic={topic} />
+                </div>
+              ))}
             </>
           ) : (
             <motion.div variants={staggerItem} className="text-center py-16">
