@@ -26,7 +26,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
       <Card className={`student-card-hover overflow-hidden border-border/60 hover:shadow-lg transition-all duration-300 h-full student-card-accent ${degreeClass} !py-3 !gap-3`}>
         <CardContent className="p-3 sm:p-4">
           <div className="flex flex-col lg:flex-row items-center lg:items-start gap-3 lg:gap-4">
-            <div className="w-28 sm:w-36 lg:w-44 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
+            <div className="w-24 sm:w-28 lg:w-32 aspect-[3/4] rounded-xl overflow-hidden border border-primary/10 flex-shrink-0">
               <Image
                 src={student.avatar}
                 alt={student.name}
@@ -122,41 +122,6 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                 </div>
               )}
 
-              {displayPapers.length > 0 && (
-                <div className="mt-3">
-                  <button
-                    onClick={() => setShowPapers(!showPapers)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
-                  >
-                    <BookMarked className="w-3.5 h-3.5" />
-                    {showPapers ? 'Hide' : 'Show'} Paper{displayPapers.length > 1 ? 's' : ''} ({displayPapers.length})
-                    {showPapers ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                  </button>
-                  <AnimatePresence>
-                    {showPapers && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
-                          {displayPapers.map((paper, i) => (
-                            <div key={i} className="text-xs text-muted-foreground leading-relaxed bg-muted/50 rounded-lg p-2">
-                              <span className="font-medium text-foreground/70">[{i + 1}]</span>{' '}
-                              {paper.citation}
-                              {paper.link && (
-                                <a href={paper.link} target="_blank" rel="noopener noreferrer" className="academic-link ml-1">[Link]</a>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-
               {/* View Profile link */}
               {student.profileUrl && (
                 <div className="mt-3 pt-2 border-t border-border/30">
@@ -173,6 +138,43 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
               )}
             </div>
           </div>
+
+          {displayPapers.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border/30 w-full">
+              <button
+                onClick={() => setShowPapers(!showPapers)}
+                className="flex w-full items-center justify-between gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
+              >
+                <span className="flex items-center gap-1.5">
+                  <BookMarked className="w-3.5 h-3.5" />
+                  {showPapers ? 'Hide' : 'Show'} Paper{displayPapers.length > 1 ? 's' : ''} ({displayPapers.length})
+                </span>
+                {showPapers ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
+              <AnimatePresence>
+                {showPapers && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
+                      {displayPapers.map((paper, i) => (
+                        <div key={i} className="text-xs text-muted-foreground leading-relaxed bg-muted/50 rounded-lg p-2">
+                          <span className="font-medium text-foreground/70">[{i + 1}]</span>{' '}
+                          {paper.citation}
+                          {paper.link && (
+                            <a href={paper.link} target="_blank" rel="noopener noreferrer" className="academic-link ml-1">[Link]</a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </CardContent>
       </Card>
     </motion.div>

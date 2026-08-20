@@ -3,6 +3,25 @@ import type { Publication } from '@/types';
 // ==================== PUBLICATIONS ====================
 export const journalPapers: Publication[] = [
   {
+    authors: ['Song Guoxi', 'Haiyang Ding', 'Gang Yang', 'Maged Elkashlan', 'Jules M. Moualeu', 'Haifan Yin', 'Xiaofeng Wang'],
+    title: 'RIS-Enabled Symbiotic Modulation: An S-UFCP Approach',
+    journal: 'IEEE Transactions on Communications',
+    volume: '74',
+    pages: '12120-12135',
+    year: 2026,
+    link: 'https://doi.org/10.1109/TCOMM.2026.3714352',
+    topicIds: ['ris'],
+  },
+  {
+    authors: ['Fanpo Fu', 'Haifan Yin', 'Weidong Li', 'Yandi Cao', 'Xinping Yi', 'Shi Jin'],
+    title: 'Movable Antenna-Enabled Phase Shifting: Performance Analysis and Position Optimization',
+    journal: 'IEEE Transactions on Communications',
+    volume: '74',
+    pages: '12211-12224',
+    year: 2026,
+    link: 'https://doi.org/10.1109/TCOMM.2026.3720498',
+  },
+  {
       authors: ['Liangcheng Han', 'Haifan Yin', 'Mérouane Debbah'],
       title: 'Multi-Target DoA Estimation With a Single Rydberg Atomic Receiver by Spectral Analysis of Spatially Resolved Fluorescence',
       journal: 'IEEE Transactions on Communications',
@@ -427,6 +446,31 @@ export const journalPapers: Publication[] = [
 ];
 
 export const conferencePapers: Publication[] = [
+  {
+    authors: ['Rongguang Song', 'Haifan Yin', 'Xilong Pei', 'Lin Cao'],
+    title: 'Millimeter-Wave Dual-Polarized Dynamic Metasurface Antenna with Spatial Decoupling',
+    booktitle: '2026 20th European Conference on Antennas and Propagation (EuCAP)',
+    pages: '1-5',
+    year: 2026,
+    link: 'https://doi.org/10.23919/EuCAP68105.2026.11612751',
+    topicIds: ['holographic'],
+  },
+  {
+    authors: ['Cheng Lu', 'Haifan Yin', 'Li Tan', 'Tao Wang', 'Ruikun Zhang', 'Hussein A. Elsayed'],
+    title: 'A Dual-Band Multi-Phase Reconfigurable Antenna Array for N41 and N78 Bands',
+    booktitle: '2026 IEEE International Conference on Radio Frequency and Antenna Technologies (RFAT)',
+    pages: '105-109',
+    year: 2026,
+    link: 'https://doi.org/10.1109/RFAT69041.2026.11634224',
+  },
+  {
+    authors: ['Quqing Huang', 'Haifan Yin', 'Li Tan', 'Yuhao Zhang', 'Ningyi Shan', 'Tao Wang', 'Mahmoud M. Salim'],
+    title: 'A Compact 26GHz Phased Array Antenna based on Liquid Crystal for 5G Applications',
+    booktitle: '2026 IEEE International Conference on Radio Frequency and Antenna Technologies (RFAT)',
+    pages: '100-104',
+    year: 2026,
+    link: 'https://doi.org/10.1109/RFAT69041.2026.11634012',
+  },
   {
       authors: ['Zhen Wen', 'Haiyang Ding', 'Wankai Tang', 'Shilian Wang', 'Haifan Yin', 'Jules M. Moualeu'],
       title: 'Transform-Domain M-PSK Constellation Design for RIS-Enabled Backscatter Systems',

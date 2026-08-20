@@ -2,7 +2,8 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const GALLERY = 'C:/Users/pxl08/Desktop/Zproj/haifan_yin/public/gallery';
+const PROJECT_ROOT = path.resolve(__dirname, '..');
+const GALLERY = path.join(PROJECT_ROOT, 'public', 'gallery');
 const MAX_KB = 500;
 const MAX_WIDTH = 1920;
 

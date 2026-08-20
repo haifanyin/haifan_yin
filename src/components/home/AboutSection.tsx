@@ -121,15 +121,19 @@ export default function AboutSection() {
                   return (
                     <div
                       key={i}
-                      className={`flex items-start gap-2.5 py-2.5 px-3 rounded-lg transition-colors ${
-                        isTop ? 'bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200/30 dark:border-amber-800/20' : 'hover:bg-accent/50'
+                      className={`group flex items-start gap-2.5 py-2.5 px-3 rounded-lg transition-all duration-200 hover:shadow-sm ${
+                        isTop
+                          ? 'bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200/30 dark:border-amber-800/20 hover:bg-amber-100/70 hover:border-amber-300/60 dark:hover:bg-amber-900/20 dark:hover:border-amber-700/40 dark:hover:shadow-amber-950/20'
+                          : 'hover:bg-accent/50'
                       }`}
                     >
-                      {isTop ? (
-                        <Award className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                      ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30 mt-1.5 flex-shrink-0" />
-                      )}
+                      <span className="flex w-4 h-4 items-center justify-center mt-0.5 flex-shrink-0">
+                        {isTop ? (
+                          <Award className="w-4 h-4 text-amber-500 transition-transform duration-200 group-hover:scale-110 group-hover:rotate-6" />
+                        ) : (
+                          <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+                        )}
+                      </span>
                       <p className={`text-[15px] leading-relaxed flex-1 ${isTop ? 'font-medium' : 'text-muted-foreground'}`}>{honor.title}</p>
                       {honor.year && (
                         <span className="inline-flex flex-shrink-0 items-center rounded-md border border-border/70 bg-background/75 px-2 py-1 text-xs font-semibold text-muted-foreground tabular-nums">{honor.year}</span>
