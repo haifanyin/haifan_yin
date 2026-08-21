@@ -3,7 +3,7 @@ import type { Publication } from '@/types';
 // ==================== PUBLICATIONS ====================
 export const journalPapers: Publication[] = [
   {
-    authors: ['Song Guoxi', 'Haiyang Ding', 'Gang Yang', 'Maged Elkashlan', 'Jules M. Moualeu', 'Haifan Yin', 'Xiaofeng Wang'],
+    authors: ['Guoxi Song', 'Haiyang Ding', 'Gang Yang', 'Maged Elkashlan', 'Jules M. Moualeu', 'Haifan Yin', 'Xiaofeng Wang'],
     title: 'RIS-Enabled Symbiotic Modulation: An S-UFCP Approach',
     journal: 'IEEE Transactions on Communications',
     volume: '74',

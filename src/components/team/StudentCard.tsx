@@ -143,7 +143,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
             <div className="mt-3 pt-3 border-t border-border/30 w-full">
               <button
                 onClick={() => setShowPapers(!showPapers)}
-                className="flex w-full items-center justify-between gap-1.5 text-xs font-medium text-primary/70 hover:text-primary transition-colors"
+                className="flex w-full items-center justify-between gap-1.5 rounded-lg border border-border/50 bg-muted/30 px-2.5 py-2 text-xs font-medium text-primary/70 transition-all hover:border-primary/20 hover:bg-accent/50 hover:text-primary"
               >
                 <span className="flex items-center gap-1.5">
                   <BookMarked className="w-3.5 h-3.5" />
@@ -159,7 +159,7 @@ export default function StudentCard({ student }: { student: Student; onNavigate?
                     exit={{ opacity: 0, height: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
+                    <div className={`mt-2 space-y-1.5 overflow-y-auto custom-scrollbar rounded-lg bg-muted/20 p-1.5 ${displayPapers.length <= 2 ? '' : 'h-56 sm:h-64'}`}>
                       {displayPapers.map((paper, i) => (
                         <div key={i} className="text-xs text-muted-foreground leading-relaxed bg-muted/50 rounded-lg p-2">
                           <span className="font-medium text-foreground/70">[{i + 1}]</span>{' '}

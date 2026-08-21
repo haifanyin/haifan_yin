@@ -13,7 +13,9 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: YearD
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [tooltipX, setTooltipX] = useState(0)
   const [containerWidth, setContainerWidth] = useState(0)
+  const [tooltipWidth, setTooltipWidth] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const el = containerRef.current
@@ -31,6 +33,21 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: YearD
       setTooltipX(e.clientX - rect.left)
     }
   }, [])
+
+  useEffect(() => {
+    const tooltip = tooltipRef.current
+    if (!tooltip) return
+
+    const updateWidth = () => setTooltipWidth(tooltip.offsetWidth)
+    updateWidth()
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(tooltip)
+    return () => observer.disconnect()
+  }, [hoveredIndex, containerWidth])
+
+  const minTooltipX = tooltipWidth > 0 ? Math.min(tooltipWidth / 2 + 4, containerWidth / 2) : 4
+  const maxTooltipX = tooltipWidth > 0 ? Math.max(containerWidth - tooltipWidth / 2 - 4, containerWidth / 2) : Math.max(containerWidth - 4, 4)
+  const clampedTooltipX = Math.min(Math.max(tooltipX, minTooltipX), maxTooltipX)
 
   return (
     <div ref={containerRef} className="relative w-full min-w-0" onMouseMove={handleMouseMove}>
@@ -79,10 +96,11 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: YearD
       {/* Hover tooltip */}
       {hoveredIndex !== null && yearDist[hoveredIndex] && (
         <div
+          ref={tooltipRef}
           className="absolute top-1/2 z-20 pointer-events-none -translate-y-1/2"
-          style={{ left: `${Math.min(Math.max(tooltipX, 0), containerWidth)}px`, transform: 'translate(-50%, -50%)' }}
+          style={{ left: `${clampedTooltipX}px`, transform: 'translate(-50%, -50%)' }}
         >
-          <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
+          <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex max-w-[calc(100vw-1rem)] flex-wrap items-center justify-center gap-2 text-center">
             <span className="tabular-nums">{yearDist[hoveredIndex].year}</span>
             <span className="w-px h-3 bg-background/30" />
             <span className="text-primary-foreground/90">Journal {yearDist[hoveredIndex].journalCount}</span>

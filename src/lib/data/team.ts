@@ -354,7 +354,7 @@ export const graduatedPhdStudents: Student[] = [
     destination: "Air Force Early Warning Academy",
     enrollDate: "2020-09",
     gradDate: "2024-06",
-    awards: ["Merit Student"],
+    awards: ["Merit Student", "National Scholarship (2023)"],
     researchTopics: ["Massive MIMO"],
   },
   {
@@ -514,6 +514,7 @@ export const graduatedMasterStudents: Student[] = [
     enrollDate: "2023-09",
     gradDate: "2026-06",
     researchTopics: ["Holographic metasurface"],
+    awards: ['National Scholarship (2024)'],
   },
   {
     name: "Jingcheng Xie",
