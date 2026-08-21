@@ -100,7 +100,7 @@ export default function SparklineChart({ yearDist, maxCount }: { yearDist: YearD
           className="absolute top-1/2 z-20 pointer-events-none -translate-y-1/2"
           style={{ left: `${clampedTooltipX}px`, transform: 'translate(-50%, -50%)' }}
         >
-          <div className="bg-foreground text-background text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex max-w-[calc(100vw-1rem)] flex-wrap items-center justify-center gap-2 text-center">
+          <div className="bg-foreground text-background text-[10px] sm:text-[11px] font-medium px-2.5 py-1.5 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
             <span className="tabular-nums">{yearDist[hoveredIndex].year}</span>
             <span className="w-px h-3 bg-background/30" />
             <span className="text-primary-foreground/90">Journal {yearDist[hoveredIndex].journalCount}</span>
