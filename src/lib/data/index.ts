@@ -15,7 +15,7 @@ export { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedM
 export { galleryPhotos } from "./gallery";
 
 // Helpers
-export { getStudentFirstAuthorPapers, getPublicationsByTopic, formatPublicationCitation } from "./helpers";
+export { formatAuthorList, formatPageRange, getStudentFirstAuthorPapers, getPublicationsByTopic, formatPublicationCitation } from "./helpers";
 
 // Publication utilities
 export { generateBibTeX } from "./bibtex";

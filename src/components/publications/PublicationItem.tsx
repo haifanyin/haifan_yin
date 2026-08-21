@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Braces, Check, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { staggerItem } from '@/lib/constants'
-import { generateBibTeX, getHighlightBadge, getVenueBadge } from '@/lib/data'
+import { formatAuthorList, formatPageRange, generateBibTeX, getHighlightBadge, getVenueBadge } from '@/lib/data'
 import type { Publication } from '@/types'
 export default function PublicationItem({ pub, index }: { pub: Publication; index: number }) {
   const [copied, setCopied] = useState(false)
@@ -13,11 +13,13 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
   const [bibtexCopied, setBibtexCopied] = useState(false)
   const [abstractOpen, setAbstractOpen] = useState(false)
   const venueName = pub.journal || pub.booktitle || ''
+  const pageRange = formatPageRange(pub.pages)
   const venueDetails = pub.journal
-    ? `vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pub.pages}`
-    : `pp. ${pub.pages}`
-  const venueDisplay = `${venueName}, ${venueDetails}`
-  const citationText = `[${index + 1}] ${pub.authors.join(', ')}, \"${pub.title},\" ${venueDisplay}, ${pub.year}.`
+    ? `vol. ${pub.volume}${pub.number ? `, no. ${pub.number}` : ''}, pp. ${pageRange}`
+    : `pp. ${pageRange}`
+  const citationText = pub.journal
+    ? `[${index + 1}] ${formatAuthorList(pub.authors)}, \"${pub.title},\" ${venueName}, ${venueDetails}, ${pub.year}.`
+    : `[${index + 1}] ${formatAuthorList(pub.authors)}, \"${pub.title},\" in Proceedings of ${venueName}, ${pub.year}, ${venueDetails}.`
   const bibtexText = generateBibTeX(pub)
   const highlightBadge = pub.highlight ? getHighlightBadge(pub.highlight) : null
 
@@ -43,13 +45,16 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
           <p className="text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
             {pub.authors.map((author, i) => {
               const name = author.trim()
+              const separator = i === 0 ? '' : i === pub.authors.length - 1
+                ? (pub.authors.length === 2 ? ' and ' : ', and ')
+                : ', '
               if (name === 'Haifan Yin') {
-                return <span key={i}>{i > 0 ? <span className="text-muted-foreground">, </span> : ''}<strong className="text-foreground">{name}</strong></span>
+                return <span key={i}><span className="text-muted-foreground">{separator}</span><strong className="text-foreground">{name}</strong></span>
               }
-              return <span key={i} className="text-muted-foreground">{i > 0 ? ', ' : ''}{name}</span>
+              return <span key={i} className="text-muted-foreground">{separator}{name}</span>
             })}
             , &ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
-            <em className="text-muted-foreground">{venueName}</em>{', '}
+            {pub.journal ? <em className="text-muted-foreground">{venueName}</em> : <>in Proceedings of <em className="text-muted-foreground">{venueName}</em></>}{', '}
             <span className="text-muted-foreground">{pub.journal ? `${venueDetails}, ${pub.year}.` : `${pub.year}, ${venueDetails}.`}</span>
             {(() => { const badge = getVenueBadge(pub.journal || pub.booktitle || ''); return badge ? (
               <Badge variant="secondary" className={`text-[9px] px-1.5 py-0 rounded ml-1.5 align-middle border ${badge.colorClass}`}>{badge.label}</Badge>

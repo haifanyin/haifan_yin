@@ -1,6 +1,6 @@
 import { ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { journalPapers } from '@/lib/data'
+import { formatAuthorList, journalPapers } from '@/lib/data'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTitle from '@/components/layout/SectionTitle'
 import type { Publication } from '@/types'
@@ -40,7 +40,7 @@ export default function FeaturedPublicationsSection() {
                 {publication.title}
               </h3>
               <p className="mt-3 flex-1 text-xs leading-relaxed text-muted-foreground">
-                {publication.authors.join(', ')}
+                {formatAuthorList(publication.authors)}
               </p>
 
               {publication.link && (
