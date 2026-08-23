@@ -10,7 +10,11 @@ export const researchBlogs: ResearchBlog[] = [
     date: 'July 24, 2026',
     author: 'MCSP Lab',
     readTime: '8 min read',
+<<<<<<< HEAD
     heroImage: '/research/blogs/ise-system-diagram.png',
+=======
+    heroImage: '/research/research-rydberg-atomic-receiver.jpg',
+>>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
     tags: ['Rydberg receivers', 'DoA estimation', 'Fluorescence imaging', 'Prony method'],
     sourceUrl: 'https://mp.weixin.qq.com/s/wXF3Dz-EPsZstdyHm5aKug',
     sections: [
@@ -82,11 +86,17 @@ export const researchBlogs: ResearchBlog[] = [
           },
         ],
         figure: {
+<<<<<<< HEAD
           src: '/research/blogs/ise-system-diagram.png',
           alt: 'Schematic illustration of a spatially resolved Rydberg atomic receiver',
           caption: 'Figure 1. Conceptual system diagram of a spatially resolved Rydberg atomic receiver.',
           width: 1080,
           height: 562,
+=======
+          src: '/research/research-rydberg-atomic-receiver.jpg',
+          alt: 'Schematic illustration of a spatially resolved Rydberg atomic receiver',
+          caption: 'Figure 1. Conceptual system diagram of a spatially resolved Rydberg atomic receiver.',
+>>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
         },
       },
       {
@@ -132,6 +142,7 @@ export const researchBlogs: ResearchBlog[] = [
           { value: '0.059 ms', label: 'Reported single-target Prony runtime' },
           { value: '1° RMSE', label: 'Resolution benchmark used for scalability tests' },
         ],
+<<<<<<< HEAD
         figures: [
           {
             src: '/research/blogs/ise-lo-strength.png',
@@ -148,6 +159,8 @@ export const researchBlogs: ResearchBlog[] = [
             height: 729,
           },
         ],
+=======
+>>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
         bullets: [
           {
             label: 'Linearization verified',
