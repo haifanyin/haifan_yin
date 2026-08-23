@@ -53,8 +53,8 @@ export default function PublicationItem({ pub, index }: { pub: Publication; inde
               }
               return <span key={i} className="text-muted-foreground">{separator}{name}</span>
             })}
-            , &ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
-            {pub.journal ? <em className="text-muted-foreground">{venueName}</em> : <>in Proceedings of <em className="text-muted-foreground">{venueName}</em></>}{', '}
+            <span className="text-muted-foreground">, </span>&ldquo;<span className="text-foreground/90">{pub.title}</span>,&rdquo;{' '}
+            {pub.journal ? <em className="text-muted-foreground">{venueName}</em> : <em className="text-muted-foreground">in Proceedings of {venueName}</em>}<span className="text-muted-foreground">, </span>
             <span className="text-muted-foreground">{pub.journal ? `${venueDetails}, ${pub.year}.` : `${pub.year}, ${venueDetails}.`}</span>
             {(() => { const badge = getVenueBadge(pub.journal || pub.booktitle || ''); return badge ? (
               <Badge variant="secondary" className={`text-[9px] px-1.5 py-0 rounded ml-1.5 align-middle border ${badge.colorClass}`}>{badge.label}</Badge>

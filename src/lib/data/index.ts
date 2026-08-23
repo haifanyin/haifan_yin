@@ -7,6 +7,7 @@ export { citationStats } from "./citation-stats";
 
 // Research topics
 export { researchTopics } from "./research-topics";
+export { researchBlogs } from "./research-blogs";
 
 // Team
 export { teachers, phdStudents, masterStudents, graduatedPhdStudents, graduatedMasterStudents } from "./team";
