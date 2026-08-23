@@ -5,11 +5,8 @@ import type { ResearchBlog, ResearchBlogSection } from '@/types/research-blog'
 import type { ResearchTopic } from '@/types'
 
 function BlogSection({ section }: { section: ResearchBlogSection }) {
-<<<<<<< HEAD
   const figures = section.figures ?? (section.figure ? [section.figure] : [])
 
-=======
->>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
   return (
     <section id={section.id} className="scroll-mt-28">
       <div className="mb-4 flex items-start gap-3">
@@ -50,7 +47,6 @@ function BlogSection({ section }: { section: ResearchBlogSection }) {
         </div>
       )}
 
-<<<<<<< HEAD
       {figures.length > 0 && (
         <div className="my-8 space-y-6">
           {figures.map((figure) => (
@@ -71,17 +67,6 @@ function BlogSection({ section }: { section: ResearchBlogSection }) {
             </figure>
           ))}
         </div>
-=======
-      {section.figure && (
-        <figure className="my-8 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
-          <div className="relative aspect-[16/8] bg-muted/30">
-            <Image src={section.figure.src} alt={section.figure.alt} fill className="object-contain p-5 md:p-8" />
-          </div>
-          <figcaption className="border-t border-border/50 px-5 py-3 text-xs leading-relaxed text-muted-foreground md:px-8">
-            {section.figure.caption}
-          </figcaption>
-        </figure>
->>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
       )}
     </section>
   )
@@ -90,11 +75,7 @@ function BlogSection({ section }: { section: ResearchBlogSection }) {
 export default function ResearchBlogArticle({ topic, blog }: { topic: ResearchTopic; blog: ResearchBlog }) {
   return (
     <main>
-<<<<<<< HEAD
       <section className="relative overflow-hidden border-b border-border/50 bg-gradient-to-br from-primary/[0.08] via-background to-primary/[0.03] pt-24 md:pt-28">
-=======
-      <section className="relative overflow-hidden border-b border-border/50 bg-gradient-to-br from-primary/[0.08] via-background to-primary/[0.03] pt-10 md:pt-16">
->>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,oklch(0.45_0.12_260_/_0.08),transparent_34%),radial-gradient(circle_at_85%_15%,oklch(0.55_0.1_220_/_0.1),transparent_30%)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-10 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground" aria-label="Breadcrumb">

@@ -1,22 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, BookOpenText, CalendarDays, ChevronRight, Clock3, Sparkles } from 'lucide-react'
-<<<<<<< HEAD
-=======
-import PageHero from '@/components/layout/PageHero'
->>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
 import type { ResearchBlog } from '@/types/research-blog'
 import type { ResearchTopic } from '@/types'
 
 export default function ResearchBlogList({ topic, blogs }: { topic: ResearchTopic; blogs: ResearchBlog[] }) {
   return (
     <main>
-<<<<<<< HEAD
       <section className="relative overflow-hidden pb-10 pt-24 md:pb-16 md:pt-28">
-=======
-      <PageHero page="research" />
-      <section className="relative overflow-hidden py-10 md:py-16">
->>>>>>> abb8b463d17aa945b15142ac025a21641d3b6ee6
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,oklch(0.45_0.12_260_/_0.06),transparent_32%),radial-gradient(circle_at_85%_10%,oklch(0.55_0.1_220_/_0.08),transparent_30%)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground" aria-label="Breadcrumb">
